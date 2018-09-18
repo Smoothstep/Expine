@@ -1,6 +1,6 @@
 #pragma once
 
-#include "D3D.h"
+#include "DirectX/D3D.h"
 
 namespace D3D
 {

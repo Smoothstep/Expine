@@ -14,41 +14,44 @@ namespace Hyper
 	public:
 		static const Vector3f ZeroVector;
 		static const Vector3f UpVector;
+		static const Vector3f DownVector;
 		static const Vector3f ForwardVector;
+		static const Vector3f BackwardVector;
 		static const Vector3f RightVector;
+		static const Vector3f LeftVector;
 
 	public:
-		FORCEINLINE Vector3f();
+		constexpr FORCEINLINE Vector3f();
 
-		FORCEINLINE Vector3f
+		constexpr FORCEINLINE Vector3f
 		(
 			Float InF
 		);
 
-		FORCEINLINE Vector3f
+		constexpr FORCEINLINE Vector3f
 		(
 			Float InX, 
 			Float InY, 
 			Float InZ
 		);
 
-		FORCEINLINE Vector3f
+		constexpr FORCEINLINE Vector3f
 		(
 			const	Vector2f	V, 
 			const	Float		InZ
 		);
 
-		FORCEINLINE Vector3f
+		constexpr FORCEINLINE Vector3f
 		(
 			const Vector4f& V
 		);
 
-		FORCEINLINE Vector3f
+		constexpr FORCEINLINE Vector3f
 		(
 			const Quaternion& Q
 		);
 
-		FORCEINLINE Vector3f
+		constexpr FORCEINLINE Vector3f
 		(
 			IntPoint A
 		);
@@ -593,14 +596,12 @@ namespace Hyper
 		return DistSquared;
 	}
 
-	FORCEINLINE Vector3f::Vector3f
+	constexpr FORCEINLINE Vector3f::Vector3f
 	(
 		const	Vector2f	V, 
 				Float		InZ)
 		: X(V.X), Y(V.Y), Z(InZ)
-	{
-		
-	}
+	{}
 
 	inline Vector3f Vector3f::RotateAngleAxis
 	(
@@ -778,34 +779,37 @@ namespace Hyper
 		return DegVector * (PI / 180.f);
 	}
 
-	FORCEINLINE Vector3f::Vector3f()
+	constexpr FORCEINLINE Vector3f::Vector3f()
+		: X(0.0f)
+		, Y(0.0f)
+		, Z(0.0f)
 	{}
 
-	FORCEINLINE Vector3f::Vector3f
+	constexpr FORCEINLINE Vector3f::Vector3f
 	(
 		Float InF
 	)
-		: X(InF), Y(InF), Z(InF)
-	{
-		
-	}
+		: X(InF)
+		, Y(InF)
+		, Z(InF)
+	{}
 
-	FORCEINLINE Vector3f::Vector3f
+	constexpr FORCEINLINE Vector3f::Vector3f
 	(
 		Float InX, 
 		Float InY, 
 		Float InZ
 	)
-		: X(InX), Y(InY), Z(InZ)
-	{
-		
-	}
+		: X(InX)
+		, Y(InY)
+		, Z(InZ)
+	{}
 
-	FORCEINLINE Vector3f::Vector3f(IntPoint A)
-		: X(A.X), Y(A.Y), Z(0.f)
-	{
-		
-	}
+	constexpr FORCEINLINE Vector3f::Vector3f(IntPoint A)
+		: X(A.X)
+		, Y(A.Y)
+		, Z(0.f)
+	{}
 
 
 #ifdef IMPLEMENT_ASSIGNMENT_OPERATOR_MANUALLY
@@ -1484,13 +1488,13 @@ namespace Hyper
 		);
 	}
 
-	FORCEINLINE Vector2f::Vector2f
+	constexpr FORCEINLINE Vector2f::Vector2f
 	(
 		const Vector3f & V
 	)	
-	: X(V.X), Y(V.Y)
-	{
-	}
+		: X(V.X)
+		, Y(V.Y)
+	{}
 
 	inline Vector3f Vector2f::SphericalToUnitCartesian() const
 	{
@@ -1498,12 +1502,12 @@ namespace Hyper
 		return Vector3f(Math::Cos(Y) * SinTheta, Math::Sin(Y) * SinTheta, Math::Cos(X));
 	}
 
-	Vector3f Math::Frac(const Vector3f& V)
+	constexpr Vector3f Math::Frac(const Vector3f& V)
 	{
 		return V - Floor(V);
 	}
 
-	Vector3f Math::Floor(const Vector3f& V)
+	constexpr Vector3f Math::Floor(const Vector3f& V)
 	{
 		return Vector3f
 		(

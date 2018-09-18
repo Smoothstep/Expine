@@ -1,10 +1,9 @@
-#include "../Precompiled.h"
-#include "Vector4.h"
-#include "Quaternion.h"
+#include "Hyper/Vector4.h"
+#include "Hyper/Quaternion.h"
 
 namespace Hyper
 {
-	Vector4f Vector4f::ZeroVector = Vector4f(0.0f);
+	const Vector4f Vector4f::ZeroVector = Vector4f(0.0f);
 
 	Rotation Vector4f::ToOrientationRotation() const
 	{
@@ -33,7 +32,6 @@ namespace Hyper
 		// This is done to avoid adding any roll (which our API states as a constraint).
 		const float YawRad = Math::Atan2(Y, X);
 		const float PitchRad = Math::Atan2(Z, Math::Sqrt(X*X + Y*Y));
-
 		const float DIVIDE_BY_2 = 0.5f;
 		float SP, SY;
 		float CP, CY;
@@ -41,11 +39,13 @@ namespace Hyper
 		Math::SinCos(&SP, &CP, PitchRad * DIVIDE_BY_2);
 		Math::SinCos(&SY, &CY, YawRad * DIVIDE_BY_2);
 
-		Quaternion RotationQuat;
-		RotationQuat.X = SP*SY;
-		RotationQuat.Y = -SP*CY;
-		RotationQuat.Z = CP*SY;
-		RotationQuat.W = CP*CY;
+		const Quaternion RotationQuat = {
+			 SP * SY,
+			-SP * CY,
+			 CP * SY,
+			 CP * CY
+		};
+
 		return RotationQuat;
 	}
 }

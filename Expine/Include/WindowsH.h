@@ -2,6 +2,9 @@
 
 #include <Windows.h>
 
+#undef min
+#undef max
+
 class ComException : public std::exception
 {
 public:
@@ -41,9 +44,92 @@ public:
 	}
 };
 
+class ScopedHandle
+{
+private:
+
+	HANDLE Handle;
+
+public:
+
+	inline ScopedHandle() = default;
+	inline ScopedHandle(HANDLE Handle) : Handle(Handle) {}
+	inline ScopedHandle(ScopedHandle&& Other) : Handle(Other.Handle)
+	{
+		Other.Handle = NULL;
+	}
+
+	inline ~ScopedHandle()
+	{
+		if (IsValid())
+		{
+			Ensure(CloseHandle(Handle));
+		}
+	}
+
+	inline operator HANDLE() const
+	{
+		return Handle;
+	}
+
+	inline void operator=(const HANDLE Other)
+	{
+		if (IsValid())
+		{
+			Ensure(Close());
+		}
+
+		Handle = Other;
+	}
+
+	inline bool IsValid() const
+	{
+		return Handle != NULL && Handle != INVALID_HANDLE_VALUE;
+	}
+
+	inline bool Close()
+	{
+		bool Result = CloseHandle(Handle);
+		Handle = NULL;
+		return Result;
+	}
+};
+
 
 #define HRESULT_LAST_ERROR		(HRESULT_FROM_WIN32(GetLastError()))
 #define IS_INVALID_HANDLE(X)	(X == NULL || X == INVALID_HANDLE_VALUE)
-#define IS_VALID_HANDLE(X)		(!IS_INVALID_HANDLE(X))
+#define IS_VALID_HANDLE(X)		(X != NULL && X != INVALID_HANDLE_VALUE)
 #define CLOSE_HANDLE(X)			CloseHandle(X); X = INVALID_HANDLE_VALUE;
-#define THROW_IF_FAILED(x)		if(FAILED(x)) throw new ComException(x);
+#define THROW_IF_FAILED(x)		if(FAILED(x)) throw ComException(x);
+
+constexpr std::pair<unsigned int, unsigned int> ExtractLoHi(size_t Size)
+{
+	if constexpr (sizeof(size_t) == 8)
+		return std::make_pair(Size & 0x00000000FFFFFFFF, (Size >> 32) & 0x00000000FFFFFFFF);
+	else
+		return std::make_pair(Size, 0U);
+}
+
+constexpr size_t CombineLoHi(unsigned int Lo, unsigned int Hi)
+{
+	if constexpr (sizeof(size_t) == 8)
+		return size_t(Lo) + ((size_t(Hi) << 32) & 0xFFFFFFFF00000000);
+	else
+		return Lo;
+}
+
+constexpr size_t MakeAlign
+(
+	const size_t Size,
+	const size_t Align
+)
+{
+	return (Size + (Align - 1)) & ~(Align - 1);
+}
+
+static SYSTEM_INFO GetSysInfo()
+{
+	SYSTEM_INFO SysInfo;
+	GetSystemInfo(&SysInfo);
+	return SysInfo;
+}

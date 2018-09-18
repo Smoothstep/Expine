@@ -1,4 +1,4 @@
-#include "Database/SQLite.h"
+#include <Database/SQLite.h>
 
 namespace Database
 {
@@ -48,7 +48,7 @@ namespace Database
 
 		int CDatabase::Execute(const String & Query, DataSet & QueryResult)
 		{
-			boost::mutex::scoped_lock Lock(ExecuteMutex);
+			std::scoped_lock<TMutex> Lock(ExecuteMutex);
 
 			char * Error;
 
@@ -142,7 +142,7 @@ namespace Database
 
 		SharedPointer<CDatabase> CDatabaseManager::OpenDatabase(const WString & Path)
 		{
-			boost::mutex::scoped_lock Lock(Mutex);
+			std::scoped_lock<TMutex> Lock(Mutex);
 
 			auto DB = OpenedDatabases.find(Path);
 			{

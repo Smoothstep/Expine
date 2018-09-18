@@ -2,12 +2,10 @@
 
 #include "Defines.h"
 #include "Types.h"
-#include "WindowsH.h"
+
+#include <experimental/filesystem>
 
 #include <fstream>
-
-#include <boost/filesystem.hpp>
-#include <boost/algorithm/string.hpp>
 
 namespace File
 {
@@ -17,6 +15,31 @@ namespace File
 		ErrorOpen,
 		ErrorRead,
 		ErrorWrite
+	};
+
+	class FileMappingStream
+	{
+	private:
+
+		size_t			MappingSize;
+		size_t			MappingSizeMax;
+		TVector<Byte>	MappingBytes;
+		void*			MappingHandle;
+		DWORD			AccessMem;
+
+	public:
+
+		 FileMappingStream() = default;
+		~FileMappingStream();
+
+		bool Open(const WStringView& File, std::ios::openmode Mode);
+		bool Open(const StringView& File, std::ios::openmode Mode);
+		bool Open(void* FileHandle);
+
+		bool Close();
+
+				TVector<Byte> & GetContent(const size_t MinBytes = -1);
+		const	TVector<Byte> & GetContent(const size_t MinBytes = -1) const;
 	};
 
 	class CFile
@@ -39,9 +62,7 @@ namespace File
 
 	public:
 
-		CFile()
-		{}
-
+		CFile() = default;
 		CFile
 		(
 			const WString & Path
@@ -61,9 +82,14 @@ namespace File
 			return Path;
 		}
 
-		template<class T = Byte> inline TVector<T> & GetContentRef() const
+		template<class T = Byte> inline const TVector<T> & GetContentRef() const
 		{
-			return (TVector<T>&)Content;
+			return reinterpret_cast<const TVector<T>&>(Content);
+		}
+
+		template<class T = Byte> inline TVector<T> & GetContentRef()
+		{
+			return reinterpret_cast<TVector<T>&>(Content);
 		}
 
 		template<class T = Byte> inline TVector<T> GetContent() const
@@ -116,7 +142,7 @@ namespace File
 		const WString & FilePath
 	)
 	{
-		return boost::filesystem::exists(boost::filesystem::path(FilePath));
+		return std::experimental::filesystem::exists(std::experimental::filesystem::path(FilePath));
 	}
 
 	static inline bool DoesFileExist
@@ -124,21 +150,125 @@ namespace File
 		const String & FilePath
 	)
 	{
-		return boost::filesystem::exists(boost::filesystem::path(WString(FilePath.begin(), FilePath.end())));
+		return std::experimental::filesystem::exists(std::experimental::filesystem::path(FilePath));
+	}
+
+	static inline bool DoesFileExist
+	(
+		const StringView FilePath
+	)
+	{
+		return std::experimental::filesystem::exists(std::experimental::filesystem::path(std::begin(FilePath), std::end(FilePath)));
+	}
+
+	static inline bool DoesFileExist
+	(
+		const WStringView FilePath
+	)
+	{
+		return std::experimental::filesystem::exists(std::experimental::filesystem::path(std::begin(FilePath), std::end(FilePath)));
+	}
+
+	template<class Callback, class StringType, class... StringTypes>
+	int DoFilesExist(Callback&& Cb, const StringType& File, const StringTypes&... Files)
+	{
+		if (DoesFileExist(File))
+		{
+			if constexpr (sizeof...(StringTypes) > 0)
+			{
+				return 1 + DoFilesExist(Cb, Files...);
+			}
+			else
+			{
+				return 1;
+			}
+		}
+
+		Cb(File);
+
+		if constexpr (sizeof...(StringTypes) > 0)
+		{
+			return DoFilesExist(Cb, Files...);
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	template<class Callback, class StringType, class... StringTypes>
+	bool DoAllFilesExist(Callback&& Cb, const StringType& File, const StringTypes&... Files)
+	{
+		if (DoesFileExist(File))
+		{
+			if constexpr (sizeof...(StringTypes) > 0)
+			{
+				return DoAllFilesExist(Cb, Files...);
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+		Cb(File);
+
+		if constexpr (sizeof...(StringTypes) > 0)
+		{
+			return DoAllFilesExist(Cb, Files...);
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	class CDirectoryReader
 	{
 
 	};
+	
+	template<
+		typename ContentType,
+		typename const	typename ContentType::value_type *	(ContentType::*GetData)() const = &ContentType::data,
+		typename		typename ContentType::size_type		(ContentType::*GetSize)() const	= &ContentType::size>
+	class ContentAdapter
+	{
+	protected:
+		
+		const ContentType & Content;
 
-	class CFileReader
+	public:
+
+		ContentAdapter(const ContentType & Content) : Content(Content) {}
+
+	public:
+
+		inline const typename ContentType::value_type * Data() const
+		{
+			return (Content.*GetData)();
+		}
+
+		inline typename ContentType::size_type Size() const
+		{
+			return (Content.*GetSize)();
+		}
+	};
+
+	template<
+		typename ContentType,
+		typename const	typename ContentType::value_type *	(ContentType::*GetData)() const = &ContentType::data,
+		typename		typename ContentType::size_type		(ContentType::*GetSize)() const	= &ContentType::size>
+	class CContentReader : public ContentAdapter<ContentType, GetData, GetSize>
 	{
 	private:
 
-		const TVector<Byte> & Content;
+		const ContentType & Content;
 
 	private:
+
+		using ContentAdapter<ContentType, GetData, GetSize>::Size;
+		using ContentAdapter<ContentType, GetData, GetSize>::Data;
 
 		size_t ReadOffset = 0;
 
@@ -150,20 +280,19 @@ namespace File
 		{
 			// Finds a character within a range
 
-			const Byte * Offset = reinterpret_cast<const Byte*>(memchr(P, C, Content.size() - ReadOffset));
+			const Byte * Offset = reinterpret_cast<const Byte*>(memchr(P, C, Size() - ReadOffset));
 
 			return Offset;
 		}
 
 	public:
 
-		inline CFileReader
+		inline CContentReader
 		(
-			const TVector<Byte> & Content
+			const ContentType & Content
 		) : 
-			Content(Content) 
-		{
-		}
+			Content(Content), ContentAdapter<ContentType, GetData, GetSize>(Content)
+		{}
 
 		void Reset()
 		{
@@ -175,11 +304,11 @@ namespace File
 			const Byte C
 		)	const
 		{
-			const Byte * Current = reinterpret_cast<const Byte*>(Content.data() + ReadOffset);
+			const Byte * Current = reinterpret_cast<const Byte*>(Data() + ReadOffset);
 
 			// Finds a character within a range
 
-			const Byte * Offset = reinterpret_cast<const Byte*>(memchr(Current, C, Content.size() - ReadOffset));
+			const Byte * Offset = reinterpret_cast<const Byte*>(memchr(Current, C, Size() - ReadOffset));
 
 			return Offset;
 		}
@@ -189,7 +318,7 @@ namespace File
 			String & Result
 		)
 		{
-			const Byte * Current = reinterpret_cast<const Byte*>(Content.data() + (ReadOffset == 0 ? 0 : ReadOffset + 1));
+			const Byte * Current = reinterpret_cast<const Byte*>(Data() + (ReadOffset == 0 ? 0 : ReadOffset + 1));
 
 			// Get the end line sign offset
 

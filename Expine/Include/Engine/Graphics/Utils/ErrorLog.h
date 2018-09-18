@@ -1,11 +1,13 @@
 #pragma once
 
-#include <Types.h>
+#include "Types.h"
 #include "Debug.h"
 #include "Singleton.h"
 #include "ErrorCode.h"
 
 #include <sstream>
+#include <io.h>
+#include <fstream>
 #include <iostream>
 
 namespace D3D

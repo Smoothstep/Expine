@@ -1,5 +1,4 @@
-#include "../Precompiled.h"
-#include "Color.h"
+#include "Hyper/Color.h"
 
 namespace Hyper
 {

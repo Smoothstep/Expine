@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RawResource.h"
+#include "Raw/RawResource.h"
 
 namespace D3D
 {

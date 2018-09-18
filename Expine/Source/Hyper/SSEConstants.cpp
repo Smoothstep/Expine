@@ -1,5 +1,4 @@
-#include "../Precompiled.h"
-#include "SSE.h"
+#include "Hyper/SSE.h"
 
 namespace SSE
 {

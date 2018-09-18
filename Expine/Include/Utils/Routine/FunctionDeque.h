@@ -56,12 +56,4 @@ public:
 	{
 		Functions.clear();
 	}
-
-	inline void ExecuteAll() const
-	{
-		for (const auto & Iter : Functions)
-		{
-			Iter.Function->Run();
-		}
-	}
 };

@@ -2,6 +2,8 @@
 
 namespace D3D
 {
+	// Forward Declarations
+
 	class CIndexBuffer;
 	class CVertexBuffer;
 	class CVertexBuffers;

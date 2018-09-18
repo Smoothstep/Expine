@@ -1,38 +1,29 @@
 #pragma once
 
-#include "SceneView.h"
-#include "SceneLight.h"
+#include "Scene/SceneOutdoor.h"
+#include "Scene/SceneLight.h"
+#include "Scene/Outdoor/OcclusionMap.h"
 
-#include "RawRenderTarget.h"
-#include "RawShaderResourceView.h"
-#include "RawDepthStencilView.h"
+#include "Raw/RawRenderTarget.h"
+#include "Raw/RawShaderResourceView.h"
+#include "Raw/RawDepthStencilView.h"
 
-#include "SceneOutdoor.h"
-
-#include "OcclusionMap.h"
-
-#include "Time\Clock.h"
+#include "Utils/Time/Clock.h"
 
 namespace D3D
 {
 	struct RenderPass
 	{
-		inline RenderPass
+		RenderPass
 		(
-			Time::TimePointSteady& RenderStartTimePoint,
-			Time::TimePointSteady& RenderEndTimePoint,
-			Time::TimePointSteady& RenderShadowMapTimePoint
-		) :
-			RenderEndTimePoint(RenderEndTimePoint),
-			RenderStartTimePoint(RenderStartTimePoint),
-			RenderShadowMapTimePoint(RenderShadowMapTimePoint)
-		{
-			RenderShadows = (RenderStartTimePoint - RenderShadowMapTimePoint) > 0;
-		}
+			Time::TimePointSteady & RenderStartTimePoint,
+			Time::TimePointSteady & RenderEndTimePoint,
+			Time::TimePointSteady & RenderShadowMapTimePoint
+		);
 
-		Time::TimePointSteady& RenderStartTimePoint;
-		Time::TimePointSteady& RenderEndTimePoint;
-		Time::TimePointSteady& RenderShadowMapTimePoint;
+		Time::TimePointSteady & RenderStartTimePoint;
+		Time::TimePointSteady & RenderEndTimePoint;
+		Time::TimePointSteady & RenderShadowMapTimePoint;
 
 		BOOL RenderShadows;
 	};
@@ -150,7 +141,7 @@ namespace D3D
 		ErrorCode CreateSceneCBV();
 	};
 
-	class CSceneComponents : public CSceneConstants
+	class _EX_ CSceneComponents : public CSceneConstants
 	{
 	public:
 
@@ -302,7 +293,7 @@ namespace D3D
 		}
 	};
 
-	class CScene : public CSceneComponents
+	class _EX_ CScene : public CSceneComponents
 	{
 		friend class CSceneRenderer;
 
@@ -364,20 +355,10 @@ namespace D3D
 
 	public:
 
-		inline void SetCamera
+		void SetCamera
 		(
 			const SharedPointer<CCamera> & pCamera
-		)
-		{
-			Ensure(pCamera);
-
-			Camera = pCamera;
-
-			if (ViewInput)
-			{
-				ViewInput->Update(Camera.Get());
-			}
-		}
+		);
 
 		inline const SharedPointer<CCamera> & GetCamera() const
 		{
@@ -390,6 +371,8 @@ namespace D3D
 		(
 			const CScreen * pScreen
 		);
+
+		~CScene();
 
 	private:
 

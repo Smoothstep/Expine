@@ -1,10 +1,8 @@
 #pragma once
 
-#include "SceneOutdoor.h"
-#include "SceneIndoor.h"
-
-#include "StaticObject.h"
-#include "SpeedTree.h"
+#include "Scene/SceneOutdoor.h"
+#include "Scene/SceneIndoor.h"
+#include "Scene/Object/StaticObject.h"
 
 namespace D3D
 {

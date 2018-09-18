@@ -1,15 +1,19 @@
 #pragma once
 
 #include "Screen.h"
-#include "Scene.h"
-#include "SceneComposite.h"
-#include "PostProcess.h"
-#include "OcclusionMap.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneComposite.h"
+#include "Scene/Outdoor/OcclusionMap.h"
 
-#include <Routine\ServiceThread.h>
+#include <Utils/Routine/ServiceThread.h>
 
 namespace D3D
 {
+	namespace PostProcess
+	{
+		class CPostProcess;
+	}
+
 	struct RenderOptions
 	{
 		BOOL UseAsyncCompute : 1;
@@ -112,25 +116,10 @@ namespace D3D
 			return &CommandContext;
 		}
 
-		inline CCommandListContext * GetGeometryCommandContext()
-		{
-			return &RenderingCommandLists[CMD_LIST_GEOMETRY];
-		}
-
-		inline CCommandListContext * GetShadowMapCommandContext()
-		{
-			return &RenderingCommandLists[CMD_LIST_SHADOWS];
-		}
-
-		inline CCommandListContext * GetCompositeCommandContext()
-		{
-			return &RenderingCommandLists[CMD_LIST_COMPOSITE];
-		}
-
-		inline CCommandListContext * GetComputeCommandContext() 
-		{
-			return &CommandContextCompute;
-		}
+		inline CCommandListContext * GetGeometryCommandContext()	{	return &RenderingCommandLists[CMD_LIST_GEOMETRY];	}
+		inline CCommandListContext * GetShadowMapCommandContext()	{	return &RenderingCommandLists[CMD_LIST_SHADOWS];	}
+		inline CCommandListContext * GetCompositeCommandContext()	{	return &RenderingCommandLists[CMD_LIST_COMPOSITE];	}
+		inline CCommandListContext * GetComputeCommandContext()		{	return &CommandContextCompute;						}
 
 		inline const CScene * GetScene() const
 		{

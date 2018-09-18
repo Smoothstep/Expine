@@ -14,19 +14,19 @@ namespace Hyper
 		static const Vector2f UnitVector;
 
 	public:
-		FORCEINLINE Vector2f() { }
-		FORCEINLINE Vector2f
+		constexpr FORCEINLINE Vector2f();
+		constexpr FORCEINLINE Vector2f
 		(
 			float InX, 
 			float InY
 		);
 
-		FORCEINLINE Vector2f
+		constexpr FORCEINLINE Vector2f
 		(
 			IntPoint InPos
 		);
 
-		FORCEINLINE Vector2f
+		constexpr FORCEINLINE Vector2f
 		(
 			const Vector3f & V
 		);
@@ -254,6 +254,7 @@ namespace Hyper
 		FORCEINLINE Vector3f SphericalToUnitCartesian() const;
 	};
 
+
 	FORCEINLINE Vector2f operator*
 	(
 		const float		 Scale,
@@ -263,23 +264,30 @@ namespace Hyper
 		return V * Scale;
 	}
 
-	FORCEINLINE Vector2f::Vector2f
+
+	constexpr FORCEINLINE Vector2f::Vector2f
 	(
 		const float InX, 
 		const float InY
 	)
-		: X(InX), Y(InY)
+		: X(InX)
+		, Y(InY)
 	{ }
 
 
-	FORCEINLINE Vector2f::Vector2f
+	constexpr FORCEINLINE Vector2f::Vector2f()
+		: X(0.0f)
+		, Y(0.0f)
+	{ }
+
+
+	constexpr FORCEINLINE Vector2f::Vector2f
 	(
 		IntPoint InPos
-	)
-	{
-		X = (float)InPos.X;
-		Y = (float)InPos.Y;
-	}
+	) 
+		: X(InPos.X)
+		, Y(InPos.Y)
+	{ }
 
 	FORCEINLINE Vector2f Vector2f::operator+
 	(

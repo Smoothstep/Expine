@@ -1,12 +1,12 @@
 #pragma once
 
-#include <boost/chrono.hpp>
+#include <chrono>
 
 namespace Time
 {
-	using Milliseconds = boost::chrono::milliseconds;
-	using Microseconds = boost::chrono::microseconds;
-	using Nanoseconds  = boost::chrono::nanoseconds;
+	using Milliseconds = std::chrono::milliseconds;
+	using Microseconds = std::chrono::microseconds;
+	using Nanoseconds  = std::chrono::nanoseconds;
 
 	template<typename T> class UTimePoint
 	{
@@ -68,13 +68,13 @@ namespace Time
 		}
 	};
 
-	using TimePointSystem = UTimePoint<boost::chrono::system_clock::time_point>;
-	using TimePointSteady = UTimePoint<boost::chrono::steady_clock::time_point>;
+	using TimePointSystem = UTimePoint<std::chrono::system_clock::time_point>;
+	using TimePointSteady = UTimePoint<std::chrono::steady_clock::time_point>;
 
 	class UHighResolutionClock
 	{
 	private:
-		using TClock = boost::chrono::high_resolution_clock;
+		using TClock = std::chrono::high_resolution_clock;
 		
 	public:
 		static UTimePoint<TClock::time_point> Now()

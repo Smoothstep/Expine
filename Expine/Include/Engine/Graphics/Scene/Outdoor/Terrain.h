@@ -1,9 +1,9 @@
 #pragma once
 
 #include "TerrainStructure.h"
-#include "TextureManager.h"
-#include "PipelinesTerrain.h"
-#include "CommandList.h"
+#include "Resource/Texture/TextureManager.h"
+#include "Pipeline/PSOTerrain.h"
+#include "Command/CommandList.h"
 
 namespace D3D
 {

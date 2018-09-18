@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RawDescriptorHeap.h"
-#include "RawResource.h"
-#include "RawCommandList.h"
+#include "Raw/RawDescriptorHeap.h"
+#include "Raw/RawResource.h"
+#include "Raw/RawCommandList.h"
 
 namespace D3D
 {
@@ -404,7 +404,7 @@ namespace D3D
 		{
 			DepthStencilView[Index] = new RDepthStencilView();
 
-			if ((Error = DepthStencilView[Index]->CreateFromResource(ppResources[Index], DescriptorHeapEntry(pDescriptorHeap, Offset + Index))))
+			if ((Error = DepthStencilView[Index]->CreateFromResource(ppResources[Index], DescriptorHeapEntry(pDescriptorHeap.Get(), Offset + Index))))
 			{
 				return Error;
 			}

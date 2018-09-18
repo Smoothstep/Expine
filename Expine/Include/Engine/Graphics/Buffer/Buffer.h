@@ -1,14 +1,8 @@
 #pragma once
 
-#include "RawDescriptorHeap.h"
-#include "ResourceAllocator.h"
-#include "Resource.h"
+#include "Raw/RawDescriptorHeap.h"
+#include "Resource/Resource.h"
 
-#include "Memory.h"
-
-#include "CommandList.h"
-
-#include <functional>
 #include <algorithm>
 #include <numeric>
 
@@ -22,10 +16,6 @@ namespace D3D
 		BufferTypeConstant,
 		BufferTypeCommand
 	};
-
-	typedef D3D12_INDEX_BUFFER_VIEW					IndexBufferView;
-	typedef D3D12_VERTEX_BUFFER_VIEW				VertexBufferView;
-	typedef D3D12_CONSTANT_BUFFER_VIEW_DESC			ConstantBufferView;
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -146,7 +136,7 @@ namespace D3D
 			const size_t StrideCount
 		)
 		{
-			this->StrideSize	= StrideSize;
+			this->StrideSize		= StrideSize;
 			this->StrideCount	= StrideCount;
 			this->Size			= StrideSize * StrideCount;
 		}
@@ -157,22 +147,17 @@ namespace D3D
 	struct GrpConstantBufferDescriptor : public GrpBufferDescriptor, public TVector<size_t>
 	{
 	private:
-
-		template<class Class>
-		static void CreateDescriptor(GrpConstantBufferDescriptor * Descriptor)
-		{
-			Descriptor->push_back(sizeof(Class));
-		}
-
 		template<class Class, class... Classes>
 		static void CreateDescriptor(GrpConstantBufferDescriptor * Descriptor)
 		{
 			Descriptor->push_back(sizeof(Class));
+
+			if constexpr (sizeof...(Classes) > 1)
 			{
 				CreateDescriptor<Classes...>(Descriptor);
 			}
 		}
-
+		
 	public:
 
 		explicit inline GrpConstantBufferDescriptor()
@@ -361,6 +346,7 @@ namespace D3D
 			GrpBufferDescriptor * Descriptor
 		)
 		{
+			
 			BufferDescriptor = Descriptor;
 		}
 	};

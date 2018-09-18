@@ -4,29 +4,32 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <deque>
 #include <bitset>
 #include <queue>
 #include <sstream>
 #include <ostream>
 #include <istream>
-#include <strstream>
+#include <mutex>
+#include <atomic>
 #include <immintrin.h>
 #include <xmmintrin.h>
-#include <String.h>
+#include <StringHelper.h>
 
-#include <boost/ptr_container/ptr_vector.hpp>
-#include <boost/thread/mutex.hpp>
+#undef min
+#undef max
 
-#include <Container/HopscotchMap.h>
+#include <Utils/Container/hopscotch_map.h>
+#include <Utils/Container/hopscotch_set.h>
 
 template <
 	class K, 
 	class V, 
 	class H = std::hash<K> >
-class THashMap : public tsl::hopscotch_map<K, V, H>
+class THashMap : public tsl::hmap<K, V, H>
 {
 public:
-	using tsl::hopscotch_map<K, V, H>::hopscotch_map;
+	using tsl::hmap<K, V, H>::hmap;
 
 	inline V * Find(const K& Key);
 	inline V * FindOrAdd(const K& Key);
@@ -38,9 +41,9 @@ template<
 	class H>
 inline V * THashMap<K, V, H>::Find(const K& Key)
 {
-	auto Iter = this->find(Key);
+	auto Iter = tsl::hmap<K, V, H>::find(Key);
 
-	if (Iter == this->end())
+	if (Iter == tsl::hmap<K, V, H>::end())
 	{
 		return nullptr;
 	}
@@ -56,9 +59,9 @@ template<
 	class H>
 inline V * THashMap<K, V, H>::FindOrAdd(const K& Key)
 {
-	auto Iter = this->find(Key);
+	auto Iter = tsl::hmap<K, V, H>::find(Key);
 
-	if (Iter == this->end())
+	if (Iter == tsl::hmap<K, V, H>::end())
 	{
 		return nullptr;
 	}
@@ -76,7 +79,8 @@ class TMap : public std::map<K, V>
 public:
 	using std::map<K, V>::map;
 
-	inline V * Find(const K& Key);
+	inline			V * Find(const K& Key);
+	inline const	V * Find(const K& Key) const;
 };
 
 template<
@@ -84,14 +88,31 @@ template<
 	class V>
 inline V * TMap<K, V>::Find(const K& Key)
 {
-	auto Iter = this->find(Key);
+	auto Iter = std::map<K, V>::find(Key);
 
-	if (Iter == this->end())
+	if (Iter == std::map<K, V>::end())
 	{
 		return nullptr;
 	}
 
 	V * Value = reinterpret_cast<V*>(&*Iter);
+
+	return Value;
+}
+
+template<
+	class K,
+	class V>
+	inline const V * TMap<K, V>::Find(const K& Key) const
+{
+	auto Iter = std::map<K, V>::find(Key);
+
+	if (Iter == std::map<K, V>::end())
+	{
+		return nullptr;
+	}
+
+	const V * Value = reinterpret_cast<const V*>(&*Iter);
 
 	return Value;
 }
@@ -109,11 +130,11 @@ public:
 	{}
 };
 
-template<class T>
-class TVector : public std::vector<T>
+template<class T, class A = std::allocator<T>>
+class TVector : public std::vector<T, A>
 {
 public:
-	using std::vector<T>::vector;
+	using std::vector<T, A>::vector;
 
 	inline void ResizeUninitialized(size_t size);
 	inline void ResizeNulled(size_t size);
@@ -139,14 +160,17 @@ public:
 	template<class Comp>
 	inline void FindSortedVoid(Comp Comparator) const;
 
-	inline TVector<T> CartesianProduct();
+	inline TVector<T, A> CartesianProduct();
 };
 
 template<class T>
+using MappedVector = TVector<T, std::allocator<T> >;
+
+template<class T, class A>
 template<class Pred>
-inline T * TVector<T>::Find(Pred Predicate) const
+inline T * TVector<T, A>::Find(Pred Predicate) const
 {
-	for (auto Iter = begin(); Iter != end(); ++Iter)
+	for (auto Iter = std::vector<T, A>::begin(); Iter != std::vector<T, A>::end(); ++Iter)
 	{
 		if (Predicate(*Iter))
 		{
@@ -157,11 +181,11 @@ inline T * TVector<T>::Find(Pred Predicate) const
 	return nullptr;
 }
 
-template<class T>
+template<class T, class A>
 template<class Pred>
-inline void TVector<T>::FindVoid(Pred Predicate) const
+inline void TVector<T, A>::FindVoid(Pred Predicate) const
 {
-	for (auto Iter = begin(); Iter != end(); ++Iter)
+	for (auto Iter = std::vector<T, A>::begin(); Iter != std::vector<T, A>::end(); ++Iter)
 	{
 		if (Predicate(*Iter))
 		{
@@ -170,24 +194,27 @@ inline void TVector<T>::FindVoid(Pred Predicate) const
 	}
 }
 
-template<class T>
+template<class T, class A>
 template<class Comp>
-inline T * TVector<T>::FindSorted(Comp Compare) const
+inline T * TVector<T, A>::FindSorted(Comp Compare) const
 {
 	size_t L = 0;
-	size_t R = size() - 1;
+	size_t R = std::vector<T, A>::size() - 1;
 	size_t C;
+	size_t M;
 
 	while (L <= R)
 	{
-		const T & Value = at(L + ((R - L) / 2));
+		M = L + (R - L) / 2;
+
+		const T & Value = std::vector<T, A>::at(M);
 
 		if ((C = Compare(Value)) == 0)
 		{
 			return std::addressof(Value);
 		}
 
-		if (Cmp > 0)
+		if (C > 0)
 		{
 			R = M - 1;
 		}
@@ -200,116 +227,119 @@ inline T * TVector<T>::FindSorted(Comp Compare) const
 	return nullptr;
 }
 
-template<class T>
+template<class T, class A>
 template<class Comp>
-inline void TVector<T>::FindSortedVoid(Comp Compare) const
+inline void TVector<T, A>::FindSortedVoid(Comp Compare) const
 {
 	size_t L = 0;
-	size_t R = size() - 1;
+	size_t R = std::vector<T, A>::size() - 1;
 	size_t C;
+	size_t M;
 
 	while (L <= R)
 	{
-		const T & Value = at(L + ((R - L) / 2));
+		M = L + (R - L) / 2;
+
+		const T & Value = std::vector<T, A>::at(M);
 
 		if ((C = Compare(Value)) == 0)
 		{
 			return;
 		}
 
-		if (Cmp > 0)
+		if (C > 0)
 		{
-			R = M - 1;
+			R = L - 1;
 		}
 		else
 		{
-			L = M + 1;
+			L = L + R / 2 + 1;
 		}
 	}
 }
 
-template<class T>
-inline void TVector<T>::AddUnitialized(size_t NumElements)
+template<class T, class A>
+inline void TVector<T, A>::AddUnitialized(size_t NumElements)
 {
-	std::vector<T>::reserve(this->capacity() + NumElements);
+	std::vector<T, A>::reserve(this->capacity() + NumElements);
 
-	this->_Myfirst() = this->data();
-	this->_Mylast() = this->data() + this->capacity();
-	this->_Myend() = this->data() + this->capacity();
+	std::vector<T, A>::_Myfirst() = std::vector<T, A>::data();
+	std::vector<T, A>::_Mylast() = std::vector<T, A>::data() + std::vector<T, A>::capacity();
+	std::vector<T, A>::_Myend() = std::vector<T, A>::data() + std::vector<T, A>::capacity();
 }
 
-template<class T>
-inline void TVector<T>::ResizeUninitialized(size_t size)
+template<class T, class A>
+inline void TVector<T, A>::ResizeUninitialized(size_t size)
 {
-	std::vector<T>::reserve(size);
+	std::vector<T, A>::reserve(size);
 
-	this->_Myfirst() = this->data();
-	this->_Mylast() = this->data() + this->capacity();
-	this->_Myend() = this->data() + this->capacity();
+	std::vector<T, A>::_Myfirst() = std::vector<T, A>::data();
+	std::vector<T, A>::_Mylast() = std::vector<T, A>::data() + std::vector<T, A>::capacity();
+	std::vector<T, A>::_Myend() = std::vector<T, A>::data() + std::vector<T, A>::capacity();
 }
 
-template<class T>
-inline void TVector<T>::ResizeNulled(size_t size)
+template<class T, class A>
+inline void TVector<T, A>::ResizeNulled(size_t size)
 {
-	std::vector<T>::reserve(size);
+	std::vector<T, A>::reserve(size);
 
-	this->_Myfirst() = this->data();
-	this->_Mylast() = this->data() + this->capacity();
-	this->_Myend() = this->data() + this->capacity();
+	std::vector<T, A>::_Myfirst() = std::vector<T, A>::data();
+	std::vector<T, A>::_Mylast() = std::vector<T, A>::data() + std::vector<T, A>::capacity();
+	std::vector<T, A>::_Myend() = std::vector<T, A>::data() + std::vector<T, A>::capacity();
 
-	memset(this->data(), 0, size * sizeof(T));
+	memset(std::vector<T, A>::data(), 0, size * sizeof(T));
 }
 
-template<class T>
-inline bool TVector<T>::Contains(const T& Element)
+template<class T, class A>
+inline bool TVector<T, A>::Contains(const T& Element)
 {
-	return std::find(this->begin(), this->end(), Element) != this->end();
+	return std::find(std::vector<T, A>::begin(), std::vector<T, A>::end(), Element) != std::vector<T, A>::end();
 }
 
-template<class T>
-inline void TVector<T>::RemoveOnce(const T& Element)
+template<class T, class A>
+inline void TVector<T, A>::RemoveOnce(const T& Element)
 {
-	auto Iter = std::find(this->begin(), this->end(), Element);
+	auto Iter = std::find(std::vector<T, A>::begin(), std::vector<T, A>::end(), Element);
 
-	if (Iter != this->end())
+	if (Iter != std::vector<T, A>::end())
 	{
-		this->erase(Iter);
+		std::vector<T, A>::erase(Iter);
 	}
 }
 
-template<class T>
-inline void TVector<T>::Remove(const T& Element)
+template<class T, class A>
+inline void TVector<T, A>::Remove(const T& Element)
 {
-	while (auto Iter = std::find(this->begin(), this->end(), Element) != this->end())
+	std::remove_if(std::vector<T, A>::begin(), std::vector<T, A>::end(), [Element](const T& E)
 	{
-		this->erase(Iter);
-	}
+		return E == Element;
+	});
 }
 
-template<class T>
-inline void TVector<T>::Fill(const T& Element)
+template<class T, class A>
+inline void TVector<T, A>::Fill(const T& Element)
 {
-	std::fill(this->begin(), this->end(), Element);
+	std::fill(std::vector<T, A>::begin(), std::vector<T, A>::end(), Element);
 }
 
-template<class T>
-inline T * TVector<T>::Detach()
+template<class T, class A>
+inline T * TVector<T, A>::Detach()
 {
-	T * Data = this->_Myfirst();
+	T * Data = std::vector<T, A>::_Myfirst();
 
-	this->_Myfirst() = this->_Mylast() = this->_Myend() = 0;
+	std::vector<T, A>::_Myfirst() = std::vector<T, A>::_Mylast() = std::vector<T, A>::_Myend() = 0;
 
 	return Data;
 }
 
-template<class T>
-inline TVector<T> TVector<T>::CartesianProduct()
+template<class T, class A>
+inline TVector<T, A> TVector<T, A>::CartesianProduct()
 {
-	TVector<T> Result;
+	TVector<T, A> Result;
 
-	for (auto Y = begin(); Y != end(); ++Y)
+	for (auto Y = std::vector<T, A>::begin(); Y != std::vector<T, A>::end(); ++Y)
 	{
-		for (auto X = begin(); X != end(); ++X)
+		for (auto X = std::vector<T, A>::begin(); X != std::vector<T, A>::end(); ++X)
 		{
 			if (X == Y)
 			{
@@ -321,22 +351,61 @@ inline TVector<T> TVector<T>::CartesianProduct()
 	}
 }
 
-template<class T>
-class TSmartVector : public TVector<T>
+template<class T, class A = std::allocator<T>>
+class TSmartVector : public TVector<T, A>
 {
 public:
-	using TVector<T>::TVector;
+	using TVector<T, A>::TVector;
 };
 
-template<class T>
-class TPointerVector : public boost::ptr_vector<T>
+using StringStream		= std::stringstream;
+using WStringStream		= std::wstringstream;
+using WStringList		= TVector<WString>;
+using StringList		= TVector<String>;
+using StringViewList	= TVector<StringView>;
+using WStringViewList	= TVector<WStringView>;
+
+template<class ElementType, class Allocator>
+inline void Detach(std::basic_string<ElementType, std::char_traits<ElementType>, Allocator>& From, TVector<ElementType, Allocator>& To)
 {
-public:
-	using boost::ptr_vector<T>::ptr_vector;
-};
+	auto& Data = From._Get_data();
 
-using WStringList	= TVector<WString>;
-using StringList	= TVector<String>;
+	if (From.capacity() < 16)
+	{
+		// SSO
+		To.resize(From.capacity());
+		To.shrink_to_fit();
+		To.insert(To.begin(), From.begin(), From.end());
+	}
+	else
+	{
+		To._Myfirst()	= Data._Bx._Ptr;
+		To._Mylast()	= Data._Bx._Ptr + Data._Mysize;
+		Data._Bx._Ptr	= 0;
+		Data._Mysize	= 0;
+		Data._Myres		= 0;
+	}
+}
+
+template<class ElementType, class Allocator>
+inline void Detach(TVector<ElementType, Allocator>& From, std::basic_string<ElementType, std::char_traits<ElementType>, Allocator>& To)
+{
+	auto& Data = To._Get_data();
+
+	if (From.capacity() < 16)
+	{
+		// SSO
+		To.resize(From.capacity());
+		To.shrink_to_fit();
+		To.insert(To.begin(), From.begin(), From.end());
+	}
+	else
+	{
+		Data._Mysize	= From.size();
+		Data._Myres		= From.capacity();
+		Data._Bx._Ptr	= From.Detach();
+	}
+}
 
 template <class T>
 using TSet 
@@ -378,6 +447,10 @@ template <class T>
 using TQueue
 = std::queue<T>;
 
+template <class T>
+using TDeque
+= std::deque<T>;
+
 template <class Type, class Comp = std::less<Type>, class Cont = TVector<Type>>
 using TPriorityQueue
 = std::priority_queue<Type, Cont, Comp>;
@@ -387,7 +460,7 @@ using TAtomic
 = std::atomic<T>;
 
 using TMutex
-= boost::mutex;
+= std::mutex;
 
 typedef unsigned char Byte;
 
@@ -435,6 +508,30 @@ namespace std
 		inline size_t operator()(const String& Value) const
 		{
 			return hash<std::string>()(Value);
+		}
+	};
+	template<>
+	struct hash<WString>
+	{
+		inline size_t operator()(const WString& Value) const
+		{
+			return hash<std::wstring>()(Value);
+		}
+	};
+	template<>
+	struct hash<StringView>
+	{
+		inline size_t operator()(const StringView& Value) const
+		{
+			return std::hash<std::string_view>()(Value);
+		}
+	};
+	template<>
+	struct hash<WStringView>
+	{
+		inline size_t operator()(const WStringView& Value) const
+		{
+			return std::hash<std::wstring_view>()(Value);
 		}
 	};
 }

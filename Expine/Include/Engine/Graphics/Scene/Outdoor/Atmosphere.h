@@ -1,9 +1,9 @@
 #pragma once
 
-#include "RawShader.h"
+#include "Raw/RawShader.h"
 #include "AtmosphericScattering.h"
 #include "Hyper.h"
-#include "File/Config.h"
+#include "Utils/File/Config.h"
 
 namespace D3D
 {
@@ -80,17 +80,7 @@ namespace D3D
 			ErrorCode Initialize
 			(
 				File::CConfig & ShaderConfig
-			)
-			{
-				StringValue Value;
-
-				if (ShaderConfig.GetValue("AtmosphericFogInscatterAltitudeSampleNum", Value))
-				{
-					Value >> Constants.AtmosphericFogInscatterAltitudeSampleNum;
-				}
-				
-				return S_OK;
-			}
+			);
 		};
 
 		struct AtmosphereProperties
@@ -107,10 +97,7 @@ namespace D3D
 			(
 				const WString & CloudConfig,
 				const WString & ScatteringConfig
-			)
-			{
-				return E_NOTIMPL;
-			}
+			);
 		};
 
 		class CAtmosphere

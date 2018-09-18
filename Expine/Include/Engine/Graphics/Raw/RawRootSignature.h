@@ -1,6 +1,6 @@
 #pragma once
 
-#include "D3D.h"
+#include "DirectX/D3D.h"
 
 namespace D3D
 {
@@ -71,8 +71,8 @@ namespace D3D
 					{
 						if (SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].RangeType == D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER)
 						{
-							TableStart	= min(TableStart,	SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].OffsetInDescriptorsFromTableStart);
-							TableEnd	= max(TableEnd,		SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].OffsetInDescriptorsFromTableStart + SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].NumDescriptors);
+							TableStart	= std::min(TableStart,	SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].OffsetInDescriptorsFromTableStart);
+							TableEnd	= std::max(TableEnd,		SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].OffsetInDescriptorsFromTableStart + SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].NumDescriptors);
 						}
 					}
 				}
@@ -96,8 +96,8 @@ namespace D3D
 							SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].RangeType == D3D12_DESCRIPTOR_RANGE_TYPE_SRV || 
 							SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].RangeType == D3D12_DESCRIPTOR_RANGE_TYPE_UAV)
 						{
-							TableStart	= min(TableStart,	SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].OffsetInDescriptorsFromTableStart);
-							TableEnd	= max(TableEnd,		SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].OffsetInDescriptorsFromTableStart + SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].NumDescriptors);
+							TableStart	= std::min(TableStart,	SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].OffsetInDescriptorsFromTableStart);
+							TableEnd	= std::max(TableEnd,		SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].OffsetInDescriptorsFromTableStart + SignatureDesc.pParameters[P].DescriptorTable.pDescriptorRanges[T].NumDescriptors);
 						}
 					}
 				}

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Quelldateien\File">
+      <UniqueIdentifier>{c02d68aa-e670-4888-b79b-ab64136a9420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Texture">
+      <UniqueIdentifier>{9c057ba4-5744-44e4-abaf-42d009b7526b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Database">
+      <UniqueIdentifier>{c3b6c752-aa09-4f10-9858-aa596a7a1622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\C">
+      <UniqueIdentifier>{ac05341b-beb0-4ddf-9f70-0dd638c10b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Hyper">
+      <UniqueIdentifier>{444e7363-ebbc-4266-a82b-6fe07d822212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Allocator">
+      <UniqueIdentifier>{21bdd398-8c8b-4063-90ca-8e00ad5a7826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Allocator">
+      <UniqueIdentifier>{bcad99c1-835f-4c28-ac03-dd34f57f3b1c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Expine\Source\Utils\File\File.cpp">
+      <Filter>Quelldateien\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Utils\File\FileSystemWatcher.cpp">
+      <Filter>Quelldateien\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Utils\File\Config.cpp">
+      <Filter>Quelldateien\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Utils\Texture\DDSTextureLoader12.cpp">
+      <Filter>Quelldateien\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Documents\Visual Studio 2015\Projects\VibeEngine\VibeUtils\Source\Database\shell.c">
+      <Filter>Quelldateien\C</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Documents\Visual Studio 2015\Projects\VibeEngine\VibeUtils\Source\Database\sqlite3.c">
+      <Filter>Quelldateien\C</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLoaderDDS.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Utils\Database\SQLite.cpp">
+      <Filter>Quelldateien\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\Color.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\Math.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\Matrix.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\Quaternion.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\Rotation.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\SSEConstants.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\Vector2.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\Vector3.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Hyper\Vector4.cpp">
+      <Filter>Quelldateien\Hyper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Include\Utils\Allocator\tlsf.c">
+      <Filter>Quelldateien\Allocator</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Expine\Include\Utils\Allocator\tlsf_allocator.hpp">
+      <Filter>Headerdateien\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Utils\Allocator\tlsf.h">
+      <Filter>Headerdateien\Allocator</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

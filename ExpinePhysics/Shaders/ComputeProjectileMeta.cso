@@ -1,0 +1,242 @@
+enum ProjectileTargetingType
+{
+	Target_Direct,
+	Target_Indirect,
+	Target_Tracing
+};
+
+enum ProjectileState
+{
+	State_Idle,
+	State_Flying,
+	State_Triggered,
+	State_Disarmed
+}; 
+
+struct ProjectileAttributes
+{
+	float Weight;
+	float Velocity;
+	float Acceleration;
+	float Accuracy;
+	float FlightControl;
+	float TTL;
+	float Time;
+	float MinAngle;
+	ProjectileTargetingType TargetingType;
+	float3 Size;
+};
+
+struct ProjectileData
+{
+    uint Index;
+    uint Next;
+	float3 Angle;
+    float3 Origin;
+    float3 Position;
+    float3 Target;
+	float TargetSize;
+	float TravelTime;
+	ProjectileState State;
+};
+
+struct Hierarchy
+{
+	int ParentIdx;
+	int LeftChildIdx;
+	int RightChildIdx;
+};
+
+struct BoundingBox
+{
+	float3 Center;
+	float3 Threhsold;
+};
+
+RWStructuredBuffer<ProjectileData> ProjectileBatch;
+StructuredBuffer<Hierarchy> HierarchyBuffer;
+StructuredBuffer<ProjectileAttributes> AttributeBuffer;
+StructuredBuffer<BoundingBox> BBoxBuffer;
+RWBuffer<int> IdxBuffer;
+RWBuffer<int> HitBuffer;
+RWBuffer<int> MisBuffer;
+RWBuffer<int> DisBuffer;
+ProjectileAttributes Attr;
+
+static const float TimePerTick = 1000.0 / 60.0;
+
+float CheckCollision(ProjectileData Data, float3 PreviousPosition)
+{
+	int IdxCurr = 0;
+	int IdxLast = 0;
+
+	while (true)
+	{
+		Hierarchy H = HierarchyBuffer[IdxLast = IdxCurr];
+
+		int IdxL = H.LeftChildIdx;
+		int IdxR = H.RightChildIdx;
+
+		BoundingBox BBoxL = BBoxBuffer[IdxL];
+		BoundingBox BBoxR = BBoxBuffer[IdxR];
+
+		float DL = abs(BBoxL.Center.x - PreviousPosition.x);
+		break;
+	}
+
+	return -1.0;
+}
+
+float2 CalculateIndirectVelocities(float2 DeltaXY, float Speed, float MinAngle)
+{
+	const float G = 0.981;
+	const float Ticks = 1.0;
+	float A = Speed * Speed - DeltaXY.y * G;
+	float B = G * G * length(DeltaXY);
+	float C = A * A - B;
+
+	if (C < 0)
+	{
+		A = sqrt(B) + 1;
+		C = A * A - B;
+	}
+
+	float T = max(1.0, sqrt(2.0 * (A + sqrt(C))) * (Ticks / G));
+	float2 V = float2(
+		DeltaXY.x * Ticks / T, 
+		DeltaXY.y * Ticks / T + G * T / (2.0 * Ticks));
+
+	if (V.y < 0)
+	{
+		// Dont' go downwards.
+		T = max(1.0, sqrt(-2.0 * DeltaXY.y * Ticks * Ticks / G));
+		V.x = DeltaXY.x * Ticks / T;
+		V.y = 0.0;
+	}
+
+	float Angle = atan2(V.x, V.y);
+
+	if (Angle < MinAngle)
+	{
+		float Tan = tan(MinAngle);
+		T = max(1.0, sqrt(2.0 * (DeltaXY.x * Tan - DeltaXY.y) * Ticks * Ticks / G));
+		V.x = DeltaXY.x * Ticks / T;
+		V.y = V.x * Tan;
+	}
+
+	return V;
+}
+
+void ProcessProjectileIndirect(uint CurrentIndex, uint HitCount)
+{
+	ProjectileData Data = ProjectileBatch[CurrentIndex];
+	float3 D = Data.Target - Data.Origin;
+	float3 O = ProjectileBatch[CurrentIndex].Origin;
+	float XZ = dot(D.xz, D.xz);
+	float2 C = float2(XZ, D.y);
+
+	float2 V = CalculateIndirectVelocities(C, Attr.Velocity, Attr.MinAngle);
+
+	float VY = (V.y - 0.5 * Data.TravelTime) * Data.TravelTime;
+
+	float Distance = max(1.0, XZ);
+	float DistanceCurrent = Data.TravelTime * V.x;
+
+	ProjectileBatch[CurrentIndex].Position = float3(
+		O.x + D.x * DistanceCurrent / Distance,
+		O.y + VY, 
+		O.z + D.z * DistanceCurrent / Distance
+	);
+}
+
+bool ProcessProjectile(uint CurrentIndex, uint HitCount)
+{
+	ProjectileBatch[CurrentIndex].TravelTime += TimePerTick;
+	ProjectileData Data = ProjectileBatch[CurrentIndex];
+	float3 PreviousPosition = ProjectileBatch[CurrentIndex].Position;
+	
+	{
+		float3 D = Data.Target - Data.Origin;
+		float3 O = ProjectileBatch[CurrentIndex].Origin;
+		float XZ = dot(D.xz, D.xz);
+		float2 C = float2(XZ, D.y);
+
+		float2 V = CalculateIndirectVelocities(C, Attr.Velocity, Attr.MinAngle);
+
+		float VY = (V.y - 0.5 * Data.TravelTime) * Data.TravelTime;
+
+		float Distance = max(1.0, XZ);
+		float DistanceCurrent = Data.TravelTime * V.x;
+
+		ProjectileBatch[CurrentIndex].Position = float3(
+			O.x + D.x * DistanceCurrent / Distance,
+			O.y + VY, 
+			O.z + D.z * DistanceCurrent / Distance
+		);
+
+		float ProjectileCollisionTime = CheckCollision(Data, PreviousPosition);
+	
+		if (ProjectileCollisionTime > 0)
+		{
+			VY = (V.y - 0.5 * ProjectileCollisionTime) * ProjectileCollisionTime;
+			DistanceCurrent = ProjectileCollisionTime * V.x;	
+
+			ProjectileBatch[CurrentIndex].Position = float3(
+				O.x + D.x * DistanceCurrent / Distance,
+				O.y + VY, 
+				O.z + D.z * DistanceCurrent / Distance
+			);
+
+			HitBuffer[HitCount] = CurrentIndex;
+		}
+	}
+
+	return true;
+}
+
+void ProcessProjectileBatch(uint Idx)
+{
+	uint CurrentIndex = Idx * 64;
+	uint LastBeforeErased = -1;
+	uint Last;
+	uint Hits = 0;
+	uint Misses = 0;
+	uint Disarms = 0;
+
+	while (true)
+	{
+		if (ProcessProjectile(CurrentIndex, Hits))
+		{
+			if (LastBeforeErased != -1)
+				LastBeforeErased = Last;
+
+			++Hits;
+		}
+		else
+		{
+			if (LastBeforeErased != -1)
+			{
+				ProjectileBatch[LastBeforeErased].Next = CurrentIndex;
+				LastBeforeErased = -1;
+			}
+		}
+
+		CurrentIndex = ProjectileBatch[Last = CurrentIndex].Next;
+
+		if (CurrentIndex == 0)
+		{
+			break;
+		}
+	}
+
+	if (LastBeforeErased != -1)
+	{
+		ProjectileBatch[LastBeforeErased].Next = 0;
+	}
+}
+
+[numthreads(1, 1, 1)]
+void main( uint3 DTid : SV_DispatchThreadID )
+{
+	ProcessProjectileBatch(DTid.x);
+}

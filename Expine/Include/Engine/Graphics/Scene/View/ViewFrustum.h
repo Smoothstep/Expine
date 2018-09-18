@@ -1,7 +1,7 @@
 #pragma once
 
-#include "D3D.h"
-#include "DrawInterface.h"
+#include "DirectX/D3D.h"
+#include "Draw/DrawInterface.h"
 
 namespace D3D
 {

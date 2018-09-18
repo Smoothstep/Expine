@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Terrain.h"
-#include "Atmosphere.h"
-#include "SceneArea.h"
+#include "Scene/Outdoor/Terrain.h"
+#include "Scene/Outdoor/Atmosphere.h"
+#include "Scene/SceneArea.h"
 
 namespace D3D
 {
@@ -17,7 +17,7 @@ namespace D3D
 
 	struct OutdoorLoadParameters : public AreaLoadParameters
 	{
-		inline bool Valid()
+		inline bool Valid() const
 		{
 			return AreaLoadParameters::Valid();
 		}
@@ -35,8 +35,8 @@ namespace D3D
 		{
 		private:
 
-			ConstPointer<CScene>									Scene;
-			ConstPointer<CSceneRenderer>							SceneRenderer;
+			ConstPointer<CScene>								Scene;
+			ConstPointer<CSceneRenderer>						SceneRenderer;
 			ConstPointer<CSceneOutdoor>							SceneOutdoor;
 
 			UniquePointer<Terrain::CTerrain::CRenderer>			RendererTerrain;

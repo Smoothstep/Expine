@@ -1,13 +1,15 @@
-#include "../Precompiled.h"
-#include "Vector3.h"
-#include "Quaternion.h"
+#include "Hyper/Vector3.h"
+#include "Hyper/Quaternion.h"
 
 namespace Hyper
 {
 	const Vector3f Vector3f::ZeroVector		= Vector3f(0.0f, 0.0f, 0.0f);
 	const Vector3f Vector3f::UpVector		= Vector3f(0.0f, 0.0f, 1.0f);
+	const Vector3f Vector3f::DownVector		= Vector3f(0.0f, 0.0f, -1.0f);
 	const Vector3f Vector3f::ForwardVector	= Vector3f(1.0f, 0.0f, 0.0f);
+	const Vector3f Vector3f::BackwardVector	= Vector3f(-1.0f, 0.0f, 0.0f);
 	const Vector3f Vector3f::RightVector	= Vector3f(0.0f, 1.0f, 0.0f);
+	const Vector3f Vector3f::LeftVector		= Vector3f(0.0f, -1.0f, 0.0f);
 
 	void Vector3f::UnwindEuler()
 	{

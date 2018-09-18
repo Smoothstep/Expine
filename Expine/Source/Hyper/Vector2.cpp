@@ -1,6 +1,5 @@
-#include "../Precompiled.h"
-#include "Vector3.h"
-#include "Quaternion.h"
+#include "Hyper/Vector3.h"
+#include "Hyper/Quaternion.h"
 
 namespace Hyper
 {

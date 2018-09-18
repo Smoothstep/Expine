@@ -2,8 +2,9 @@
 
 #include "ParallelProcessingMesh.h"
 
-#include <tbb\tbb.h>
-#include <tbb\concurrent_priority_queue.h>
+#include <tbb/reader_writer_lock.h>
+#include <tbb/concurrent_priority_queue.h>
+#include <tbb/parallel_do.h>
 
 namespace D3D
 {
@@ -57,7 +58,8 @@ namespace D3D
 	{
 	private:
 
-		std::vector<IParallelProcessingUnit*> ProcessingUnits;
+		//std::vector<IParallelProcessingUnit*> ProcessingUnits;
+		tbb::concurrent_priority_queue<IParallelProcessingUnit*, CParallelProcessingRelevancy<Ordering>> ProcessingUnits;
 		tbb::reader_writer_lock ProcessingRWLock;
 
 	private:
@@ -84,12 +86,7 @@ namespace D3D
 		{
 			tbb::reader_writer_lock::scoped_lock Lock(ProcessingRWLock);
 			{
-				ProcessingUnits.push_back(Unit);
-
-				std::push_heap(
-					ProcessingUnits.begin(), 
-					ProcessingUnits.end(), 
-					ProcessingRelevancy);
+				ProcessingUnits.push(Unit);
 			}
 		}
 

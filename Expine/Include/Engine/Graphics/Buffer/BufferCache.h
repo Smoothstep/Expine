@@ -1,10 +1,6 @@
 #pragma once
 
-#include "IndexBuffer.h"
-#include "VertexBuffer.h"
-#include "CommandBuffer.h"
-
-#include <Container/HopscotchMap.h>
+#include "DirectX/D3D.h"
 
 namespace D3D
 {
@@ -12,35 +8,41 @@ namespace D3D
 	{
 	public:
 
-		bool GetVertexBuffer
+		bool GetBuffer
 		(
 			size_t							BufferSize,
 			size_t							StrideSize,
 			SharedPointer<CVertexBuffer> &	Buffer 
 		);
 
-		bool GetIndexBuffer
+		bool GetBuffer
 		(
 			size_t							BufferSize,
 			DXGI_FORMAT						Format,
 			SharedPointer<CIndexBuffer> &	Buffer
 		);
 
-		ErrorCode CreateVertexBuffer
+		bool GetBuffer
+		(
+			size_t							CommandSizePerFrame,
+			SharedPointer<CCommandBuffer> & Buffer
+		);
+
+		ErrorCode CreateBuffer
 		(
 			size_t							StrideCount,
 			size_t							StrideSize,
 			SharedPointer<CVertexBuffer> &	Buffer
 		);
 
-		ErrorCode CreateIndexBuffer
+		ErrorCode CreateBuffer
 		(
 			size_t						  NumIndices,
 			DXGI_FORMAT					  Format,
 			SharedPointer<CIndexBuffer> & Buffer
 		);
 
-		ErrorCode CreateCommandBuffer
+		ErrorCode CreateBuffer
 		(
 			size_t							CommandSizePerFrame,
 			SharedPointer<CCommandBuffer> & Buffer

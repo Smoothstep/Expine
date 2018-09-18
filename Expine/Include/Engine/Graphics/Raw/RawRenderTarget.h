@@ -1,10 +1,10 @@
 #pragma once
 
-#include "RawDescriptorHeap.h"
-#include "RawDevice.h"
-#include "RawCommandList.h"
-#include "RawResource.h"
-#include "RawDepthStencilView.h"
+#include "Raw/RawDescriptorHeap.h"
+#include "Raw/RawDevice.h"
+#include "Raw/RawCommandList.h"
+#include "Raw/RawResource.h"
+#include "Raw/RawDepthStencilView.h"
 
 namespace D3D
 {
@@ -268,6 +268,8 @@ namespace D3D
 		const UINT								Offset
 	)
 	{
+		ErrorCode Error;
+
 		CHECK_NULL_ARG(pDescriptorHeap);
 
 		DescriptorHeap = pDescriptorHeap;

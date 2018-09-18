@@ -9,7 +9,7 @@ namespace Hyper
 	{
 	public:
 
-		static Vector4f ZeroVector;
+		static const Vector4f ZeroVector;
 
 	public:
 
@@ -20,15 +20,15 @@ namespace Hyper
 
 	public:
 
-		explicit Vector4f();
+		explicit constexpr Vector4f();
 
-		explicit Vector4f
+		explicit constexpr Vector4f
 		(
 			const Vector3f& InVector, 
 			const float		InW = 1.0f
 		);
 
-		explicit Vector4f
+		explicit constexpr Vector4f
 		(
 			const float InX,
 			const float InY,
@@ -36,18 +36,18 @@ namespace Hyper
 			const float InW = 1.0f
 		);
 
-		explicit Vector4f
+		explicit constexpr Vector4f
 		(
 			const Vector2f InXY,
 			const Vector2f InZW
 		);
 
-		explicit Vector4f
+		explicit constexpr Vector4f
 		(
 			const Float F
 		);
 
-		explicit Vector4f
+		explicit constexpr Vector4f
 		(
 			const Float4 F
 		);
@@ -216,14 +216,14 @@ namespace Hyper
 			const float InW
 		);
 
-		FORCEINLINE float Size3()			const;
-		FORCEINLINE float SizeSquared3()	const;
-		FORCEINLINE float Size()			const;
-		FORCEINLINE float SizeSquared()		const;
+		constexpr FORCEINLINE float Size3()			const;
+		constexpr FORCEINLINE float SizeSquared3()	const;
+		constexpr FORCEINLINE float Size()			const;
+		constexpr FORCEINLINE float SizeSquared()	const;
 
-		FORCEINLINE bool ContainsNaN() const;
+		constexpr FORCEINLINE bool ContainsNaN() const;
 
-		FORCEINLINE bool IsNearlyZero3
+		constexpr FORCEINLINE bool IsNearlyZero3
 		(
 			const float Tolerance = KINDA_SMALL_NUMBER
 		)	const;
@@ -241,16 +241,19 @@ namespace Hyper
 
 		FORCEINLINE Vector3f TransformToVector3() const;
 
-		FORCEINLINE void DiagnosticCheckNaN() { }
+		constexpr FORCEINLINE void DiagnosticCheckNaN() { }
 	};
 
-	FORCEINLINE Vector4f::Vector4f()
-	{
-		X = Y = Z = 0.0f;
-		W = 1.0f;
-	}
 
-	FORCEINLINE Vector4f::Vector4f
+	constexpr FORCEINLINE Vector4f::Vector4f()
+		: X(0.0f)
+		, Y(0.0f)
+		, Z(0.0f)
+		, W(1.0f)
+	{ }
+
+
+	constexpr FORCEINLINE Vector4f::Vector4f
 	(
 		const Vector3f &	InVector, 
 		const float			InW
@@ -264,7 +267,7 @@ namespace Hyper
 	}
 
 
-	FORCEINLINE Vector4f::Vector4f
+	constexpr FORCEINLINE Vector4f::Vector4f
 	(
 		const float InX, 
 		const float InY,
@@ -279,7 +282,7 @@ namespace Hyper
 		DiagnosticCheckNaN();
 	}
 
-	FORCEINLINE Vector4f::Vector4f
+	constexpr FORCEINLINE Vector4f::Vector4f
 	(
 		const Vector2f InXY,
 		const Vector2f InZW
@@ -292,20 +295,25 @@ namespace Hyper
 		DiagnosticCheckNaN();
 	}
 
-	FORCEINLINE Vector4f::Vector4f
+	constexpr FORCEINLINE Vector4f::Vector4f
 	(
 		const Float F
 	)
+		: X(F)
+		, Y(F)
+		, Z(F)
+		, W(F)
 	{
-		X = Y = Z = W = F;
+		DiagnosticCheckNaN();
 	}
 
-	FORCEINLINE Vector4f::Vector4f(const Float4 F)
+	constexpr FORCEINLINE Vector4f::Vector4f(const Float4 F)
+		: X(F[0])
+		, Y(F[1])
+		, Z(F[2])
+		, W(F[3])
 	{
-		X = F[0];
-		Y = F[1];
-		Z = F[2];
-		W = F[3];
+		DiagnosticCheckNaN();
 	}
 
 
@@ -549,7 +557,7 @@ namespace Hyper
 	}
 
 
-	FORCEINLINE Vector4f Vector4f::GetUnsafeNormal3() const
+	constexpr FORCEINLINE Vector4f Vector4f::GetUnsafeNormal3() const
 	{
 		const float Scale = Math::InvSqrt(
 			X * X + 
@@ -566,7 +574,7 @@ namespace Hyper
 	}
 
 
-	FORCEINLINE float Vector4f::Size3() const
+	constexpr FORCEINLINE float Vector4f::Size3() const
 	{
 		return Math::Sqrt(
 			X * X + 
@@ -574,7 +582,7 @@ namespace Hyper
 			Z * Z);
 	}
 
-	FORCEINLINE float Vector4f::SizeSquared3() const
+	constexpr FORCEINLINE float Vector4f::SizeSquared3() const
 	{
 		return 
 			X * X + 
@@ -582,7 +590,7 @@ namespace Hyper
 			Z * Z;
 	}
 
-	FORCEINLINE float Vector4f::Size() const
+	constexpr FORCEINLINE float Vector4f::Size() const
 	{
 		return Math::Sqrt(
 			X * X + 
@@ -591,7 +599,7 @@ namespace Hyper
 			W * W);
 	}
 
-	FORCEINLINE float Vector4f::SizeSquared() const
+	constexpr FORCEINLINE float Vector4f::SizeSquared() const
 	{
 		return X * X + Y * Y + Z * Z + W * W;
 	}
@@ -744,11 +752,13 @@ namespace Hyper
 		);
 	}
 
-	FORCEINLINE Vector3f::Vector3f
+	constexpr FORCEINLINE Vector3f::Vector3f
 	(
 		const Vector4f & V
 	)
-		: X(V.X), Y(V.Y), Z(V.Z)
+		: X(V.X)
+		, Y(V.Y)
+		, Z(V.Z)
 	{
 	}
 

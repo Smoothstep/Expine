@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Scene.h"
-#include "Input.h"
+#include "Engine/IO/Input.h"
 
 namespace D3D
 {
@@ -17,17 +16,8 @@ namespace D3D
 		KeyboardKey RotateLeft;
 	};
 
-	class CSceneController
+	class _EX_ CSceneController
 	{
-		enum EMovingDirection
-		{
-			None,
-			Forwards,
-			Backwards,
-			Right,
-			Left
-		};
-
 	private:
 
 		SharedPointer<CCamera> Camera;
@@ -41,7 +31,8 @@ namespace D3D
 		bool IsDraggingLocked	= false;
 		bool IsDragging			= false;
 		
-		EMovingDirection MovingDirection = None;
+		Vector3f MovingDirection;
+		Vector3f MovingAmplitude = 10.0f;
 
 		int DragX = 0;
 		int DragY = 0;
@@ -55,21 +46,15 @@ namespace D3D
 			const CScene * pScene
 		);
 
-		inline void SetPosition
+		void SetPosition
 		(
 			const Vector3f & Position
-		)
-		{
-			Camera->SetPosition(Position);
-		}
+		);
 
-		inline void SetRotation
+		void SetRotation
 		(
 			const Rotation & Rotation
-		)
-		{
-			Camera->SetRotation(Rotation);
-		}
+		);
 
 		inline void LockDrag()
 		{
@@ -91,100 +76,51 @@ namespace D3D
 
 		inline void StopMove()
 		{
-			MovingDirection = None;
+			MovingDirection = Vector3f::ZeroVector;
 		}
 
 		inline void MoveForward()
 		{
-			MovingDirection = Forwards;
+			MovingDirection += Vector3f::ForwardVector;
 		}
 
 		inline void MoveBackward()
 		{
-			MovingDirection = Backwards;
+			MovingDirection += Vector3f::BackwardVector;
 		}
 
 		inline void MoveRight()
 		{
-			MovingDirection = Right;
+			MovingDirection += Vector3f::RightVector;
 		}
 
 		inline void MoveLeft()
 		{
-			MovingDirection = Left;
+			MovingDirection += Vector3f::LeftVector;
 		}
 
-		inline void BeginDrag
+		inline void MoveUp()
+		{
+			MovingDirection += Vector3f::UpVector;
+		}
+
+		inline void MoveDown()
+		{
+			MovingDirection += Vector3f::DownVector;
+		}
+
+		void Drag
 		(
 			const int ScreenX,
 			const int ScreenY
-		)
-		{
-			if (IsDraggingLocked)
-			{
-				return;
-			}
+		);
 
-			IsDragging = true;
+		void Update();
 
-			DragX = ScreenX;
-			DragY = ScreenY;
-		}
-
-		inline void Drag
+		void BeginDrag
 		(
 			const int ScreenX,
 			const int ScreenY
-		)
-		{
-			static constexpr float ResistModificier = 1.0 / 3.0;
-
-			if (!IsDragging)
-			{
-				BeginDrag(ScreenX, ScreenY);
-				return;
-			}
-
-			RotationVector.X = (ScreenX - DragX) * ResistModificier;
-			RotationVector.Y = (ScreenY - DragY) * ResistModificier;
-
-			if (RotationVector.X != 0 || RotationVector.Y != 0)
-			{
-				Camera->Rotate(RotationVector);
-			}
-
-			DragX = ScreenX;
-			DragY = ScreenY;
-		}
-
-		inline void Update()
-		{
-			switch (MovingDirection)
-			{
-			case Forwards:
-
-				Camera->Move(10.0);
-
-				break;
-
-			case Backwards:
-
-				Camera->Move(-10.0);
-
-				break;
-
-			case Right:
-
-				Camera->MoveRight(10.0);
-
-				break;
-
-			case Left:
-
-				Camera->MoveRight(-10.0);
-
-				break;
-			}
-		}
+		);
 	};
 }

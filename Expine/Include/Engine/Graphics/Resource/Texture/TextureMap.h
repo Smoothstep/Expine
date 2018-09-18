@@ -1,16 +1,15 @@
 #pragma once
 
-#include "RawShaderResourceView.h"
-#include "RawUnorderedAccessView.h"
+#include "Raw/RawShaderResourceView.h"
+#include "Raw/RawUnorderedAccessView.h"
 
-#include "TextureResource.h"
-#include "CommandList.h"
+#include "Resource/Texture/TextureResource.h"
+#include "Command/CommandList.h"
 
-#include <File/File.h>
-#include <LexicalCast.h>
+#include <Utils/File/File.h>
+#include <Utils/StringOp.h>
 
-#include <XML.h>
-
+namespace rapidxml { template<class T> class xml_node; }
 namespace D3D
 {
 	class CTextureMap
@@ -121,11 +120,6 @@ namespace D3D
 
 	private:
 
-		void ReadTextureSet
-		(
-			const boost::property_tree::basic_ptree<WString, WString> & Tree
-		);
-
 		ErrorCode LoadTextures
 		(
 			const CCommandListContext	& CmdListCtx,
@@ -158,13 +152,18 @@ namespace D3D
 
 		ErrorCode ReadTextureSet
 		(
-			const WString & FilePath
+			const WStringView & FilePath
+		);
+
+		bool ReadTextureSet
+		(
+			const rapidxml::xml_node<char> * Tree
 		);
 
 		ErrorCode ReadTextureMap
 		(
 			const CCommandListContext	& CmdListCtx,
-			const WString				& FilePath
+			const WStringView			& FilePath
 		);
 	};
 }

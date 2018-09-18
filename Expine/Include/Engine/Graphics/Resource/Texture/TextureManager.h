@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TextureResource.h"
-#include "CommandList.h"
+#include "Resource/Texture/TextureResource.h"
+#include "Command/CommandList.h"
 
 namespace D3D
 {
@@ -13,27 +13,21 @@ namespace D3D
 		SharedPointer<CTextureResource>		Resource;
 		SharedPointer<RShaderResourceView>	ShaderResource;
 
-		inline ShaderTextureInfo() = default;
-		inline ShaderTextureInfo
+		ShaderTextureInfo() = default;
+		ShaderTextureInfo
 		(
 			const WString				& Name,
 			const WString				& Path,
 			const DescriptorHeapEntry	& Entry,
 			CTextureResource			* pResource
-		)
-		{
-			TextureName		= Name;
-			TexturePath		= Path;
-			HeapEntry		= Entry;
-			Resource		= pResource;
-		}
+		);
 	};
 
 	class CTextureManager : public CSingleton<CTextureManager>
 	{
 	public:
 
-		typedef THashMap<WString, ShaderTextureInfo> TTextures;
+		typedef THashMap<WStringView, ShaderTextureInfo> TTextures;
 
 		class CTextureInitializationStream
 		{
@@ -69,7 +63,7 @@ namespace D3D
 
 		const ShaderTextureInfo * GetShaderTextureInfo
 		(
-			const WString & Name
+			const WStringView & Name
 		)	const;
 
 	public:
@@ -79,38 +73,36 @@ namespace D3D
 
 		ErrorCode AddTexture
 		(
-			const WString & TexturePath,
-			const WString & TextureName
+			const WStringView & TexturePath,
+			const WStringView & TextureName
 		);
 
 		ErrorCode GetOrAddTexture
 		(
-			const WString & TexturePath,
-			const WString & TextureName
+			const WStringView & TexturePath,
+			const WStringView & TextureName
 		)
 		{
-			return AddTexture(
-				WString(TexturePath.begin(), TexturePath.end()),
-				WString(TextureName.begin(), TextureName.end()));
+			return AddTexture(TexturePath, TextureName);
 		}
 
 		ErrorCode AddLookupPath
 		(
-			const WString & Path
+			const WStringView & Path
 		);
 
 		ErrorCode GetOrAddTexture
 		(
-			const WString & TexturePath,
-			const WString & TextureName,
+			const WStringView & TexturePath,
+			const WStringView & TextureName,
 			ShaderTextureInfo & pInfo,
 			CTextureInitializationStream * Stream = NULL
 		);
 
 		ErrorCode GetOrAddTexture
 		(
-			const String & TexturePath,
-			const String & TextureName,
+			const StringView & TexturePath,
+			const StringView & TextureName,
 			ShaderTextureInfo & Info,
 			CTextureInitializationStream * Stream = NULL
 		)
@@ -146,8 +138,8 @@ namespace D3D
 
 		inline ErrorCode CreateTexture
 		(
-			const String & TexturePath,
-			const String & TextureName,
+			const StringView & TexturePath,
+			const StringView & TextureName,
 			const RResource::InitializeOptions & Options,
 			const size_t StartSubResource,
 			const size_t NumSubResources,
@@ -169,8 +161,8 @@ namespace D3D
 
 		ErrorCode CreateTexture
 		(
-			const WString & TexturePath,
-			const WString & TextureName,
+			const WStringView & TexturePath,
+			const WStringView & TextureName,
 			const RResource::InitializeOptions & Options,
 			ShaderTextureInfo & Info,
 			CTextureInitializationStream * Stream = NULL
@@ -178,8 +170,8 @@ namespace D3D
 
 		inline ErrorCode CreateTexture
 		(
-			const String & TexturePath,
-			const String & TextureName,
+			const StringView & TexturePath,
+			const StringView & TextureName,
 			const RResource::InitializeOptions & Options,
 			ShaderTextureInfo & Info,
 			CTextureInitializationStream * Stream = NULL

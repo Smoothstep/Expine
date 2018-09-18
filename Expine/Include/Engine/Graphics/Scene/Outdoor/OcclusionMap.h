@@ -1,7 +1,6 @@
 #pragma once
 
-#include "SceneLight.h"
-#include "RawUnorderedAccessView.h"
+#include "Raw/RawUnorderedAccessView.h"
 
 namespace D3D
 {

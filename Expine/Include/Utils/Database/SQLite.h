@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Types.h>
-#include <Singleton.h>
-#include <Smart.h>
+#include "Types.h"
+#include "Singleton.h"
+#include "Smart.h"
 
-#include "../LexicalCast.h"
+#include "Utils/StringOp.h"
 
 #include "Private/sqlite3.h"
 
@@ -42,6 +42,20 @@ namespace Database
 
 			template
 			<
+				typename	Type,
+				typename... Types
+			>
+			inline bool GetRecordsAs
+			(
+				const	String	&		ColumnName,
+						Type	&		Result,
+				const	Types	&&...	Values
+			)
+			{
+			}
+
+			template
+			<
 				typename Type
 			>
 			inline bool GetRecordAs
@@ -65,7 +79,7 @@ namespace Database
 						return false;
 					}
 
-					Result = Iter.value()[RowIndex];
+					Result = std::move(Iter.value()[RowIndex]);
 				}
 				else
 				{
@@ -78,11 +92,12 @@ namespace Database
 
 					if constexpr (std::is_floating_point<Type>::value)
 					{
+						Ensure(Value.Size() > 2);
 						// SQLite formatting logic.
 						if (Value[Value.Size() - 1] == '0' && 
 							Value[Value.Size() - 2] == '.')
 						{
-							Value = StringEmu(Value[0])
+							Value.Resize(Value.Size() - 2);
 						};
 					}
 

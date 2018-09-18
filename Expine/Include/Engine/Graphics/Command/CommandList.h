@@ -1,7 +1,7 @@
 #pragma once
 
-#include "RawCommandList.h"
-#include "DescriptorHeapPool.h"
+#include "Raw/RawCommandList.h"
+#include "Descriptor/DescriptorHeapPool.h"
 
 namespace D3D
 {

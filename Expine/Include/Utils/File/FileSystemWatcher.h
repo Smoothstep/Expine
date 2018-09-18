@@ -1,6 +1,7 @@
 #pragma once
 
 #include "File.h"
+#include <WindowsH.h>
 
 namespace File
 {

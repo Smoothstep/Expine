@@ -1,7 +1,7 @@
 #pragma once
 
-#include "D3D.h"
-#include "PipelineObject.h"
+#include "DirectX/D3D.h"
+#include "Pipeline/PipelineObject.h"
 
 namespace D3D
 {

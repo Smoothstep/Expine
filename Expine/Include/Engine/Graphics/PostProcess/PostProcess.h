@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scene.h"
+#include "Scene/Scene.h"
 
 namespace D3D
 {
@@ -68,14 +68,14 @@ namespace D3D
 
 		private:
 
-			ConstPointer<CScene>				Scene;
-			ConstPointer<CSceneRenderer>		SceneRenderer;
+			ConstPointer<CScene>			Scene;
+			ConstPointer<CSceneRenderer>	SceneRenderer;
 			ConstPointer<CPostProcessBloom>	PostProcessBloom;
 			ConstPointer<CPostProcessDOF>	PostProcessDOF;
 			UniquePointer<CConstantBuffer>	PostProcessConstants;
 
-			Uint ProcessBloom	: 1;
-			Uint ProcessDOF		: 1;
+			Uint ProcessBloom;
+			Uint ProcessDOF;
 
 			PostProcessSettings Settings;
 
@@ -130,7 +130,7 @@ namespace D3D
 				float EyeAdaptationMin = Settings.AutoExposureMinBrightness;
 				float EyeAdaptationMax = Settings.AutoExposureMaxBrightness;
 
-				float LocalOverrideExposure = FLT_MAX;
+				float LocalOverrideExposure = std::numeric_limits<float>::max();
 				float LocalExposureMultipler = Math::Pow(2.0f, Settings.AutoExposureBias);
 
 				if (EyeAdaptationMin > EyeAdaptationMax)

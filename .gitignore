@@ -21,6 +21,14 @@
 *.la
 *.a
 *.lib
+*.tlog
+*.ipch
+*.db
+*.opendb
+*.pdb
+*.log
+*.sqlite
+
 
 # Executables
 *.exe

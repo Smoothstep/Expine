@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ViewFrustum.h"
+#include "Scene/View/ViewFrustum.h"
 
 namespace D3D
 {

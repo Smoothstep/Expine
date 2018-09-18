@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Resource.h"
-#include "CommandQueue.h"
+#include "Command/CommandQueue.h"
 
 namespace D3D
 {

@@ -1,7 +1,6 @@
-#include "../Precompiled.h"
-#include "Quaternion.h"
-#include "Rotation.h"
-#include "Matrix.h"
+#include "Hyper/Quaternion.h"
+#include "Hyper/Rotation.h"
+#include "Hyper/Matrix.h"
 
 namespace Hyper
 {

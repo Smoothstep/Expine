@@ -1,9 +1,9 @@
 #pragma once
 
-#include "RawResource.h"
-#include "CommandList.h"
+#include "Raw/RawResource.h"
+#include "Command/CommandList.h"
 
-#include <DXTK\DDSTextureLoader.h>
+#include <DXTK/DDSTextureLoader.h>
 
 namespace D3D
 {

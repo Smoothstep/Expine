@@ -1,0 +1,651 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien\Buffer">
+      <UniqueIdentifier>{e990c178-692d-467f-af45-63048db75daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Command">
+      <UniqueIdentifier>{9dbc6aab-90d6-4d79-8e03-f09b40a7acc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Descriptor">
+      <UniqueIdentifier>{09bff815-c066-4385-ba03-9160cdc6ac9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Pipeline">
+      <UniqueIdentifier>{94dfa58d-d489-41e9-ace3-070b119cd72b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\DirectX">
+      <UniqueIdentifier>{8e3371cc-5bf3-4ae8-8a36-3a2ab99ae753}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Scene">
+      <UniqueIdentifier>{16e7ee9d-c241-421e-ac7c-ea6abe0b5917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Draw">
+      <UniqueIdentifier>{0d2db1e3-4e92-4c26-a7af-e84ed37b1696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Object">
+      <UniqueIdentifier>{64289574-0964-48cf-853d-258b04a20924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Particle">
+      <UniqueIdentifier>{9e993fe5-c843-4609-b234-30f9d830fac0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\PostProcess">
+      <UniqueIdentifier>{b0f2ab15-73c2-4dbb-a7e5-a9659c15f81f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Process">
+      <UniqueIdentifier>{e02ac00e-2245-4a71-a854-82d7bcba462b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Raw">
+      <UniqueIdentifier>{95b86454-00a3-40fb-936e-7b9d946a27c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Resource">
+      <UniqueIdentifier>{fa04a013-01db-463a-bdd7-70a9ae8bbcc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Shader">
+      <UniqueIdentifier>{220cf8c7-a763-4ba0-9b84-63196a5dee71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\SpeedTree">
+      <UniqueIdentifier>{daaf0bac-9df7-435a-8609-ec8b9df0d282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Utils">
+      <UniqueIdentifier>{d1c63cc0-5002-4cd4-988c-db85b143e591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Scene\Indoor">
+      <UniqueIdentifier>{e37f7b1b-a249-4220-b3ca-5a22c3264669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Scene\Outdoor">
+      <UniqueIdentifier>{6c000797-b6c8-4d82-ade5-c93970bed2d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Scene\Object">
+      <UniqueIdentifier>{95c86ce3-542d-4ed4-a793-cd66aab426df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Scene\View">
+      <UniqueIdentifier>{05fb5cd6-cfff-4b0d-88b4-423d257788d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Scene\Lighting">
+      <UniqueIdentifier>{51d3caaf-d972-42ba-8a12-1f5fef2cd0c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Resource\Texture">
+      <UniqueIdentifier>{bca73326-50fe-40d2-bec5-361c61c989a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\IO">
+      <UniqueIdentifier>{25f36817-a894-4cce-b3b0-90c61dec1dd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Buffer">
+      <UniqueIdentifier>{18dd67a8-2cbd-4b33-b29f-f8af1a5d8723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Command">
+      <UniqueIdentifier>{f4407c74-54c8-4f5f-a900-e0f34f55e90a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Descriptor">
+      <UniqueIdentifier>{6d459da6-f11f-4b0b-b9cd-d0c91a23cb48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\DirectX">
+      <UniqueIdentifier>{e4bbc854-14b9-4a18-8cb5-d83bf22f9469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Draw">
+      <UniqueIdentifier>{ecbc6c5f-f954-4cc5-a4ca-8de80cd771de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\IO">
+      <UniqueIdentifier>{ab773a8f-5448-4ae4-a21e-3fa9c1af5466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Utils">
+      <UniqueIdentifier>{6b21f7b5-dc90-41d4-8f42-3106add46525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\SpeedTree">
+      <UniqueIdentifier>{a933b444-747d-41b5-be62-d5a62bcf2c38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Shader">
+      <UniqueIdentifier>{c55312cd-63fa-4568-8ed8-b08121c0839f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Resource">
+      <UniqueIdentifier>{7fff25e0-1b7d-408f-a875-a05c584f3683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Raw">
+      <UniqueIdentifier>{2a6bed1d-6444-44c6-8f60-1aa9170e85f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Process">
+      <UniqueIdentifier>{2e5e5371-f50d-4870-af4d-16473b1d0c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\PostProcess">
+      <UniqueIdentifier>{7c8c7008-beab-47ee-ac08-1c783b0426e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Particle">
+      <UniqueIdentifier>{96c45108-bcae-493e-8a0c-fd24dcf02633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Object">
+      <UniqueIdentifier>{6600be94-6d0d-4ce0-8142-a6cdb72a399c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Scene">
+      <UniqueIdentifier>{90a99b94-e426-4101-a347-8ab498d974df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Pipeline">
+      <UniqueIdentifier>{dace33e0-e5c5-4f3e-8d51-e5a598d46ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Utils\State">
+      <UniqueIdentifier>{4e2b71ef-5551-45c6-b357-29d6602f5943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Scene\Indoor">
+      <UniqueIdentifier>{60acc1f5-11e9-4bae-ad14-d55b7b468cad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Scene\Outdoor">
+      <UniqueIdentifier>{b1a60faf-9c06-4a56-af8e-9bccb4baa3ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Scene\View">
+      <UniqueIdentifier>{8c4efe31-ae92-46d8-af1c-3523de97f8eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Scene\Lighting">
+      <UniqueIdentifier>{788d9397-44d0-4d06-b4cc-e0968b6ebc55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Scene\Outdoor\Terrain">
+      <UniqueIdentifier>{89b5d34f-06d4-40f9-94ab-206e8995b53f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Resource\Texture">
+      <UniqueIdentifier>{75434180-005f-4563-9042-7f41ded11f6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Utils\State">
+      <UniqueIdentifier>{97c4fa87-40f9-4101-a123-dec0ef0518a7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\ErrorCode.h">
+      <Filter>Headerdateien\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\ErrorLog.h">
+      <Filter>Headerdateien\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\VertexTypes.h">
+      <Filter>Headerdateien\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\DXGIHelper.h">
+      <Filter>Headerdateien\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\SpeedTree\SpeedTree.h">
+      <Filter>Headerdateien\SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneIndoor.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneLight.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneOutdoor.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneRenderer.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneResources.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneView.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Environment.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Scene.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneArea.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneComposite.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneController.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneEnvironment.h">
+      <Filter>Headerdateien\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\View\Camera.h">
+      <Filter>Headerdateien\Scene\View</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\View\ViewFrustum.h">
+      <Filter>Headerdateien\Scene\View</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\TerrainHeight.h">
+      <Filter>Headerdateien\Scene\Outdoor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\TerrainQuadTree.h">
+      <Filter>Headerdateien\Scene\Outdoor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\TerrainRenderer.h">
+      <Filter>Headerdateien\Scene\Outdoor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\TerrainStructure.h">
+      <Filter>Headerdateien\Scene\Outdoor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\Atmosphere.h">
+      <Filter>Headerdateien\Scene\Outdoor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\AtmosphericScattering.h">
+      <Filter>Headerdateien\Scene\Outdoor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\OcclusionMap.h">
+      <Filter>Headerdateien\Scene\Outdoor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\Terrain.h">
+      <Filter>Headerdateien\Scene\Outdoor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Lighting\VolumetricLighting.h">
+      <Filter>Headerdateien\Scene\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\Resource.h">
+      <Filter>Headerdateien\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\ResourceAllocator.h">
+      <Filter>Headerdateien\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\ResourceCache.h">
+      <Filter>Headerdateien\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\Texture\TextureMap.h">
+      <Filter>Headerdateien\Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\Texture\TextureResource.h">
+      <Filter>Headerdateien\Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\Texture\TextureManager.h">
+      <Filter>Headerdateien\Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Shader\ShaderManager.h">
+      <Filter>Headerdateien\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Shader\ShaderRenderTarget.h">
+      <Filter>Headerdateien\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Shader\ShaderGroup.h">
+      <Filter>Headerdateien\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Draw\Geometry.h">
+      <Filter>Headerdateien\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Draw\DrawInterface.h">
+      <Filter>Headerdateien\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\DirectX\D3D.h">
+      <Filter>Headerdateien\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\DirectX\Default.h">
+      <Filter>Headerdateien\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Descriptor\DescriptorHeapPool.h">
+      <Filter>Headerdateien\Descriptor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Descriptor\DescriptorHeap.h">
+      <Filter>Headerdateien\Descriptor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Command\CommandQueue.h">
+      <Filter>Headerdateien\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Command\CommandAllocator.h">
+      <Filter>Headerdateien\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Command\CommandBuffer.h">
+      <Filter>Headerdateien\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Command\CommandList.h">
+      <Filter>Headerdateien\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\Buffer.h">
+      <Filter>Headerdateien\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferCache.h">
+      <Filter>Headerdateien\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferTypes.h">
+      <Filter>Headerdateien\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawPipelineState.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawRenderTarget.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawResource.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawRootSignature.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawShader.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawShaderResourceView.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawUnorderedAccessView.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawCommandAllocator.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawCommandList.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawCommandQueue.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawCommandSignature.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawDepthStencilView.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawDescriptorHeap.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawDevice.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawFence.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawHeap.h">
+      <Filter>Headerdateien\Raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Process\ParallelProcessingUnit.h">
+      <Filter>Headerdateien\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Process\ParallelProcessing.h">
+      <Filter>Headerdateien\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Process\ParallelProcessingMesh.h">
+      <Filter>Headerdateien\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Process\ParallelProcessingObject.h">
+      <Filter>Headerdateien\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\PostProcess\PostProcessBloom.h">
+      <Filter>Headerdateien\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\PostProcess\PostProcessDOF.h">
+      <Filter>Headerdateien\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\PostProcess\PostProcess.h">
+      <Filter>Headerdateien\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Object\Mesh.h">
+      <Filter>Headerdateien\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Object\Material.h">
+      <Filter>Headerdateien\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\PipelineObject.h">
+      <Filter>Headerdateien\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\Pipelines.h">
+      <Filter>Headerdateien\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Screen.h">
+      <Filter>Headerdateien\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferConstant.h">
+      <Filter>Headerdateien\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferIndex.h">
+      <Filter>Headerdateien\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferQuad.h">
+      <Filter>Headerdateien\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferVertex.h">
+      <Filter>Headerdateien\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\State\StateRasterizer.h">
+      <Filter>Headerdateien\Utils\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\State\StateSampler.h">
+      <Filter>Headerdateien\Utils\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\State\StateBlend.h">
+      <Filter>Headerdateien\Utils\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\State\StateDepthStencil.h">
+      <Filter>Headerdateien\Utils\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\PSOAtmosphere.h">
+      <Filter>Headerdateien\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\PSOPostProcess.h">
+      <Filter>Headerdateien\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\PSOTerrain.h">
+      <Filter>Headerdateien\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\IO\Input.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\IO\KeyConfig.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\IO\KeySystem.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\ScreenIO.h">
+      <Filter>Headerdateien\IO</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferCommand.cpp">
+      <Filter>Quelldateien\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferConstant.cpp">
+      <Filter>Quelldateien\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferIndex.cpp">
+      <Filter>Quelldateien\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferQuad.cpp">
+      <Filter>Quelldateien\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferVertex.cpp">
+      <Filter>Quelldateien\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\Buffer.cpp">
+      <Filter>Quelldateien\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferCache.cpp">
+      <Filter>Quelldateien\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Command\CommandList.cpp">
+      <Filter>Quelldateien\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Descriptor\DescriptorHeap.cpp">
+      <Filter>Quelldateien\Descriptor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Descriptor\DescriptorHeapPool.cpp">
+      <Filter>Quelldateien\Descriptor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\DirectX\D3D.cpp">
+      <Filter>Quelldateien\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Draw\Geometry.cpp">
+      <Filter>Quelldateien\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Draw\DrawInterface.cpp">
+      <Filter>Quelldateien\Draw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\IO\Screen.cpp">
+      <Filter>Quelldateien\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOAtmosphere.cpp">
+      <Filter>Quelldateien\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOComposite.cpp">
+      <Filter>Quelldateien\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOPostProcess.cpp">
+      <Filter>Quelldateien\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOPresent.cpp">
+      <Filter>Quelldateien\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOTerrain.cpp">
+      <Filter>Quelldateien\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PipelineObject.cpp">
+      <Filter>Quelldateien\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\Pipelines.cpp">
+      <Filter>Quelldateien\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\PostProcess\PostProcessDOF.cpp">
+      <Filter>Quelldateien\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\PostProcess\PostProcess.cpp">
+      <Filter>Quelldateien\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\PostProcess\PostProcessBloom.cpp">
+      <Filter>Quelldateien\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneComposite.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneController.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneLight.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneOutdoor.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneRenderer.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneResources.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Scene.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneArea.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\OcclusionMap.cpp">
+      <Filter>Quelldateien\Scene\Outdoor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\TerrainQuadTree.cpp">
+      <Filter>Quelldateien\Scene\Outdoor\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\TerrainRenderer.cpp">
+      <Filter>Quelldateien\Scene\Outdoor\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\TerrainStructure.cpp">
+      <Filter>Quelldateien\Scene\Outdoor\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\Terrain.cpp">
+      <Filter>Quelldateien\Scene\Outdoor\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\TerrainHeight.cpp">
+      <Filter>Quelldateien\Scene\Outdoor\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\AtmosphericScattering.cpp">
+      <Filter>Quelldateien\Scene\Outdoor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Atmosphere.cpp">
+      <Filter>Quelldateien\Scene\Outdoor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneView.cpp">
+      <Filter>Quelldateien\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\View\Camera.cpp">
+      <Filter>Quelldateien\Scene\View</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\View\ViewFrustum.cpp">
+      <Filter>Quelldateien\Scene\View</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Lighting\VolumetricLighting.cpp">
+      <Filter>Quelldateien\Scene\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawFence.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawPipelineState.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawRenderTarget.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawResource.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawRootSignature.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawShader.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawUnorderedAccessView.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawCommandList.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawCommandQueue.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawCommandSignature.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawDescriptorHeap.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawDevice.cpp">
+      <Filter>Quelldateien\Raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Resource\Texture\TextureMap.cpp">
+      <Filter>Quelldateien\Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Resource\Texture\TextureResource.cpp">
+      <Filter>Quelldateien\Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Resource\Texture\TextureManager.cpp">
+      <Filter>Quelldateien\Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Shader\ShaderManager.cpp">
+      <Filter>Quelldateien\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Shader\ShaderGroup.cpp">
+      <Filter>Quelldateien\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\SpeedTree\SpeedTree.cpp">
+      <Filter>Quelldateien\SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Utils\ErrorLog.cpp">
+      <Filter>Quelldateien\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Utils\State\StateBlend.cpp">
+      <Filter>Quelldateien\Utils\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Utils\State\StateDepthStencil.cpp">
+      <Filter>Quelldateien\Utils\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Utils\State\StateRasterizer.cpp">
+      <Filter>Quelldateien\Utils\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Precompiled.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Resource\ResourceAllocator.cpp">
+      <Filter>Quelldateien\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\IO\ScreenIO.cpp">
+      <Filter>Quelldateien\IO</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

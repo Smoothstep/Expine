@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RawDevice.h"
+#include "Raw/RawDevice.h"
 
 namespace D3D
 {
@@ -46,12 +46,12 @@ namespace D3D
 
 		inline UINT64 RefreshCompletedValue()
 		{
-			return LastValueCompleted = max(Fence->GetCompletedValue(), LastValueCompleted);
+			return LastValueCompleted = std::max(Fence->GetCompletedValue(), LastValueCompleted);
 		}
 
 		inline UINT64 RefreshCompletedValueSafe()
 		{
-			boost::unique_lock<TMutex> Lock(Mutex);
+			std::scoped_lock<TMutex> Lock(Mutex);
 			{
 				return RefreshCompletedValue();
 			}
@@ -95,7 +95,7 @@ namespace D3D
 			const UINT64 Value
 		)
 		{
-			boost::mutex::scoped_lock Lock(Mutex);
+			std::scoped_lock<TMutex> Lock(Mutex);
 
 			if (RefreshCompletedValue() < Value)
 			{
@@ -124,7 +124,7 @@ namespace D3D
 			const UINT Frame
 		)
 		{
-			boost::mutex::scoped_lock Lock(Mutex);
+			std::scoped_lock<TMutex> Lock(Mutex);
 
 			if (RefreshCompletedValue() < Values[Frame])
 			{
@@ -142,7 +142,7 @@ namespace D3D
 			const UINT Frame
 		)
 		{
-			boost::mutex::scoped_lock Lock(Mutex);
+			std::scoped_lock<TMutex> Lock(Mutex);
 
 			ThrowOnError
 			(

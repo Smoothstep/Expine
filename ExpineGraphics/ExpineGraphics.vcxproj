@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\Buffer.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferCache.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferTypes.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferConstant.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferIndex.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferQuad.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Buffer\BufferVertex.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Command\CommandAllocator.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Command\CommandBuffer.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Command\CommandList.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Command\CommandQueue.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Descriptor\DescriptorHeap.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Descriptor\DescriptorHeapPool.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\DirectX\D3D.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\DirectX\Default.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Draw\DrawInterface.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Draw\Geometry.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Object\Material.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Object\Mesh.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\PipelineObject.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\Pipelines.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\PSOAtmosphere.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\PSOPostProcess.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Pipeline\PSOTerrain.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\PostProcess\PostProcess.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\PostProcess\PostProcessBloom.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\PostProcess\PostProcessDOF.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Process\ParallelProcessing.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Process\ParallelProcessingMesh.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Process\ParallelProcessingObject.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Process\ParallelProcessingUnit.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawCommandAllocator.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawCommandList.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawCommandQueue.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawCommandSignature.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawDepthStencilView.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawDescriptorHeap.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawDevice.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawFence.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawHeap.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawPipelineState.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawRenderTarget.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawResource.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawRootSignature.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawShader.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawShaderResourceView.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Raw\RawUnorderedAccessView.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\Resource.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\ResourceAllocator.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\ResourceCache.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\Texture\TextureManager.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\Texture\TextureMap.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Resource\Texture\TextureResource.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Environment.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Lighting\VolumetricLighting.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\Atmosphere.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\AtmosphericScattering.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\OcclusionMap.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\Terrain.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\TerrainHeight.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\TerrainQuadTree.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\TerrainRenderer.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Outdoor\TerrainStructure.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\Scene.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneArea.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneComposite.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneController.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneEnvironment.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneIndoor.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneLight.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneOutdoor.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneRenderer.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneResources.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\SceneView.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\View\Camera.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Scene\View\ViewFrustum.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Screen.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\ScreenIO.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Shader\ShaderGroup.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Shader\ShaderManager.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Shader\ShaderRenderTarget.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\SpeedTree\SpeedTree.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\DXGIHelper.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\ErrorCode.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\ErrorLog.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\State\StateBlend.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\State\StateDepthStencil.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\State\StateRasterizer.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\State\StateSampler.h" />
+    <ClInclude Include="..\Expine\Include\Engine\Graphics\Utils\VertexTypes.h" />
+    <ClInclude Include="..\Expine\Include\Engine\IO\Input.h" />
+    <ClInclude Include="..\Expine\Include\Engine\IO\KeyConfig.h" />
+    <ClInclude Include="..\Expine\Include\Engine\IO\KeySystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\Buffer.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferCache.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferCommand.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferConstant.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferIndex.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferQuad.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Buffer\BufferVertex.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Command\CommandList.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Descriptor\DescriptorHeap.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Descriptor\DescriptorHeapPool.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\DirectX\D3D.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Draw\DrawInterface.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Draw\Geometry.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\IO\Screen.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\IO\ScreenIO.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PipelineObject.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\Pipelines.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOAtmosphere.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOComposite.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOPostProcess.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOPresent.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Pipeline\PSOTerrain.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\PostProcess\PostProcess.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\PostProcess\PostProcessBloom.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\PostProcess\PostProcessDOF.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawCommandList.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawCommandQueue.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawCommandSignature.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawDescriptorHeap.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawDevice.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawFence.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawPipelineState.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawRenderTarget.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawResource.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawRootSignature.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawShader.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Raw\RawUnorderedAccessView.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Resource\ResourceAllocator.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Resource\Texture\TextureManager.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Resource\Texture\TextureMap.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Resource\Texture\TextureResource.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Lighting\VolumetricLighting.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Atmosphere.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\AtmosphericScattering.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\OcclusionMap.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\Terrain.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\TerrainHeight.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\TerrainQuadTree.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\TerrainRenderer.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Outdoor\Terrain\TerrainStructure.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\Scene.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneArea.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneComposite.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneController.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneLight.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneOutdoor.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneRenderer.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneResources.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\SceneView.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\View\Camera.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Scene\View\ViewFrustum.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Shader\ShaderGroup.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Shader\ShaderManager.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\SpeedTree\SpeedTree.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Utils\ErrorLog.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Utils\State\StateBlend.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Utils\State\StateDepthStencil.cpp" />
+    <ClCompile Include="..\Expine\Source\Engine\Graphics\Utils\State\StateRasterizer.cpp" />
+    <ClCompile Include="..\Expine\Source\Precompiled.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{EE3B1256-282C-4582-AD07-5AAE0646444B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ExpineGraphics</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Intel C++ Compiler 19.0</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseIntelTBB>true</UseIntelTBB>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\a\Source\Repos\Expine\Expine\Include\Engine\Graphics;C:\Users\a\Source\Repos\Expine\Expine\Include;C:\Users\a\Source\Repos\Expine\Expine\Include\Engine;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\a\Source\Repos\Expine\Expine\Include\Engine\Graphics;C:\Users\a\Source\Repos\Expine\Expine\Include;Z:\boost_1_65_0;C:\Users\a\Source\Repos\Expine\Expine\Include\ThirdParty\SpeedTree;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;EXPINEGRAPHICS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;EXPINEGRAPHICS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <CCppSupport>Cpp17Support</CCppSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;EXPINEGRAPHICS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/Qvc14.1 %(AdditionalOptions)</AdditionalOptions>
+      <CCppSupport>Cpp17Support</CCppSupport>
+      <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;EXPINEGRAPHICS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

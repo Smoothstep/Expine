@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Camera.h"
-#include "DXGIHelper.h"
+#include "Utils/DXGIHelper.h"
 
-#include "ViewFrustum.h"
+#include "Scene/View/Camera.h"
+#include "Scene/View/ViewFrustum.h"
 
 namespace D3D
 {
@@ -87,41 +87,15 @@ namespace D3D
 
 	public:
 
-		inline void SetViewport
+		void SetViewport
 		(
 			const ScreenViewport & Viewport
-		)
-		{
-			this->Viewport = Viewport;
-			this->Viewport.MaxDepth				= Math::Clamp(Viewport.MaxDepth,			0.0f,	1.0f);
-			this->Viewport.MaxDepth				= Math::Clamp(Viewport.MaxDepth,			0.0f,	1.0f);
-			this->Viewport.TopLeftX				= Math::Clamp(Viewport.TopLeftX,			0.0f,	ViewSizeX);
-			this->Viewport.TopLeftY				= Math::Clamp(Viewport.TopLeftY,			0.0f,	ViewSizeY);
-			this->Viewport.Width				= Math::Clamp(Viewport.Width,				0.0f,	ViewSizeX);
-			this->Viewport.Height				= Math::Clamp(Viewport.Height,				0.0f,	ViewSizeY);
-			this->Viewport.ScissorRect.bottom	= Math::Clamp(Viewport.ScissorRect.bottom,	0L,		ViewSize.Y);
-			this->Viewport.ScissorRect.right	= Math::Clamp(Viewport.ScissorRect.right,	0L,		ViewSize.X);
-			this->Viewport.ScissorRect.left		= Math::Clamp(Viewport.ScissorRect.left,	0L,		ViewSize.X);
-			this->Viewport.ScissorRect.top		= Math::Clamp(Viewport.ScissorRect.top,		0L,		ViewSize.Y);
-		}
+		);
 
-		inline void SetViewportShadowMap
+		void SetViewportShadowMap
 		(
 			const ScreenViewport & Viewport
-		)
-		{
-			this->ViewportShadowMap = Viewport;
-			this->ViewportShadowMap.MaxDepth				= Math::Clamp(Viewport.MaxDepth,			0.0f,	1.0f);
-			this->ViewportShadowMap.MaxDepth				= Math::Clamp(Viewport.MaxDepth,			0.0f,	1.0f);
-			this->ViewportShadowMap.TopLeftX				= Math::Clamp(Viewport.TopLeftX,			0.0f,	ShadowSizeX);
-			this->ViewportShadowMap.TopLeftY				= Math::Clamp(Viewport.TopLeftY,			0.0f,	ShadowSizeY);
-			this->ViewportShadowMap.Width					= Math::Clamp(Viewport.Width,				0.0f,	ShadowSizeX);
-			this->ViewportShadowMap.Height					= Math::Clamp(Viewport.Height,				0.0f,	ShadowSizeY);
-			this->ViewportShadowMap.ScissorRect.bottom		= Math::Clamp(Viewport.ScissorRect.bottom,	0L,		ShadowSize.Y);
-			this->ViewportShadowMap.ScissorRect.right		= Math::Clamp(Viewport.ScissorRect.right,	0L,		ShadowSize.X);
-			this->ViewportShadowMap.ScissorRect.left		= Math::Clamp(Viewport.ScissorRect.left,	0L,		ShadowSize.X);
-			this->ViewportShadowMap.ScissorRect.top			= Math::Clamp(Viewport.ScissorRect.top,		0L,		ShadowSize.Y);
-		}
+		);
 
 		inline void SetSize
 		(

@@ -2,10 +2,7 @@
 
 #include "FunctionDeque.h"
 
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/condition_variable.hpp>
-
-#include <WindowsH.h>
+#include <thread>
 
 namespace Thread
 {
@@ -15,7 +12,7 @@ namespace Thread
 
 		CFunctionDeque FunctionSequence;
 
-		boost::shared_ptr<boost::thread> ExecThread;
+		SharedPointer<std::thread> ExecThread;
 
 		volatile bool ShallContinue = true;
 

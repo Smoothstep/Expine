@@ -376,8 +376,8 @@ inline bool CBasicFixedString<uiDataSize>::operator < (const CBasicFixedString& 
 template <size_t uiDataSize>
 inline bool CBasicFixedString<uiDataSize>::operator > (const CBasicFixedString& strRight) const
 {
-	char* pThis = m_aData;
-	char* pRight = strRight.m_aData;
+	char* pThis = const_cast<char*>(m_aData);
+	char* pRight = const_cast<char*>(strRight.m_aData);
 	for ( ; *pThis == *pRight; ++pThis, ++pRight)
 		if (*pThis == 0)
 			return false;

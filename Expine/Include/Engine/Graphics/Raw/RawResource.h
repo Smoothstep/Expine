@@ -1,10 +1,10 @@
 #pragma once
 
-#include "RawDevice.h"
-#include "RawCommandList.h"
+#include "Raw/RawDevice.h"
+#include "Raw/RawCommandList.h"
 #include "RawHeap.h"
 
-#include "DXGIHelper.h"
+#include "Utils/DXGIHelper.h"
 
 namespace D3D
 {
@@ -80,28 +80,11 @@ namespace D3D
 			D3D12_HEAP_FLAGS		HeapFlags		= D3D12_HEAP_FLAG_NONE;
 			D3D12_RESOURCE_STATES	InitialState	= D3D12_RESOURCE_STATE_COMMON;
 
-			InitializeOptions()
-			{
-				this->DepthOrArraySize		= 0;
-				this->Dimension				= D3D12_RESOURCE_DIMENSION_UNKNOWN;
-				this->Width					= 0;
-				this->Height				= 0;
-				this->Format				= DXGI_FORMAT_UNKNOWN;
-				this->MipLevels				= 0;
-				this->Flags					= D3D12_RESOURCE_FLAG_NONE;
-				this->Layout				= D3D12_TEXTURE_LAYOUT_UNKNOWN;
-				this->Alignment				= 0;
-				this->SampleDesc.Count		= 1;
-				this->SampleDesc.Quality	= 0;
-			}
-
+			InitializeOptions();
 			InitializeOptions
 			(
 				D3D12_RESOURCE_DESC & ResourceDesc
-			) :
-				D3D12_RESOURCE_DESC(ResourceDesc)
-			{}
-
+			);
 			InitializeOptions
 			(
 				const UINT						Width,
@@ -114,24 +97,7 @@ namespace D3D
 				const D3D12_RESOURCE_STATES		InitState		= D3D12_RESOURCE_STATE_COMMON,
 				const D3D12_RESOURCE_FLAGS		Flags			= D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
 				const UINT						SampleCount		= 1
-			)
-			{
-				this->DepthOrArraySize		= ArraySize;
-				this->Dimension				= Dimension;
-				this->Width					= Width;
-				this->Height				= Height;
-				this->Format				= Format;
-				this->MipLevels				= MipLevels;
-				this->ClearValue			= ClearValue;
-				this->InitialState			= InitState;
-				this->Flags					= Flags;
-				this->Layout				= D3D12_TEXTURE_LAYOUT_UNKNOWN;
-				this->Alignment				= 0;
-				this->SampleDesc.Count		= SampleCount;
-				this->SampleDesc.Quality	= 0;
-				this->Clear					= TRUE;
-			}
-
+			);
 			InitializeOptions
 			(
 				const UINT						Width,
@@ -144,28 +110,7 @@ namespace D3D
 				const D3D12_RESOURCE_STATES		InitState		= D3D12_RESOURCE_STATE_COMMON,
 				const D3D12_RESOURCE_FLAGS		Flags			= D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
 				const UINT						SampleCount		= 1
-			)
-			{
-				this->DepthOrArraySize		= ArraySize;
-				this->Dimension				= Dimension;
-				this->Width					= Width;
-				this->Height				= Height;
-				this->Format				= Format;
-				this->MipLevels				= MipLevels;
-				this->InitialState			= InitState;
-				this->Flags					= Flags;
-				this->Layout				= D3D12_TEXTURE_LAYOUT_UNKNOWN;
-				this->Alignment				= 0;
-				this->SampleDesc.Count		= SampleCount;
-				this->SampleDesc.Quality	= 0;
-
-				if (ClearValue)
-				{
-					this->Clear = TRUE;
-					this->ClearValue = CD3DX12_CLEAR_VALUE(Format, ClearValue);
-				}
-			}
-
+			);
 			static InitializeOptions Buffer
 			(
 				const UINT64					Size,
@@ -174,20 +119,7 @@ namespace D3D
 				const D3D12_RESOURCE_STATES		ResourceState,
 				const D3D12_RESOURCE_FLAGS		ResourceFlags	= D3D12_RESOURCE_FLAG_NONE,
 				const DXGI_FORMAT				Format			= DXGI_FORMAT_UNKNOWN
-			)
-			{
-				InitializeOptions Options(CD3DX12_RESOURCE_DESC::Buffer(Size, ResourceFlags));
-				{
-					Options.HeapFlags		= HeapFlags;
-					Options.HeapType		= HeapType;
-					Options.InitialState	= ResourceState;
-				}
-
-				Options.Format = Format;
-
-				return Options;
-			}
-
+			);
 			static InitializeOptions DepthStencil2D
 			(
 				const UINT						Width,
@@ -195,59 +127,10 @@ namespace D3D
 				const DXGI_FORMAT				Format,
 				const FLOAT						DepthClearValue,
 				const UINT						StencilClearValue,
-				const UINT						MipLevels = 1,
-				const D3D12_RESOURCE_STATES		InitState = D3D12_RESOURCE_STATE_DEPTH_WRITE,
+				const UINT						MipLevels	= 1,
+				const D3D12_RESOURCE_STATES		InitState	= D3D12_RESOURCE_STATE_DEPTH_WRITE,
 				const UINT						SampleCount = 1
-			)
-			{
-				DXGI_FORMAT ClearFormat;
-
-				switch (Format)
-				{
-					case DXGI_FORMAT_R32G8X24_TYPELESS:
-					{
-						ClearFormat = DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
-					}
-
-					break;
-
-					case DXGI_FORMAT_R32_TYPELESS:
-					{
-						ClearFormat = DXGI_FORMAT_D32_FLOAT;
-					}
-
-					break;
-
-					case DXGI_FORMAT_R24G8_TYPELESS:
-					{
-						ClearFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-					}
-
-					break;
-
-					case DXGI_FORMAT_R16_TYPELESS:
-					{
-						ClearFormat = DXGI_FORMAT_D16_UNORM;
-					}
-
-					break;
-
-					default:
-					{
-						ClearFormat = Format;
-					}
-				}
-
-				D3D12_CLEAR_VALUE DepthOptimizedClearValue = {};
-				{
-					DepthOptimizedClearValue.Format					= ClearFormat;
-					DepthOptimizedClearValue.DepthStencil.Depth		= DepthClearValue;
-					DepthOptimizedClearValue.DepthStencil.Stencil	= StencilClearValue;
-				}
-
-				return InitializeOptions(Width, Height, Format, MipLevels, DepthOptimizedClearValue, D3D12_RESOURCE_DIMENSION_TEXTURE2D, 1, InitState, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL, SampleCount);
-			}
-
+			);
 			static InitializeOptions DepthStencil2D
 			(
 				const UINT						Width,
@@ -257,55 +140,7 @@ namespace D3D
 				const D3D12_RESOURCE_STATES		InitState	= D3D12_RESOURCE_STATE_DEPTH_WRITE,
 				const UINT						SampleCount = 1,
 				const FLOAT						ClearColor	= 1.0f
-			)
-			{
-				DXGI_FORMAT ClearFormat;
-
-				switch (Format)
-				{
-					case DXGI_FORMAT_R32G8X24_TYPELESS:
-					{
-						ClearFormat = DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
-					}
-
-					break;
-
-					case DXGI_FORMAT_R32_TYPELESS:
-					{
-						ClearFormat = DXGI_FORMAT_D32_FLOAT;
-					}
-
-					break;
-
-					case DXGI_FORMAT_R24G8_TYPELESS:
-					{
-						ClearFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-					}
-
-					break;
-
-					case DXGI_FORMAT_R16_TYPELESS:
-					{
-						ClearFormat = DXGI_FORMAT_D16_UNORM;
-					}
-
-					break;
-
-					default:
-					{
-						ClearFormat = Format;
-					}
-				}
-
-				D3D12_CLEAR_VALUE DepthOptimizedClearValue = {};
-				{
-					DepthOptimizedClearValue.Format					= ClearFormat;
-					DepthOptimizedClearValue.DepthStencil.Depth		= ClearColor;
-					DepthOptimizedClearValue.DepthStencil.Stencil	= 0;
-				}
-
-				return InitializeOptions(Width, Height, Format, MipLevels, DepthOptimizedClearValue, D3D12_RESOURCE_DIMENSION_TEXTURE2D, 1, InitState, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL, SampleCount);
-			}
+			);
 
 			static constexpr inline bool IsRenderTargetFormat
 			(
@@ -324,14 +159,7 @@ namespace D3D
 				const Float*					ClearValue	= NULL,
 				const D3D12_RESOURCE_STATES		InitState	= D3D12_RESOURCE_STATE_COMMON,
 				const UINT						SampleCount	= 1
-			)
-			{
-				return InitializeOptions(Width, Height, Format, MipLevels, ClearValue, D3D12_RESOURCE_DIMENSION_TEXTURE2D, 1, InitState, InitState == D3D12_RESOURCE_STATE_UNORDERED_ACCESS ?
-													D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET | D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS	:
-					IsRenderTargetFormat(Format) ?	D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET													: D3D12_RESOURCE_FLAG_NONE,
-					SampleCount);
-			}
-
+			);
 			static InitializeOptions Texture2DArray
 			(
 				const UINT						Width,
@@ -342,14 +170,7 @@ namespace D3D
 				const Float*					ClearValue	= NULL,
 				const D3D12_RESOURCE_STATES		InitState	= D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
 				const UINT						SampleCount = 1
-			)
-			{
-				return InitializeOptions(Width, Height, Format, MipLevels, ClearValue, D3D12_RESOURCE_DIMENSION_TEXTURE2D, Depth, InitState, InitState == D3D12_RESOURCE_STATE_UNORDERED_ACCESS ?
-					D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS :
-					D3D12_RESOURCE_FLAG_NONE, 
-					SampleCount);
-			}
-
+			);
 			static InitializeOptions Texture3D
 			(
 				const UINT						Width,
@@ -360,13 +181,7 @@ namespace D3D
 				const UINT16					ArraySize	= 1,
 				const D3D12_RESOURCE_STATES		InitState	= D3D12_RESOURCE_STATE_COMMON,
 				const UINT						SampleCount = 1
-			)
-			{
-				return InitializeOptions(Width, Height, Format, MipLevels, ClearValue, D3D12_RESOURCE_DIMENSION_TEXTURE3D, ArraySize, InitState, InitState == D3D12_RESOURCE_STATE_UNORDERED_ACCESS ?
-					D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET | D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS :
-					D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,
-					SampleCount);
-			}
+			);
 		};
 
 	protected:

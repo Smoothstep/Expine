@@ -1,4 +1,5 @@
 #include "File/FileSystemWatcher.h"
+#include "Defines.h"
 #include "Memory.h"
 
 namespace File
@@ -141,7 +142,7 @@ namespace File
 
 	CFileSystemWatcher::~CFileSystemWatcher()
 	{
-		SafeReleaseArray(FileNotifyInformation);
+		delete[] FileNotifyInformation;
 	}
 
 	HRESULT CFileSystemWatcher::Initialize(LPCWSTR pFileDirectory)

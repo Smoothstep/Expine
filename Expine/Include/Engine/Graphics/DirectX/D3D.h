@@ -3,25 +3,49 @@
 
 #include <DX12Helper.h>
 
-#include <d3dcommon.h>
-
 #include "Smart.h"
 #include "Singleton.h"
 #include "Defines.h"
-#include "Types.h"
 #include "Hyper.h"
-#include "ErrorLog.h"
-#include "Memory.h"
+#include "Memory/Memory.h"
 #include "Default.h"
 
-#define CHECK_NULL_ARG(X)		\
-	if((X) == NULL)				\
-	{							\
-		return E_INVALIDARG;	\
-	}							\
+#include "Utils/ErrorLog.h"
+
+#undef min
+#undef max
+#undef CopyMemory
 
 namespace D3D
 {
+#ifdef EXPINEGRAPHICS_EXPORTS
+#define _EX_ __declspec(dllexport)
+#else 
+#define _EX_ __declspec(dllimport)
+#endif
+	class CScene;
+	class CSceneController;
+	class CScreen;
+	class CScreenInputHandler;
+	class CSceneRenderer;
+	class CSceneView;
+	class CSceneArea;
+	class CSceneIndoor;
+	class CSceneOutdoor;
+	class CSceneLight;
+	class CCamera;
+	class CCommandListContext;
+	class CCommandList;
+	class CCGraphicsCommandList;
+	class CVertexBuffer;
+	class CIndexBuffer;
+	class CCommandBuffer;
+	class CCommandQueueDirect;
+	class CCommandQueueCopy;
+	class CCommandQueueCompute;
+	class PipelineObjectBase;
+	class RShader;
+
 	using IFence				= ID3D12Fence;
 	using IResource				= ID3D12Resource;
 	using IGrpCommandList		= ID3D12GraphicsCommandList;
@@ -43,6 +67,10 @@ namespace D3D
 	using LPDescriptorHeap		= IDescriptorHeap*;
 	using LPGrpCommandList		= IGrpCommandList*;
 	using LPipelineState		= IPipelineState*;
+
+	using IndexBufferView		= D3D12_INDEX_BUFFER_VIEW;
+	using VertexBufferView		= D3D12_VERTEX_BUFFER_VIEW;
+	using ConstantBufferView	= D3D12_CONSTANT_BUFFER_VIEW_DESC;
 
 	inline D3D12_PRIMITIVE_TOPOLOGY_TYPE GetPrimitiveTopologyType
 	(

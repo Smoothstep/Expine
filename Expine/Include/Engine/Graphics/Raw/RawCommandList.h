@@ -1,10 +1,10 @@
 #pragma once
 
-#include "RawCommandAllocator.h"
-#include "RawCommandSignature.h"
-#include "RawPipelineState.h"
+#include "Raw/RawCommandAllocator.h"
+#include "Raw/RawCommandSignature.h"
+#include "Raw/RawPipelineState.h"
 
-#include "BufferTypes.h"
+#include "Buffer/BufferTypes.h"
 
 namespace D3D
 {
@@ -402,14 +402,14 @@ namespace D3D
 			const RDescriptorHeap * pDescriptorHeap
 		)	const;
 
-		inline void RGrpCommandList::SetGraphicsRootDescriptorTable
+		inline void SetGraphicsRootDescriptorTable
 		(
 			const UINT				RootParameter,
 			const UINT				Offset,
 			const RDescriptorHeap * pDescriptorHeap
 		)	const;
 
-		inline void RGrpCommandList::SetComputeRootDescriptorTable
+		inline void SetComputeRootDescriptorTable
 		(
 			const UINT				RootParameter,
 			const UINT				Offset,

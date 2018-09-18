@@ -3,6 +3,9 @@
 #include <vector>
 #include <tuple>
 #include <utility>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
 #include "WindowsH.h"
 #include "Function.h"
@@ -132,24 +135,24 @@ namespace Thread
 		}
 	};
 
-	class CThreadGroup : public std::vector<boost::thread*> 
+	class CThreadGroup : public std::vector<std::thread*> 
 	{};
 
 	class CThreadPool
 	{
 	private:
 
-		CTaskQueue		TaskQueue;
-		CThreadGroup	ThreadGroup;
+		CTaskQueue				TaskQueue;
+		CThreadGroup			ThreadGroup;
 
-		long StopWork;
-		long StopAfterWork;
-		long NumTasks;
+		long					StopWork;
+		long					StopAfterWork;
+		long					NumTasks;
 
-		HANDLE Queue;
+		HANDLE					Queue;
 
-		boost::mutex WaitMutex;
-		boost::condition_variable WaitCondition;
+		std::mutex				WaitMutex;
+		std::condition_variable WaitCondition;
 
 	private:
 
@@ -259,10 +262,13 @@ namespace Thread
 		{
 			for(auto & Thread : ThreadGroup)
 			{
-				Thread->interrupt();
-				{
-					delete Thread;
-				}
+				PostQueuedCompletionStatus(Queue, 0, 0, nullptr);
+			}
+
+			for (auto & Thread : ThreadGroup)
+			{
+				Thread->join();
+				delete Thread;
 			}
 
 			ThreadGroup.clear();
@@ -290,13 +296,13 @@ namespace Thread
 
 			for (size_t i = 0; i < Count; ++i)
 			{
-				ThreadGroup.push_back(new boost::thread(boost::bind(&CThreadPool::ThreadMain, this)));
+				ThreadGroup.push_back(new std::thread(std::bind(&CThreadPool::ThreadMain, this)));
 			}
 
 			return true;
 		}
 
-		size_t ThreadCount()
+		size_t ThreadCount() const
 		{
 			return ThreadGroup.size();
 		}
@@ -349,9 +355,9 @@ namespace Thread
 			DWORD dwMs = INFINITE
 		)
 		{
-			boost::unique_lock<boost::mutex> Lock(WaitMutex);
+			std::unique_lock<std::mutex> Lock(WaitMutex);
 			{
-				WaitCondition.wait_until(Lock, boost::chrono::time_point<boost::chrono::high_resolution_clock>(boost::chrono::milliseconds(dwMs)), [this]
+				WaitCondition.wait_until(Lock, std::chrono::time_point<std::chrono::high_resolution_clock>(std::chrono::milliseconds(dwMs)), [this]
 				{
 					return !HasWork();
 				});

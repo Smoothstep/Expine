@@ -10,7 +10,7 @@
 
 #include "Defines.h"
 
-namespace Memory
+namespace Memoryspace
 {
 #ifndef COPY
 #define COPY		memcpy
@@ -188,12 +188,12 @@ namespace Memory
 		>
 		FORCEINLINE static Type & FromSource
 		(
-			IN const T & Source
+			const T & Source
 		)
 		{
 			static_assert(sizeof(T) == sizeof(Type), "Incorrect size of Source Type. Size must be 64");
-
-			return *reinterpret_cast<const Type*>(&Memory);
+	
+			return *reinterpret_cast<Type*>(Source);
 		}
 
 		template
@@ -202,7 +202,7 @@ namespace Memory
 		>
 		FORCEINLINE void CopyFromSource
 		(
-			IN const T & Source
+			const T & Source
 		)
 		{
 			static_assert(sizeof(T) == sizeof(Type), "Incorrect size of Source Type. Size must be 64");

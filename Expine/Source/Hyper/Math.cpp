@@ -1,12 +1,11 @@
-#include "../Precompiled.h"
-#include "Math.h"
-#include "Vector4.h"
+#include "Hyper/Math.h"
+#include "Hyper/Vector4.h"
 
 namespace Hyper
 {
 	namespace Math
 	{
-		Float GenerateNoise(const Vector3f& Position)
+		constexpr Float GenerateNoise(const Vector3f& Position)
 		{
 			Vector3f P = Floor(Position);
 			Vector3f F = Frac(Position);
@@ -22,10 +21,12 @@ namespace Hyper
 						Lerp(IqHash(N + 170.0), IqHash(N + 171.0), F.X), F.Y), F.Z);
 		}
 
-		Float GenerateNoise2(const Vector3f& Position)
-		{
-			static const Vector3f Step(Math::RandomNoiseGtZero() * 255.0, Math::RandomNoiseGtZero() * 255.0, Math::RandomNoiseGtZero() * 255.0);
+		static const Vector3f Step(Math::RandomNoiseGtZero() * 255.0, 
+								   Math::RandomNoiseGtZero() * 255.0, 
+								   Math::RandomNoiseGtZero() * 255.0);
 
+		constexpr Float GenerateNoise2(const Vector3f& Position)
+		{
 			const Vector3f I = Floor(Position);
 			const Vector3f F = Frac(Position);
 

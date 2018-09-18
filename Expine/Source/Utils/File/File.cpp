@@ -1,10 +1,104 @@
-#include "File/File.h"
-
+#include "Utils/File/File.h"
+#include <WindowsH.h>
 #include <fstream>
 #include <ostream>
 
 namespace File
 {
+	FileMappingStream::~FileMappingStream()
+	{
+		Close();
+	}
+
+	bool FileMappingStream::Open(const WStringView& File, std::ios::openmode Mode)
+	{
+		DWORD Access = FILE_GENERIC_EXECUTE;
+		DWORD AccessMem = PAGE_EXECUTE;
+
+		if (Mode & std::ios::in)
+		{
+			Access |= FILE_GENERIC_READ;
+			AccessMem = PAGE_EXECUTE_READ;
+		}
+
+		if (Mode & std::ios::out)
+		{
+			Access |= FILE_GENERIC_WRITE;
+			AccessMem = PAGE_EXECUTE_READWRITE;
+		}
+
+		return Open(CreateFile2(File.data(), Access, 0, OPEN_EXISTING, NULL));
+	}
+
+	bool FileMappingStream::Open(HANDLE FileHandle)
+	{
+		if (FileHandle == NULL)
+		{
+			return false;
+		}
+
+		FILE_STANDARD_INFO FileInfo;
+
+		if (!GetFileInformationByHandleEx(FileHandle, FileStandardInfo, &FileInfo, sizeof(FileInfo)))
+		{
+			return false;
+		}
+
+		MappingHandle = CreateFileMapping(FileHandle, NULL, FILE_ALL_ACCESS, FileInfo.AllocationSize.HighPart, FileInfo.AllocationSize.LowPart, NULL);
+		MappingSizeMax = FileInfo.AllocationSize.QuadPart;
+		MappingSize = 0;
+
+		return MappingHandle != NULL;
+	}
+
+
+	TVector<Byte> & FileMappingStream::GetContent(size_t MinBytes)
+	{
+		MinBytes = std::min(MinBytes, MappingSizeMax);
+
+		if (MappingSize < MinBytes)
+		{
+			void * Data = MapViewOfFile(MappingHandle, FILE_MAP_ALL_ACCESS, 0, 0, MinBytes);
+		}
+
+		return MappingBytes;
+	}
+
+	const TVector<Byte> & FileMappingStream::GetContent(size_t MinBytes) const
+	{
+		return MappingBytes;
+	}
+
+	bool FileMappingStream::Open(const StringView& File, std::ios::openmode Mode)
+	{
+		DWORD Access = FILE_GENERIC_EXECUTE;
+		DWORD AccessMem = PAGE_EXECUTE;
+
+		if (Mode & std::ios::in)
+		{
+			Access |= FILE_GENERIC_READ;
+			AccessMem = PAGE_EXECUTE_READ;
+		}
+
+		if (Mode & std::ios::out)
+		{
+			Access |= FILE_GENERIC_WRITE;
+			AccessMem = PAGE_EXECUTE_READWRITE;
+		}
+
+		return Open(CreateFileA(File.data(), Access, 0, NULL, OPEN_EXISTING, 0, NULL));
+	}
+
+	bool FileMappingStream::Close()
+	{
+		if (IS_VALID_HANDLE(MappingHandle))
+		{
+			return CloseHandle(MappingHandle);
+		}
+
+		return true;
+	}
+
 	bool CFile::OpenFileWrite()
 	{
 		if (IsOpenForWrite())

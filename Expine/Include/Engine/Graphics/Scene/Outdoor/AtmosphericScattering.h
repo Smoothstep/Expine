@@ -1,11 +1,11 @@
 #pragma once
 
-#include "RawRenderTarget.h"
-#include "RawShaderResourceView.h"
+#include "Raw/RawRenderTarget.h"
+#include "Raw/RawShaderResourceView.h"
 
-#include "PipelinesAtmosphere.h"
+#include "Pipeline/PSOAtmosphere.h"
 
-#include "CommandList.h"
+#include "Command/CommandList.h"
 
 namespace D3D
 {

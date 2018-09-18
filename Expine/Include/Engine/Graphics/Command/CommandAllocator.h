@@ -1,10 +1,10 @@
 #pragma once
 
-#include "RawCommandAllocator.h"
+#include "Raw/RawCommandAllocator.h"
 
 namespace D3D
 {
-#define COMMAND_LIST_TYPE_NUM 4
+	constexpr Uint CommandListTypeNum = 4;
 
 	class CCommandAllocator : public RCommandAllocator
 	{};
@@ -14,9 +14,9 @@ namespace D3D
 	private:
 
 		TArray<TQueue<
-			SharedPointer<CCommandAllocator> >, COMMAND_LIST_TYPE_NUM>  AvailableAllocators;
+			SharedPointer<CCommandAllocator> >, CommandListTypeNum>  AvailableAllocators;
 		TArray<TVector<
-			SharedPointer<CCommandAllocator> >, COMMAND_LIST_TYPE_NUM>	Allocators;
+			SharedPointer<CCommandAllocator> >, CommandListTypeNum>	Allocators;
 
 		SharedPointer<CCommandAllocator> CreateAllocator
 		(

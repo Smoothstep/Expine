@@ -1,7 +1,7 @@
 #pragma once
 
-#include "RawDevice.h"
-#include "RawCommandList.h"
+#include "Raw/RawDevice.h"
+#include "Raw/RawCommandList.h"
 
 namespace D3D
 {
@@ -320,7 +320,8 @@ namespace D3D
 			return false;
 		}
 
-		inline DescriptorHeapRange() : DescriptorHeapEntry(0), Range(0)
+		inline DescriptorHeapRange() 
+			: DescriptorHeapEntry(0), Range(0)
 		{}
 
 		inline DescriptorHeapEntry operator[]
@@ -333,7 +334,7 @@ namespace D3D
 				Index < Range
 			);
 
-			return DescriptorHeapEntry(DescriptorHeap.Get(), Offset + Index);
+			return { DescriptorHeap.Get(), Offset + Index };
 		}
 
 		inline DescriptorHeapRange
@@ -859,6 +860,6 @@ namespace D3D
 
 	inline DescriptorHeapRange RDescriptorHeap::AsDescriptorHeapRange() const
 	{
-		return DescriptorHeapRange(this, OffsetCurrent, OffsetMax);
+		return { this, OffsetCurrent, OffsetMax };
 	}
 }

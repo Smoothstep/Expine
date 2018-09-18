@@ -84,7 +84,7 @@ namespace Hyper
 			static const M128 QMULTI_SIGN_MASK1 = MakeVectorRegister( 1.f, 1.f,-1.f,-1.f);
 			static const M128 QMULTI_SIGN_MASK2 = MakeVectorRegister(-1.f, 1.f, 1.f,-1.f);
 
-			static FORCEINLINE M128 VectorQuaternionMultiply2
+			static CONSTEXPR FORCEINLINE M128 VectorQuaternionMultiply2
 			(
 				const M128 & Quat1, 
 				const M128 & Quat2
@@ -99,7 +99,7 @@ namespace Hyper
 				return Result;
 			}
 
-			static FORCEINLINE void VectorQuaternionMultiply
+			static CONSTEXPR FORCEINLINE void VectorQuaternionMultiply
 			(
 						void * RESTRICT Result, 
 				const	void * RESTRICT Quat1, 
@@ -112,7 +112,7 @@ namespace Hyper
 				);
 			}
 
-			static FORCEINLINE M128 VectorSelect
+			static CONSTEXPR FORCEINLINE M128 VectorSelect
 			(
 				const M128 & Mask, 
 				const M128 & Vec1,
@@ -122,7 +122,7 @@ namespace Hyper
 				return _mm_xor_ps(Vec2, _mm_and_ps(Mask, _mm_xor_ps(Vec1, Vec2)));
 			}
 
-			static FORCEINLINE M128 VectorDot3
+			static CONSTEXPR FORCEINLINE M128 VectorDot3
 			(
 				const M128 & Vec1, 
 				const M128 & Vec2
@@ -132,21 +132,20 @@ namespace Hyper
 				return VectorAdd(VectorReplicate(Temp, 0), VectorAdd(VectorReplicate(Temp, 1), VectorReplicate(Temp, 2)));
 			}
 
-			static FORCEINLINE M128 VectorDot4
+			static CONSTEXPR FORCEINLINE M128 VectorDot4
 			(
 				const M128 & Vec1, 
 				const M128 & Vec2
 			)
 			{
-				M128 Temp1, Temp2;
-				Temp1 = VectorMultiply(Vec1, Vec2);
-				Temp2 = _mm_shuffle_ps(Temp1, Temp1, SHUFFLEMASK(2, 3, 0, 1));
+				M128 Temp1 = VectorMultiply(Vec1, Vec2);
+				M128 Temp2 = _mm_shuffle_ps(Temp1, Temp1, SHUFFLEMASK(2, 3, 0, 1));
 				Temp1 = VectorAdd(Temp1, Temp2);
 				Temp2 = _mm_shuffle_ps(Temp1, Temp1, SHUFFLEMASK(1, 2, 3, 0));
 				return VectorAdd(Temp1, Temp2);
 			}
 
-			static FORCEINLINE M128 VectorReciprocalLen
+			static CONSTEXPR FORCEINLINE M128 VectorReciprocalLen
 			(
 				const M128 & Vector
 			)
@@ -155,7 +154,7 @@ namespace Hyper
 				return VectorReciprocalSqrt(RecipLen);
 			}
 
-			static FORCEINLINE M128 VectorReciprocalSqrtAccurate
+			static CONSTEXPR FORCEINLINE M128 VectorReciprocalSqrtAccurate
 			(
 				const M128 & Vec
 			)
@@ -176,7 +175,7 @@ namespace Hyper
 				return x2;
 			}
 
-			static FORCEINLINE M128 VectorReciprocalAccurate
+			static CONSTEXPR FORCEINLINE M128 VectorReciprocalAccurate
 			(
 				const M128 & Vec
 			)
@@ -194,7 +193,7 @@ namespace Hyper
 				return x2;
 			}
 
-			static FORCEINLINE M128 VectorNormalizeSafe
+			static CONSTEXPR FORCEINLINE M128 VectorNormalizeSafe
 			(
 				const M128 & Vector,
 				const M128 & VectorDefaultValue
@@ -207,7 +206,7 @@ namespace Hyper
 				return VectorSelect(NonZeroMask, NormalizedVector, VectorDefaultValue);
 			}
 
-			static FORCEINLINE M128 VectorNormalizeQuaternion
+			static CONSTEXPR FORCEINLINE M128 VectorNormalizeQuaternion
 			(
 				const M128 & UnnormalizedQuat
 			)
@@ -215,7 +214,7 @@ namespace Hyper
 				return VectorNormalizeSafe(UnnormalizedQuat, ::SSE::Float0001);
 			}
 
-			static FORCEINLINE M128 VectorCross
+			static CONSTEXPR FORCEINLINE M128 VectorCross
 			(
 				const M128 & Vec1,
 				const M128 & Vec2
@@ -249,9 +248,9 @@ namespace Hyper
 		<
 			typename IntegerType
 		>
-		static FORCEINLINE IntegerType PreviousPowerOfTwo
+		static CONSTEXPR FORCEINLINE IntegerType PreviousPowerOfTwo
 		(
-			IN	IntegerType Integer
+			IntegerType Integer
 		)
 		{
 			Integer |= (Integer >> 1);
@@ -266,9 +265,9 @@ namespace Hyper
 		<
 			typename IntegerType
 		>
-		static FORCEINLINE IntegerType NextPowerOfTwo
+		static CONSTEXPR FORCEINLINE IntegerType NextPowerOfTwo
 		(
-			IN	IntegerType Integer
+			IntegerType Integer
 		)
 		{
 			Integer--;
@@ -283,7 +282,7 @@ namespace Hyper
 
 		static CONSTEXPR FORCEINLINE Float TruncateToFloat
 		(
-			IN	const int Integer
+			const int Integer
 		)
 		{
 			return static_cast<float>(Integer);
@@ -291,7 +290,7 @@ namespace Hyper
 
 		static CONSTEXPR FORCEINLINE Int TruncateToInt
 		(
-			IN	const Float FloatingPoint
+			const Float FloatingPoint
 		)
 		{
 			return static_cast<int>(FloatingPoint);
@@ -299,7 +298,7 @@ namespace Hyper
 
 		static CONSTEXPR FORCEINLINE Float TruncateToFloat
 		(
-			IN	const Float FloatingPoint
+			const Float FloatingPoint
 		)
 		{
 			return
@@ -325,8 +324,8 @@ namespace Hyper
 
 		static FORCEINLINE Float GridSnap
 		(
-			IN	const Float Location,
-			IN	const Float Grid
+			const Float Location,
+			const Float Grid
 		)
 		{
 			if (Grid == 0.0f)
@@ -339,7 +338,7 @@ namespace Hyper
 
 		static FORCEINLINE Float Log2
 		(
-			IN	const Float Value
+			const Float Value
 		)
 		{
 			return log2f(Value);
@@ -351,7 +350,7 @@ namespace Hyper
 		>
 		static CONSTEXPR FORCEINLINE T Square
 		(
-			IN	const T A
+			const T A
 		)
 		{
 			return A * A;
@@ -363,9 +362,9 @@ namespace Hyper
 		>
 		static CONSTEXPR FORCEINLINE T Clamp
 		(
-			IN	const T X,
-			IN	const T Min,
-			IN	const T Max
+			const T X,
+			const T Min,
+			const T Max
 		)
 		{
 			return	X < Min ? Min : 
@@ -376,47 +375,55 @@ namespace Hyper
 		<
 			typename T
 		>
-		static FORCEINLINE int RoundToInt
+		static CONSTEXPR FORCEINLINE int RoundToInt
 		(
-			IN	const T FloatingPoint
+			const T FloatingPoint
 		)
 		{
 			int Value;
-#if defined(__ICC) || defined(__INTEL_COMPILER)
-			RoundFP(FloatingPoint, Value);
+#ifdef __INTEL_COMPILER
+			__asm 
+			{
+				fld		FloatingPoint
+				fistp	Value
+			};
 #else
 			Value = _mm_cvt_ss2si(_mm_set_ss(FloatingPoint + FloatingPoint + 0.5f)) >> 1;
 #endif
 			return Value;
 		}
 
-		static FORCEINLINE float Abs
+		template
+		<
+			class T
+		>
+		static CONSTEXPR FORCEINLINE T Abs
 		(
-			IN	const Float FloatingPoint
+			const T N
 		)
 		{
-			return fabsf(FloatingPoint);
+			return N < 0 ? -N : N;
 		}
 
-		static FORCEINLINE float Sqrt
+		FORCEINLINE float Sqrt
 		(
-			IN	const Float FloatingPoint
+			const Float FloatingPoint
 		)
 		{
-			return sqrtf(FloatingPoint);
+			return std::sqrt(FloatingPoint);
 		}
 
-		static FORCEINLINE float Exp2
+		FORCEINLINE float Exp2
 		(
-			IN	const Float FloatingPoint
+			const Float FloatingPoint
 		)
 		{
 			return powf(2.0f, FloatingPoint);
 		}
 
-		static FORCEINLINE float Exp
+		extern FORCEINLINE float Exp
 		(
-			IN	const Float FloatingPoint
+			const Float FloatingPoint
 		)
 		{
 			return expf(FloatingPoint);
@@ -424,9 +431,9 @@ namespace Hyper
 
 		static CONSTEXPR FORCEINLINE float FloatSelect
 		(
-			IN	const Float Comparand,
-			IN	const Float ValueGEZero,
-			IN	const Float ValueLTZero
+			const Float Comparand,
+			const Float ValueGEZero,
+			const Float ValueLTZero
 		)
 		{
 			return Comparand >= 0.f ? ValueGEZero : ValueLTZero;
@@ -438,8 +445,8 @@ namespace Hyper
 		>
 		static CONSTEXPR FORCEINLINE T Max
 		(
-			IN	const T L,
-			IN	const T R
+			const T L,
+			const T R
 		)
 		{
 			return L < R ? R : L;
@@ -451,8 +458,8 @@ namespace Hyper
 		>
 		static CONSTEXPR FORCEINLINE T Min
 		(
-			IN	const T L,
-			IN	const T R
+			const T L,
+			const T R
 		)
 		{
 			return L > R ? R : L;
@@ -462,9 +469,9 @@ namespace Hyper
 		<
 			class T
 		>
-		static FORCEINLINE auto RadiansToDegrees
+		static CONSTEXPR FORCEINLINE auto RadiansToDegrees
 		(
-			IN	T const& RadVal
+			T const& RadVal
 		) 
 			-> decltype(RadVal * (180.0 / PI))
 		{
@@ -475,20 +482,20 @@ namespace Hyper
 		<
 			class T
 		>
-		static FORCEINLINE auto DegreesToRadians
+		static CONSTEXPR FORCEINLINE auto DegreesToRadians
 		(
-			IN	T const& DegVal
+			T const& DegVal
 		) 
 			-> decltype(DegVal * (PI / 180.0))
 		{
 			return DegVal * (PI / 180.0);
 		}
 
-		static FORCEINLINE void SinCos
+		static CONSTEXPR FORCEINLINE void SinCos
 		(
 			OUT			Float *	ScalarSin,
 			OUT			Float *	ScalarCos,
-			IN	const	Float	Value)
+			const	Float	Value)
 		{
 			float quotient = (INV_PI*0.5f)*Value;
 
@@ -502,7 +509,7 @@ namespace Hyper
 			}
 
 			float y = Value - (2.0f * PI) * quotient;
-			float sign;
+			float sign = 0.0f;
 
 			if (y > HALF_PI)
 			{
@@ -519,55 +526,53 @@ namespace Hyper
 				sign = +1.0f;
 			}
 
-			float y2 = y * y;
+			const float y2 = y * y;
 			*ScalarSin = (((((-2.3889859e-08f * y2 + 2.7525562e-06f) * y2 - 0.00019840874f) * y2 + 0.0083333310f) * y2 - 0.16666667f) * y2 + 1.0f) * y;
 
-			float p = ((((-2.6051615e-07f * y2 + 2.4760495e-05f) * y2 - 0.0013888378f) * y2 + 0.041666638f) * y2 - 0.5f) * y2 + 1.0f;
+			const float p = ((((-2.6051615e-07f * y2 + 2.4760495e-05f) * y2 - 0.0013888378f) * y2 + 0.041666638f) * y2 - 0.5f) * y2 + 1.0f;
 			*ScalarCos = sign*p;
 		}
 
-		static FORCEINLINE Float InvSqrt
+		static CONSTEXPR FORCEINLINE Float InvSqrt
 		(
-			IN	const Float F
+			const Float F
 		)
 		{
 			const M128 fOneHalf = _mm_set_ss(0.5f);
-			M128 Y0, X0, X1, X2, FOver2;
-			float temp;
+			float temp = 0.0f;
 
-			Y0 = _mm_set_ss(F);
-			X0 = _mm_rsqrt_ss(Y0);
-			FOver2 = _mm_mul_ss(Y0, fOneHalf);
+			M128 Y0 = _mm_set_ss(F);
+			M128 X0 = _mm_rsqrt_ss(Y0);
+			M128 FOver2 = _mm_mul_ss(Y0, fOneHalf);
 
-			X1 = _mm_mul_ss(X0, X0);
-			X1 = _mm_sub_ss(fOneHalf, _mm_mul_ss(FOver2, X1));
-			X1 = _mm_add_ss(X0, _mm_mul_ss(X0, X1));
+			M128	X1 = _mm_mul_ss(X0, X0);
+					X1 = _mm_sub_ss(fOneHalf, _mm_mul_ss(FOver2, X1));
+					X1 = _mm_add_ss(X0, _mm_mul_ss(X0, X1));
 
-			X2 = _mm_mul_ss(X1, X1);
-			X2 = _mm_sub_ss(fOneHalf, _mm_mul_ss(FOver2, X2));
-			X2 = _mm_add_ss(X1, _mm_mul_ss(X1, X2));
+			M128	X2 = _mm_mul_ss(X1, X1);
+					X2 = _mm_sub_ss(fOneHalf, _mm_mul_ss(FOver2, X2));
+					X2 = _mm_add_ss(X1, _mm_mul_ss(X1, X2));
 
 			_mm_store_ss(&temp, X2);
 			return temp;
 		}
 
-		static FORCEINLINE Float InvSqrtEst
+		static CONSTEXPR FORCEINLINE Float InvSqrtEst
 		(
-			IN	const Float F
+			const Float F
 		)
 		{
 			const M128 fOneHalf = _mm_set_ss(0.5f);
-			M128 Y0, X0, X1, FOver2;
-			float temp;
+			float temp = 0.0f;
 
-			Y0 = _mm_set_ss(F);
-			X0 = _mm_rsqrt_ss(Y0);
+			M128 Y0 = _mm_set_ss(F);
+			M128 X0 = _mm_rsqrt_ss(Y0);
 
-			FOver2 = _mm_mul_ss(Y0, fOneHalf);
+			M128 FOver2 = _mm_mul_ss(Y0, fOneHalf);
 
-			X1 = _mm_mul_ss(X0, X0);
-			X1 = _mm_sub_ss(fOneHalf, _mm_mul_ss(FOver2, X1));
-			X1 = _mm_add_ss(X0, _mm_mul_ss(X0, X1));
+			M128	X1 = _mm_mul_ss(X0, X0);
+					X1 = _mm_sub_ss(fOneHalf, _mm_mul_ss(FOver2, X1));
+					X1 = _mm_add_ss(X0, _mm_mul_ss(X0, X1));
 
 			_mm_store_ss(&temp, X1);
 			return temp;
@@ -577,20 +582,18 @@ namespace Hyper
 		<
 			class MatrixType
 		>
-		FORCEINLINE M128 VectorTransformVector
+		static CONSTEXPR FORCEINLINE M128 VectorTransformVector
 		(
-			IN	const M128			& VecP,
-			IN	const MatrixType	& MatrixM
+			const M128			& VecP,
+			const MatrixType	& MatrixM
 		)
 		{
-			M128 VTempX, VTempY, VTempZ, VTempW;
-
 			const M128 *M = (const M128 *)&MatrixM;
 
-			VTempX = VectorReplicate(VecP, 0);
-			VTempY = VectorReplicate(VecP, 1);
-			VTempZ = VectorReplicate(VecP, 2);
-			VTempW = VectorReplicate(VecP, 3);
+			M128 VTempX = VectorReplicate(VecP, 0);
+			M128 VTempY = VectorReplicate(VecP, 1);
+			M128 VTempZ = VectorReplicate(VecP, 2);
+			M128 VTempW = VectorReplicate(VecP, 3);
 
 			VTempX = VectorMultiply(VTempX, M[0]);
 			VTempY = VectorMultiply(VTempY, M[1]);
@@ -604,15 +607,13 @@ namespace Hyper
 			return VTempX;
 		}
 
-		FORCEINLINE M256 TwoLincomb_AVX_8
+		static CONSTEXPR FORCEINLINE M256 TwoLincomb_AVX_8
 		(
-			IN	const M128	 Source[4],
-			IN	const M256 & A01
+			const M128	 Source[4],
+			const M256 & A01
 		)
 		{
-			M256 Result;
-
-			Result = _mm256_mul_ps(_mm256_shuffle_ps(A01, A01, 0x00), _mm256_broadcast_ps(&Source[0]));
+			M256 Result = _mm256_mul_ps(_mm256_shuffle_ps(A01, A01, 0x00), _mm256_broadcast_ps(&Source[0]));
 			{
 				Result = _mm256_add_ps(Result, _mm256_mul_ps(_mm256_shuffle_ps(A01, A01, 0x55), _mm256_broadcast_ps(&Source[1])));
 				Result = _mm256_add_ps(Result, _mm256_mul_ps(_mm256_shuffle_ps(A01, A01, 0xaa), _mm256_broadcast_ps(&Source[2])));
@@ -622,18 +623,18 @@ namespace Hyper
 			return Result;
 		}
 
-		static FORCEINLINE Float FMod
+		static CONSTEXPR FORCEINLINE Float FMod
 		(
-			IN	const Float X,
-			IN	const Float Y
+			const Float X,
+			const Float Y
 		)
 		{
 			return fmodf(X, Y);
 		}
 
-		static FORCEINLINE Float UnwindDegrees
+		static CONSTEXPR FORCEINLINE Float UnwindDegrees
 		(
-			IN	Float A
+			Float A
 		)
 		{
 			A = FMod(A, 360.f);
@@ -651,50 +652,61 @@ namespace Hyper
 			return A;
 		}
 
-		static FORCEINLINE Float Cos
+		static CONSTEXPR FORCEINLINE Float Cos
 		(
-			IN	const Float F
+			const Float F
 		)
 		{
 			return cosf(F);
 		}
 
-		static FORCEINLINE Float Sin
+		static CONSTEXPR FORCEINLINE Float Sin
 		(
-			IN	const Float F
+			const Float F
 		)
 		{
 			return sinf(F);
 		}
 
-		static FORCEINLINE Float Acos
+		static CONSTEXPR FORCEINLINE Float Acos
 		(
-			IN	const Float Value
+			const Float Value
 		) 
 		{ 
 			return acosf((Value<-1.f) ? -1.f : ((Value<1.f) ? Value : 1.f)); 
 		}
 
-		static FORCEINLINE float Tan
+		static CONSTEXPR FORCEINLINE float Tan
 		(
-			IN	const float Value
+			const float Value
 		) 
 		{ 
 			return tanf(Value); 
 		}
 
-		static FORCEINLINE float Atan
+		static CONSTEXPR FORCEINLINE float Atan
 		(
-			IN	const float Value
+			const float Value
 		) 
 		{ 
 			return atanf(Value); 
 		}
 
-		static FORCEINLINE float Atan2
+		static CONSTEXPR float Atan2_LUT[7] =
+		{
+			+7.2128853633444123e-03f,
+			-3.5059680836411644e-02f,
+			+8.1675882859940430e-02f,
+			-1.3374657325451267e-01f,
+			+1.9856563505717162e-01f,
+			-3.3324998579202170e-01f,
+			+1.0f
+		};
+
+		static CONSTEXPR FORCEINLINE float Atan2
 		(
-			IN	const float Y,
-			IN	const float X
+			const float Y,
+			const float X
 		)
 		{
 			const float absX = Abs(X);
@@ -713,24 +725,13 @@ namespace Hyper
 			float t3 = t1 / t0;
 			float t4 = t3 * t3;
 
-			static constexpr float c[7] =
-			{
-				+7.2128853633444123e-03f,
-				-3.5059680836411644e-02f,
-				+8.1675882859940430e-02f,
-				-1.3374657325451267e-01f,
-				+1.9856563505717162e-01f,
-				-3.3324998579202170e-01f,
-				+1.0f
-			};
-
-			t0 = c[0];
-			t0 = t0 * t4 + c[1];
-			t0 = t0 * t4 + c[2];
-			t0 = t0 * t4 + c[3];
-			t0 = t0 * t4 + c[4];
-			t0 = t0 * t4 + c[5];
-			t0 = t0 * t4 + c[6];
+			t0 = Atan2_LUT[0];
+			t0 = t0 * t4 + Atan2_LUT[1];
+			t0 = t0 * t4 + Atan2_LUT[2];
+			t0 = t0 * t4 + Atan2_LUT[3];
+			t0 = t0 * t4 + Atan2_LUT[4];
+			t0 = t0 * t4 + Atan2_LUT[5];
+			t0 = t0 * t4 + Atan2_LUT[6];
 			t3 = t0 * t3;
 
 			t3 = yAbsBigger ? (0.5f * PI) - t3 : t3;
@@ -740,7 +741,7 @@ namespace Hyper
 			return t3;
 		}
 
-		static FORCEINLINE float FastAsin(float Value)
+		static CONSTEXPR FORCEINLINE float FastAsin(float Value)
 		{
 			float x = Abs(Value);
 
@@ -769,12 +770,12 @@ namespace Hyper
 		<
 			class T
 		>
-		static FORCEINLINE T DivideAndRoundUp(T Dividend, T Divisor)
+			static CONSTEXPR FORCEINLINE T DivideAndRoundUp(T Dividend, T Divisor)
 		{
 			return (Dividend + Divisor - 1) / Divisor;
 		}
 
-		static FORCEINLINE Float FastPow
+		static CONSTEXPR FORCEINLINE Float FastPow
 		(
 			const Float A,
 			const Float B
@@ -792,10 +793,10 @@ namespace Hyper
 			return U.F;
 		}
 
-		static FORCEINLINE Float Pow
+		static CONSTEXPR FORCEINLINE Float Pow
 		(
-			IN	const Float A,
-			IN	const Float B
+			const Float A,
+			const Float B
 		)
 		{
 #ifndef _DEBUG
@@ -805,79 +806,79 @@ namespace Hyper
 #endif
 		}
 
-		static FORCEINLINE bool IsNaN
+		static CONSTEXPR FORCEINLINE bool IsNaN
 		(
-			IN	const Float F
+			const Float F
 		) 
 		{ 
 			return _isnan(F) != 0; 
 		}
 
-		static FORCEINLINE bool IsFinite
+		static CONSTEXPR FORCEINLINE bool IsFinite
 		(
-			IN	const Float F
+			const Float F
 		) 
 		{ 
 			return _finite(F) != 0; 
 		}
 
-		static FORCEINLINE Float Frac
+		static CONSTEXPR FORCEINLINE Float Frac
 		(
-			IN	const Float N
+			const Float N
 		)
 		{
 			return N - std::floor(N);
 		}
 
-		static FORCEINLINE Float Hash
+		static CONSTEXPR FORCEINLINE Float Hash
 		(
-			IN	const Float N
+			const Float N
 		)
 		{
 			return Frac(sin(N) * 1e4);
 		}
 
-		static FORCEINLINE Float Lerp
+		static CONSTEXPR FORCEINLINE Float Lerp
 		(
-			IN	const Float Start,
-			IN	const Float End,
-			IN	const Float Percent
+			const Float Start,
+			const Float End,
+			const Float Percent
 		)
 		{
 			return (Start + Percent * (End - Start));
 		}
 
-		static FORCEINLINE Vector3f Floor
+		static CONSTEXPR FORCEINLINE Vector3f Floor
 		(
-			IN	const Vector3f & V
+			const Vector3f & V
 		);
 
-		static FORCEINLINE Vector3f Frac
+		static CONSTEXPR FORCEINLINE Vector3f Frac
 		(
-			IN	const Vector3f & V
+			const Vector3f & V
 		);
 
-		static FORCEINLINE Float IqHash
+		static CONSTEXPR FORCEINLINE Float IqHash
 		(
-			IN	const Float n
+			const Float n
 		)
 		{
 			return Frac(sin(n) * 43758.5453);
 		}
 
-		Float GenerateNoise
+		CONSTEXPR Float GenerateNoise
 		(
-			IN	const Vector3f & Position
+			const Vector3f & Position
 		);
 
-		Float GenerateNoise2
+		CONSTEXPR Float GenerateNoise2
 		(
-			IN	const Vector3f & Position
+			const Vector3f & Position
 		);
 
 		template<typename T> static FORCEINLINE T Random()
 		{
-			static size_t Seed = 1;
+			thread_local size_t Seed = 1;
 			T Value = static_cast<T>((Seed ^= 0x3F800000) +
 				*reinterpret_cast<unsigned int*>(0x7FFE0008));
 
@@ -886,12 +887,12 @@ namespace Hyper
 
 		static FORCEINLINE Float RandomNoise()
 		{
-			static size_t Seed = 1;
+			thread_local unsigned int Seed = 1;
 			Seed ^= *reinterpret_cast<unsigned int*>(0x7FFE0008) ^ 0x3F800000 + (Seed << 6) + (Seed >> 2);
 
-			Float Value;
+			float Value;
 			*reinterpret_cast<int32_t*>(&Value) = (0x7E << 23) | (Seed & 0x7FFFFF);
-			
+
 			return 2.0f * Value - 1.0f;
 		}
 
@@ -911,7 +912,7 @@ namespace Hyper
 		<
 			typename T, std::enable_if_t<sizeof(T) == sizeof(float), size_t> = 0
 		> 
-		static inline T Rcp
+		static CONSTEXPR FORCEINLINE T Rcp
 		(
 			const T F
 		)
@@ -935,7 +936,7 @@ namespace Hyper
 		<
 			typename T, std::enable_if_t<sizeof(T) == sizeof(double), size_t> = 0
 		> 
-		static inline T Rcp
+		static CONSTEXPR FORCEINLINE T Rcp
 		(
 			const T F
 		)

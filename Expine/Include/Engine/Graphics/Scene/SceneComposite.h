@@ -1,12 +1,12 @@
 #pragma once
 
-#include "RawRenderTarget.h"
-#include "RawShaderResourceView.h"
-#include "RawPipelineState.h"
+#include "Raw/RawRenderTarget.h"
+#include "Raw/RawShaderResourceView.h"
+#include "Raw/RawPipelineState.h"
 
-#include "QuadBuffer.h"
+#include "Buffer/BufferQuad.h"
 
-#include "TextureManager.h"
+#include "Resource/Texture/TextureManager.h"
 
 namespace D3D
 {

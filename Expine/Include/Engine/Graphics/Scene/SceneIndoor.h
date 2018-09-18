@@ -1,7 +1,6 @@
 #pragma once
 
-#include "D3D.h"
-#include "SceneArea.h"
+#include "Scene/SceneArea.h"
 
 namespace D3D
 {

@@ -1,6 +1,9 @@
 #pragma once
 
-#include "BufferCache.h"
+#include "Buffer/BufferCache.h"
+#include "Buffer/BufferVertex.h"
+#include "Buffer/BufferIndex.h"
+#include "Buffer/BufferCommand.h"
 
 namespace D3D
 {
@@ -337,7 +340,7 @@ namespace D3D
 			IndexSize == sizeof(Uint16) ? DXGI_FORMAT_R16_UINT : 
 			IndexSize == sizeof(Uint32) ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R8_UINT;
 
-		return CBufferCache::Instance().CreateIndexBuffer(IndexData.size(), IndexFormat, IndexBuffer);
+		return CBufferCache::Instance().CreateBuffer(IndexData.size(), IndexFormat, IndexBuffer);
 	}
 
 	template
@@ -348,7 +351,7 @@ namespace D3D
 	>
 	inline ErrorCode CIGeometryBuffer<Vertex, Index, Command>::CreateVertexBuffer()
 	{
-		return CBufferCache::Instance().CreateVertexBuffer(VertexData.size(), sizeof(Vertex), VertexBuffer);
+		return CBufferCache::Instance().CreateBuffer(VertexData.size(), sizeof(Vertex), VertexBuffer);
 	}
 
 	template
@@ -359,7 +362,7 @@ namespace D3D
 	>
 	inline ErrorCode CIGeometryBuffer<Vertex, Index, Command>::CreateCommandBuffer()
 	{
-		return CBufferCache::Instance().CreateCommandBuffer(sizeof(Command), CommandBuffer);
+		return CBufferCache::Instance().CreateBuffer(sizeof(Command), CommandBuffer);
 	}
 
 	template

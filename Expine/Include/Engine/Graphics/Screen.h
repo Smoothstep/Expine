@@ -1,118 +1,22 @@
 #pragma once
 
-#include "DXGIHelper.h"
+#include "Utils/DXGIHelper.h"
 
-#include "RawCommandQueue.h"
-#include "RawCommandAllocator.h"
-#include "RawRenderTarget.h"
-#include "RawDepthStencilView.h"
-#include "RawFence.h"
+#include "Raw/RawCommandQueue.h"
+#include "Raw/RawCommandAllocator.h"
+#include "Raw/RawRenderTarget.h"
+#include "Raw/RawDepthStencilView.h"
+#include "Raw/RawFence.h"
 
-#include "Input.h"
-#include "Scene.h"
-#include "SceneController.h"
-
-#include "KeySystem.h"
+#include "Scene/Scene.h"
+#include "Scene/SceneController.h"
 
 #define BUFFER_COUNT	2
 #define SAMPLE_COUNT	1
 
 namespace D3D
 {
-	class CKeyInputHandler
-	{
-		Uint64 KeySet[4] = { 0 };
-		Uint32 PressedKeyCount = 0;
-
-	protected:
-
-		SharedPointer<KeyActionHandler> KeyInputActionHandler;
-		KeyCombination Combination;
-
-	public:
-
-		virtual void Process() = 0;
-
-		void KeyDown(Uint8 K)
-		{
-			if (PressedKeyCount > 3)
-			{
-				return;
-			}
-
-			++PressedKeyCount;
-
-			const auto I = K / 64;
-			const auto O = K % 64;
-			{
-				KeySet[I] |= (1 << O);
-			}
-
-			Combination.SetKey(&KeyMap::Array[K]);
-			{
-				Process();
-			}
-		}
-
-		void KeyUp(Uint8 K)
-		{
-			if (PressedKeyCount < 1)
-			{
-				return;
-			}
-
-			--PressedKeyCount;
-
-			const auto I = K / 64;
-			const auto O = K % 64;
-			{
-				KeySet[I] &= ~(1 << O);
-			}
-
-			Combination.UnsetKey(&KeyMap::Array[K]);
-		}
-
-		bool IsKeyPressed(Uint8 K)
-		{
-			const auto I = K / 64;
-			const auto O = K % 64;
-			{
-				return (KeySet[I] & (1 >> O)) == 0;
-			}
-		}
-	};
-
-	class CMouseInputHandler
-	{
-	public:
-
-		virtual void Process() = 0;
-	};
-
-	class CScreenInputHandler : public CKeyInputHandler, public CMouseInputHandler
-	{
-
-	public:
-
-		CScreenInputHandler(WeakPointer<KeyActionHandler> ParentHandler = nullptr)
-		{
-			KeyInputActionHandler = new KeyActionHandler(ParentHandler);
-		}
-
-	private:
-		
-		virtual void Process() override
-		{
-			const auto Code = Combination.CombinationCode();
-			
-			if (Code != 0)
-			{
-				KeyInputActionHandler->HandleKeyAction(Combination.CombinationCode());
-			}
-		}
-	};
-
-	class CScreen
+	class _EX_ CScreen
 	{
 	public:
 
@@ -121,18 +25,19 @@ namespace D3D
 			ScreenWindow	DefaultWindow;
 			ScreenViewport	DefaultViewport;
 
-			inline InitializeParameter()
+			InitializeParameter() 
+				: DefaultWindow(D3D::GlobalDefault)
+				, DefaultViewport()
 			{}
 
-			inline InitializeParameter
+			explicit constexpr InitializeParameter
 			(
 				const ScreenWindow		& Window,
 				const ScreenViewport	& Viewport
-			)
-			{
-				DefaultWindow	= Window;
-				DefaultViewport = Viewport;
-			}
+			) 
+				: DefaultWindow(Window)
+				, DefaultViewport(Viewport)
+			{}
 		};
 
 	private:
@@ -198,12 +103,17 @@ namespace D3D
 			return CommandAllocator[BackBufferIndex].GetRef();
 		}
 
-		inline const RCommandQueue & GetDirectCommandQueue() const
+		inline const CCommandQueueDirect & GetDirectCommandQueue() const
 		{
 			return CommandQueueDirect.GetRef();
 		}
 
-		inline const RCommandQueue & GetComputeCommandQueue() const
+		inline const CCommandQueueCopy & GetCopyCommandQueue() const
+		{
+			return CommandQueueCopy.GetRef();
+		}
+
+		inline const CCommandQueueCompute & GetComputeCommandQueue() const
 		{
 			return CommandQueueCompute.GetRef();
 		}
@@ -222,6 +132,9 @@ namespace D3D
 		}
 
 	public:
+
+		 CScreen();
+		~CScreen();
 
 		ErrorCode Create
 		(
@@ -252,35 +165,19 @@ namespace D3D
 			return BackBufferIndex = DXGISwapChain3->GetCurrentBackBufferIndex();
 		}
 
-		inline void WaitForGPU() const
-		{
-			CCommandQueueDirect::Instance().WaitForGPU(BackBufferIndex);
-		}
-
-		inline void NextFrame()
-		{
-			const UINT64 Value = CCommandQueueDirect::Instance().SignalFence(BackBufferIndex) + 1;
-			{
-				OnAfterRender();
-			}
-
-			CCommandQueueDirect::Instance().WaitForCompletion(BackBufferIndex);
-			CCommandQueueDirect::Instance().GotoNextFrame(BackBufferIndex, Value);
-		}
+		void WaitForGPU() const;
+		void NextFrame();
 
 	private:
 
-		SharedPointer<CScene>			Scene;
-		SharedPointer<CSceneController> SceneController;
-
-		SharedPointer<CInput> Input;
+		SharedPointer<CScene>				Scene;
+		SharedPointer<CSceneController>		SceneController;
+		UniquePointer<CScreenInputHandler>	InputHandler;
 
 	public:
 
-		inline CScene * GetActiveScene() const
-		{
-			return Scene.Get();
-		}
+		CScene * GetActiveScene() const;
+		CSceneController * GetSceneController() const;
 
 	private:
 
@@ -289,112 +186,8 @@ namespace D3D
 
 	public:
 
-		void Render()
-		{
-			SceneController->Update();
-			Scene->RenderScene();
-		}
-
-		void OnActivation(UINT Message, WPARAM wParam, LPARAM lParam)
-		{
-			if (Input)
-			{
-				Input->AcquireInput(Message, wParam, lParam);
-			}
-		}
-		
-		void OnMouseInput(UINT Message, WPARAM wParam, LPARAM lParam)
-		{
-			Input->AcquireMouseInput(Message, wParam, lParam);
-
-			int MouseX;
-			int MouseY;
-			int MouseZ;
-
-			Input->GetMouseXYZ
-			(
-				MouseX, 
-				MouseY, 
-				MouseZ
-			);
-
-			switch (Input->LeftButtonState())
-			{
-				case MouseState::PRESSED:
-				{
-					Input->SetMouseMode(Mouse::MODE_RELATIVE);
-
-					SceneController->BeginDrag
-					(
-						MouseX,
-						MouseY
-					);
-				}
-
-				break;
-
-				case MouseState::HELD:
-				{
-					SceneController->Drag
-					(
-						MouseX,
-						MouseY
-					);
-				}
-
-				break;
-
-				case MouseState::RELEASED:
-				{
-					Input->SetMouseMode(Mouse::MODE_ABSOLUTE);
-
-					SceneController->EndDrag();
-				}
-
-				break;
-			}
-		}
-
-		void OnKeyboardInput(UINT Message, WPARAM wParam, LPARAM lParam)
-		{
-			Input->AcquireKeyboardInput(Message, wParam, lParam);
-
-			if (Input->IsKeyDown(KeyboardKey::W))
-			{
-				SceneController->MoveForward();
-			}
-			else if (Input->IsKeyReleased(KeyboardKey::W))
-			{
-				SceneController->StopMove();
-			}
-
-			if (Input->IsKeyDown(KeyboardKey::S))
-			{
-				SceneController->MoveBackward();
-			}
-			else if (Input->IsKeyReleased(KeyboardKey::S))
-			{
-				SceneController->StopMove();
-			}
-
-			if (Input->IsKeyDown(KeyboardKey::D))
-			{
-				SceneController->MoveRight();
-			}
-			else if (Input->IsKeyReleased(KeyboardKey::D))
-			{
-				SceneController->StopMove();
-			}
-
-			if (Input->IsKeyDown(KeyboardKey::A))
-			{
-				SceneController->MoveLeft();
-			}
-			else if (Input->IsKeyReleased(KeyboardKey::A))
-			{
-				SceneController->StopMove();
-			}
-		}
+		void Render();
+		void Message(UINT Message, WPARAM wParam, LPARAM lParam);
 
 	private:
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Object.h"
-#include <boost/compute/detail/lru_cache.hpp>
 
 namespace D3D
 {
@@ -16,13 +15,9 @@ namespace D3D
 	class ObjectTable;
 	class ObjectTableCache
 	{
-	private:
-
-		boost::compute::detail::lru_cache<Uint32, SharedPointer<ISceneObjectComponents> > Cache;
-
 	public:
 
-		ObjectTableCache();
+		ObjectTableCache() {}
 	};
 
 	class ObjectTableLoader : public CSingleton<ObjectTableLoader>

@@ -98,11 +98,18 @@
 #define CONCATENATE(s1, s2) CONCATENATE_DIRECT(s1, s2)
 #endif
 #ifndef PADDING
-#define PADDING(Length) FLOAT CONCATENATE(Padding, __COUNTER__)[Length]
+#define PADDING(Length) float CONCATENATE(Padding, __COUNTER__)[Length]
 #endif
 #ifndef PADDING_BYTE
-#define PADDING_BYTE(Length) CHAR CONCATENATE(Padding, __COUNTER__)[Length]
+#define PADDING_BYTE(Length) char CONCATENATE(Padding, __COUNTER__)[Length]
 #endif
 #ifndef GET_UUID
 #define GET_UUID(X) __uuidof(X)
+#endif
+#ifndef CHECK_NULL_ARG
+#define CHECK_NULL_ARG(X)		\
+	if((X) == NULL)				\
+	{							\
+		return E_INVALIDARG;	\
+	}
 #endif

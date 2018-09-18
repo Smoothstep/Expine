@@ -1,7 +1,7 @@
 #pragma once
 
-#include "RawResource.h"
-#include "RawDescriptorHeap.h"
+#include "Raw/RawResource.h"
+#include "Raw/RawDescriptorHeap.h"
 
 namespace D3D
 {
@@ -287,7 +287,7 @@ namespace D3D
 					return Error;
 				}
 
-				ResourceObjects[Index] = ppResources[Index].Get();
+				ResourceObjects[Index] = ppResources[Index];
 			}
 		}
 

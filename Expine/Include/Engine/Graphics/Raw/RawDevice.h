@@ -1,6 +1,6 @@
 #pragma once
 
-#include "D3D.h"
+#include "DirectX/D3D.h"
 
 namespace D3D
 {
@@ -31,7 +31,7 @@ namespace D3D
 
 	public:
 
-		static ErrorCode RDevice::CreateDevice
+		static ErrorCode CreateDevice
 		(
 			IUnknown * const pAdapter = NULL
 		);

@@ -1,12 +1,10 @@
 #pragma once
 
-#include "RawShader.h"
-
-#include <boost/thread/mutex.hpp>
+#include <DirectX/D3D.h>
 
 namespace D3D
 {
-	class CShaderManager : public CSingleton<CShaderManager>
+	class _EX_ CShaderManager : public CSingleton<CShaderManager>
 	{
 		friend class RShader;
 		friend class CGrpShader;
@@ -14,19 +12,9 @@ namespace D3D
 
 	private:
 
-		boost::mutex Mutex;
-
-	private:
-
-		WString ShaderDefaultDirectory;
-
-	private:
-
-		TVector<SharedPointer<RShader> > Shaders;
-
-	public:
-
-		ErrorCode EnableDevelopmentMode();
+		TMutex								Mutex;
+		WString								ShaderDefaultDirectory;
+		TVector<SharedPointer<RShader> >	Shaders;
 
 	public:
 
@@ -38,96 +26,29 @@ namespace D3D
 
 		~CShaderManager();
 
-		inline bool GetShader
+		bool GetShader
 		(
 			const	WString					& Path,
 			const	String					& EntryPoint,
 			const	TVector<ShaderMacro>	& Macros,
 					SharedPointer<RShader>	& Result
-		)	const
-		{
-			for (auto & Shader : Shaders)
-			{
-				bool Equal = true;
+		)	const;
 
-				if (Shader->GetEntryPoint() == EntryPoint && Shader->GetPath() == Path)
-				{
-					if (!Macros.empty())
-					{
-						if (Macros.size() != Shader->Macros.size())
-						{
-							continue;
-						}
-
-						for (UINT N = 0; N < Shader->Macros.size() - 1; ++N)
-						{
-							if (strcmp(Macros[N].Definition, Shader->Macros[N].Definition))
-							{
-								Equal = false;
-								break;
-							}
-
-							if (strcmp(Macros[N].Name, Shader->Macros[N].Name))
-							{
-								Equal = false;
-								break;
-							}
-						}
-
-						if (!Equal)
-						{
-							continue;
-						}
-					}
-
-					Result = Shader;
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		inline bool GetShaderByPathEntrypoint
+		bool GetShaderByPathEntrypoint
 		(
 			const	WString					& Path,
 			const	String					& EntryPoint,
 					SharedPointer<RShader>	& Result
-		)	const
-		{
-			for(auto & Shader : Shaders)
-			{
-				if (Shader->GetEntryPoint() == EntryPoint && Shader->GetPath() == Path)
-				{
-					Result = Shader;
-					return true;
-				}
-			}
+		)	const;
 
-			return false;
-		}
-
-		inline bool GetShaderByPath
+		bool GetShaderByPath
 		(
 			const	WString					& Path,
 					SharedPointer<RShader>	& Result
-		)	const
-		{
-			for (auto & Shader : Shaders)
-			{
-				if (Shader->GetPath() == Path)
-				{
-					Result = Shader;
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-	public:
+		)	const;
 
 		void Update();
+		ErrorCode EnableDevelopmentMode();
 
 		struct InitializeOptions
 		{

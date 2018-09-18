@@ -14,31 +14,30 @@ namespace Hyper
 
 	public:
 
-		FORCEINLINE Point() = default;
-
-		FORCEINLINE Point
+		FORCEINLINE constexpr Point() = default;
+		FORCEINLINE constexpr Point
 		(
 			IN PointType X,
 			IN PointType Y
 		) : X(X), Y(Y)
 		{}
 
-		FORCEINLINE PointType Min() const
+		FORCEINLINE constexpr PointType Min() const
 		{
 			return X > Y ? Y : X;
 		}
 
-		FORCEINLINE PointType Max() const
+		FORCEINLINE constexpr PointType Max() const
 		{
 			return X < Y ? Y : X;
 		}
 
-		FORCEINLINE PointType Product() const
+		FORCEINLINE constexpr PointType Product() const
 		{
 			return X * Y;
 		}
 
-		FORCEINLINE bool operator==
+		FORCEINLINE constexpr bool operator==
 		(
 			const Point Other
 		)	const
@@ -48,7 +47,7 @@ namespace Hyper
 				Other.Y == Y;
 		}
 
-		FORCEINLINE bool operator!=
+		FORCEINLINE constexpr bool operator!=
 		(
 			const Point Other
 		)	const
@@ -58,7 +57,7 @@ namespace Hyper
 				Other.Y != Y;
 		}
 
-		FORCEINLINE bool operator<=
+		FORCEINLINE constexpr bool operator<=
 		(
 			const Point Other	
 		)	const
@@ -68,7 +67,7 @@ namespace Hyper
 				Y <= Other.Y;
 		}
 
-		FORCEINLINE Point operator /
+		FORCEINLINE constexpr Point operator /
 		(
 			const Point Value
 		)	const
@@ -79,7 +78,7 @@ namespace Hyper
 			return Result;
 		}
 
-		FORCEINLINE Point operator /
+		FORCEINLINE constexpr Point operator /
 		(
 			const PointType Value
 		)	const
@@ -90,7 +89,7 @@ namespace Hyper
 			return Result;
 		}
 
-		FORCEINLINE Point operator *
+		FORCEINLINE constexpr Point operator *
 		(
 			const PointType Value
 		)	const
@@ -101,7 +100,7 @@ namespace Hyper
 			return Result;
 		}
 
-		FORCEINLINE Point & operator /=
+		FORCEINLINE constexpr Point & operator /=
 		(
 			const PointType Value
 		)
@@ -111,7 +110,7 @@ namespace Hyper
 			return *this;
 		}
 
-		FORCEINLINE Point & operator *=
+		FORCEINLINE constexpr Point & operator *=
 		(
 			const PointType Value
 		)
@@ -121,7 +120,7 @@ namespace Hyper
 			return *this;
 		}
 
-		FORCEINLINE Point & operator +=
+		FORCEINLINE constexpr Point & operator +=
 		(
 			const PointType Value
 		)
@@ -131,7 +130,7 @@ namespace Hyper
 			return *this;
 		}
 
-		FORCEINLINE Point & operator +=
+		FORCEINLINE constexpr Point & operator +=
 		(
 			const Point P
 		)
@@ -141,7 +140,7 @@ namespace Hyper
 			return *this;
 		}
 
-		FORCEINLINE Point & operator -=
+		FORCEINLINE constexpr Point & operator -=
 		(
 			const PointType Value
 		)
@@ -151,7 +150,7 @@ namespace Hyper
 			return *this;
 		}
 
-		FORCEINLINE Point & operator -=
+		FORCEINLINE constexpr Point & operator -=
 		(
 			const Point P
 		)
@@ -161,7 +160,7 @@ namespace Hyper
 			return *this;
 		}
 
-		FORCEINLINE Point operator +
+		FORCEINLINE constexpr Point operator +
 		(
 			const PointType Value
 		)	const
@@ -172,7 +171,7 @@ namespace Hyper
 			return Result;
 		}
 
-		FORCEINLINE Point operator +
+		FORCEINLINE constexpr Point operator +
 		(
 			const Point Value
 		)	const
@@ -183,7 +182,7 @@ namespace Hyper
 			return Result;
 		}
 
-		FORCEINLINE Point operator -
+		FORCEINLINE constexpr Point operator -
 		(
 			const PointType Value
 		)	const
@@ -194,7 +193,7 @@ namespace Hyper
 			return Result;
 		}
 
-		FORCEINLINE Point operator -
+		FORCEINLINE constexpr Point operator -
 		(
 			const Point Value
 		)	const

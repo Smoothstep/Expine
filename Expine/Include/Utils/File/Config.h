@@ -1,29 +1,36 @@
 #pragma once
 
-#include "File.h"
-#include "../LexicalCast.h"
+#include "Utils/File/File.h"
+#include "Utils/StringOp.h"
 
 namespace File
 {
+	class CConfigParseError
+	{
+	private:
+		size_t Line;
+		StringView Reason;
+
+	public:
+		CConfigParseError(const size_t Line, const StringView Reason) : 
+			Line(Line), Reason(Reason) {}
+	};
+
 	class CConfig
 	{
 	private:
 
-		THashMap<String, StringValue> ConfigMap;
+		using StringType = StringValue<StringView>;
+		using StringMap = THashMap<StringType, StringType>;
+
+		String		Storage;
+		StringMap	ConfigMap;
 
 	public:
 
-		inline StringValue & operator[]
+		inline StringType & operator[]
 		(
-			const char * Key
-		)
-		{
-			return ConfigMap[Key];
-		}
-
-		inline StringValue & operator[]
-		(
-			const String & Key
+			const StringType & Key
 		)
 		{
 			return ConfigMap[Key];
@@ -31,25 +38,24 @@ namespace File
 
 		inline bool GetValue
 		(
-			const	String		& Key,
-					StringValue & Value
-		)
+			const	StringType	& Key,
+					StringType	& Value
+		)	const
 		{
 			auto Iter = ConfigMap.find(Key);
 
-			if (Iter == ConfigMap.end())
+			if (Iter != ConfigMap.end())
 			{
-				return false;
+				Value = Iter.value();
+				return true;
 			}
 
-			Value = Iter->second;
-
-			return true;
+			return false;
 		}
 
 		inline bool Contains
 		(
-			const String & Key
+			const StringType & Key
 		)	const
 		{
 			return ConfigMap.find(Key) != ConfigMap.end();
@@ -59,7 +65,16 @@ namespace File
 
 		void ReadConfig
 		(
-			const CFile & File
+			CFile & File
 		);
+
+		void ReadConfig
+		(
+			String&& Config
+		);
+
+	private:
+
+		void Parse();
 	};
 }

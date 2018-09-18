@@ -1,17 +1,17 @@
 #pragma once
 
-#include "RawCommandList.h"
-#include "RawCommandAllocator.h"
-#include "RawCommandSignature.h"
-#include "RawRenderTarget.h"
+#include "Raw/RawCommandList.h"
+#include "Raw/RawCommandAllocator.h"
+#include "Raw/RawCommandSignature.h"
+#include "Raw/RawRenderTarget.h"
 
-#include "BlendState.h"
-#include "RasterizerState.h"
+#include "Utils/State/StateBlend.h"
+#include "Utils/State/StateRasterizer.h"
 
-#include "ConstantBuffer.h"
-#include "Geometry.h"
+#include "Buffer/BufferConstant.h"
+#include "Draw/Geometry.h"
 
-#include "VertexTypes.h"
+#include "Utils/VertexTypes.h"
 
 namespace D3D
 {

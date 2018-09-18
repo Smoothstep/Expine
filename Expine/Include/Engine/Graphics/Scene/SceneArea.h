@@ -1,8 +1,9 @@
 #pragma once
 
-#include "D3D.h"
-#include "Intersection.h"
-#include "ObjectTable.h"
+#include "DirectX/D3D.h"
+
+#include "Scene/Object/Intersection.h"
+#include "Scene/Object/ObjectTable.h"
 
 namespace D3D
 {
@@ -64,7 +65,7 @@ namespace D3D
 	{
 		UINT AreaId;
 
-		inline bool Valid()
+		inline bool Valid() const
 		{
 			return true;
 		}

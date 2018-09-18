@@ -4,9 +4,7 @@
 
 #include "Memory.h"
 
-#include <boost/bind.hpp>
-#include <boost/thread.hpp>
-#include <boost/function.hpp>
+#include <utility>
 
 /*----------------------------------------------------------------
 	Fast function container.
@@ -15,36 +13,6 @@
 class CFunction
 {
 private:
-
-	template
-	<
-		int ...
-	>
-	struct seq 
-	{};
-
-	/*----------------------------------------------------------------*/
-
-	template
-	<
-		int		N, 
-		int ... S
-	>
-	struct gens : gens<N - 1, N - 1, S...> 
-	{};
-
-	/*----------------------------------------------------------------*/
-
-	template
-	<
-		int ... S
-	>
-	struct gens<0, S ...>
-	{
-		typedef seq<S...> type;
-	};
-
-	/*----------------------------------------------------------------*/
 
 	template 
 	<
@@ -70,27 +38,104 @@ private:
 		}
 	};
 
-	template
-	<
-		typename	 Return, 
-		typename ... Args
-	>
-	class CFunctionTypes
+#ifdef boost::thread
+	class CServiceFunction : public CFunctionWrapper
 	{
+	private:
+
+		boost::detail::thread_data_ptr Context;
+
 	public:
 
-		typedef std::function<Return(Args...)>	TFunction;
-		typedef std::tuple<Args...>				TTuple;
+		template
+		<
+			typename Signature
+		>
+		inline void Initialize
+		(
+			Signature&& Bound
+		)
+		{
+			Context = GetContext(boost::thread_detail::decay_copy(boost::forward<Signature>(Bound)));
+		}
+
+		template
+		<
+			typename Signature
+		>
+		explicit inline CServiceFunction
+		(
+			Signature&& Bound
+		)
+		{
+			Initialize(Bound);
+		}
+
+		template
+		<
+			class		Return, 
+			class ...	Args
+		>
+		explicit inline CServiceFunction
+		(
+			Return		Function, 
+			Args && ... Arguments
+		)
+		{
+			Initialize(boost::bind(Function, std::forward<Args>(Arguments)...));
+		}
+
+		inline virtual ~CServiceFunction() = default;
+
+		template
+		<
+			class Signature
+		>
+		explicit CServiceFunction
+		(
+			boost::thread::attributes&  Attributes, 
+			Signature&&					Bound
+		) 
+		{
+			Context = boost::thread_detail::decay_copy(boost::forward<Signature>(GetContext(Bound)));
+		}
+
+		template
+		<
+			typename Signature
+		>
+		static inline boost::detail::thread_data_ptr GetContext
+		(
+			Signature&& Bound
+		)
+		{
+			return boost::detail::thread_data_ptr
+			(
+				boost::detail::heap_new<boost::detail::thread_data<typename boost::remove_reference<Signature>::type> >
+				(
+					boost::forward<Signature>(Bound)
+				)
+			);
+		}
+
+		virtual inline void Run() const override
+		{
+			Context->run();
+		}
 	};
+#endif
 
 	template
 	<
 		typename	 Return, 
 		typename ... Args
 	>
-	class CFunctionHolder : public CFunctionWrapper, CFunctionTypes<Return, Args...>
+	class CFunctionHolder : public CFunctionWrapper
 	{
 	public:
+
+		using TTuple	= std::tuple<Args...>;
+		using TFunction = std::function<Return(Args...)>;
 
 		TTuple		Tuple;
 		TFunction	Function;
@@ -102,7 +147,7 @@ private:
 			TFunction &	Bound,
 			Args &&...	Arguments
 		) :
-			Tuple(TTuple(Arguments...)), Function(Bound)
+			Tuple(std::forward<Args>(Arguments)...), Function(Bound)
 		{}
 
 		inline CFunctionHolder
@@ -110,7 +155,7 @@ private:
 			Return		(*Bound)(Args &&...),
 			Args &&...	Arguments
 		) :
-			Tuple(TTuple(Arguments...)), Function(Bound)
+			Tuple(std::forward<Args>(Arguments)...), Function(Bound)
 		{}
 
 		inline CFunctionHolder
@@ -118,28 +163,14 @@ private:
 			Return*		Bound,
 			Args&&...	Arguments
 		) :
-			Tuple(TTuple(Arguments...)), Function(Bound)
+			Tuple(std::forward<Args>(Arguments)...), Function(Bound)
 		{}
 
 	public:
 
 		virtual inline void Run() const override
 		{
-			Dispatch(typename gens<sizeof...(Args)>::type());
-		}
-
-	private:
-
-		template
-		<
-			int ... S
-		> 
-		inline void Dispatch
-		(
-			const seq<S...>
-		)	const
-		{
-			Function(std::get<S>(Tuple) ...);
+			std::apply(Function, Tuple);
 		}
 	};
 
@@ -149,9 +180,12 @@ private:
 		typename	 Class, 
 		typename ... Args
 	>
-	class CMemberFunctionHolder : public CFunctionWrapper, CFunctionTypes<Return, Args...>
+	class CMemberFunctionHolder : public CFunctionWrapper
 	{
 	public:
+
+		using TTuple	= std::tuple<Args...>;
+		using TFunction = std::function<Return(Args...)>;
 
 		TTuple		Tuple;
 		TFunction	Function;
@@ -183,116 +217,15 @@ private:
 			Class		*		Instance,
 			Args		&& ...	Arguments
 		) :
-			Tuple(TTuple(Arguments...)),
+			Tuple(std::forward<Args>(Arguments)...),
 			Function(std::bind(MemberFunction, Instance, Arguments...))
 		{}
 
 	public:
 
-		virtual void Run() const override
+		virtual inline void Run() const override
 		{
-			Dispatch(typename gens<sizeof...(Args)>::type());
-		}
-
-	private:
-
-		template
-		<
-			int ... S
-		> 
-		inline void Dispatch
-		(
-			const seq<S...>
-		)	const
-		{
-			Function(std::get<S>(Tuple) ...);
-		}
-	};
-
-	class CServiceFunction : public CFunctionWrapper
-	{
-	private:
-
-		boost::detail::thread_data_ptr Context;
-
-	public:
-
-		template
-		<
-			typename Signature
-		>
-		inline void Initialize
-		(
-			BOOST_THREAD_RV_REF(Signature) Bound
-		)
-		{
-			Context = GetContext(boost::thread_detail::decay_copy(boost::forward<Signature>(Bound)));
-		}
-
-		template
-		<
-			typename Signature
-		>
-		explicit inline CServiceFunction
-		(
-			BOOST_THREAD_RV_REF(Signature) Bound
-		)
-		{
-			Initialize(Bound);
-		}
-
-		template
-		<
-			class		Return, 
-			class ...	Args
-		>
-		explicit inline CServiceFunction
-		(
-			Return		Function, 
-			Args && ... Arguments
-		)
-		{
-			Initialize(boost::bind(Function, std::forward<Args>(Arguments)...));
-		}
-
-		inline virtual ~CServiceFunction()
-		{
-		}
-
-		template
-		<
-			class Signature
-		>
-		explicit CServiceFunction
-		(
-			boost::thread::attributes		&   Attributes, 
-			BOOST_THREAD_RV_REF(Signature)		Bound
-		) 
-		{
-			Context = boost::thread_detail::decay_copy(boost::forward<Signature>(GetContext(Bound)));
-		}
-
-		template
-		<
-			typename Signature
-		>
-		static inline boost::detail::thread_data_ptr GetContext
-		(
-			BOOST_THREAD_RV_REF(Signature) Bound
-		)
-		{
-			return boost::detail::thread_data_ptr
-			(
-				boost::detail::heap_new<boost::detail::thread_data<typename boost::remove_reference<Signature>::type> >
-				(
-					boost::forward<Signature>(Bound)
-				)
-			);
-		}
-
-		inline void Run() const override
-		{
-			Context->run();
+			std::apply(Function, Tuple);
 		}
 	};
 
@@ -321,7 +254,7 @@ public:
 	>
 	inline CFunction
 	(
-		BOOST_THREAD_RV_REF(Signature) Bound
+		Signature&& Bound
 	)
 	{
 		AssignFunction(Bound);
@@ -362,7 +295,7 @@ public:
 		Args	...	Arguments
 	)
 	{
-		AssignFunction(Function, Arguments...);
+		AssignFunction(Function, std::forward<Args>(Arguments)...);
 	}
 
 
@@ -380,7 +313,7 @@ public:
 		Args&&...	Arguments
 	)
 	{
-		AssignFunction(Bound, Arguments...);
+		AssignFunction(Bound, std::forward<Args>(Arguments)...);
 	}
 
 
@@ -401,7 +334,7 @@ public:
 		Args	&& ...	Arguments
 	)
 	{
-		AssignFunction(MemberFunction, Instance, Arguments...);
+		AssignFunction(MemberFunction, Instance, std::forward<Args>(Arguments)...);
 	}
 
 
@@ -422,10 +355,11 @@ public:
 		Args	&& ...	Arguments
 	)
 	{
-		FunctionWrapper = new CMemberFunctionHolder<Return, Class, Args...>(MemberFunction, Instance, Arguments...);
+		FunctionWrapper = new CMemberFunctionHolder<Return, Class, Args...>(MemberFunction, Instance, std::forward<Args>(Arguments)...);
 	}
 
 
+#ifdef boost::thread
 	/*----------------------------------------------------------------------------------------------------------------------------------
 		Assigns a function with a specific signature. (ForEx: AssignFunction(Run))
 	----------------------------------------------------------------------------------------------------------------------------------*/
@@ -436,12 +370,12 @@ public:
 	> 
 	inline void AssignFunction
 	(
-		BOOST_THREAD_RV_REF(Signature) Bound
+		Signature&& Bound
 	)
 	{
-		FunctionWrapper = new CServiceFunction(STATIC_CAST<BOOST_THREAD_RV_REF(Signature)>(Bound));
+		FunctionWrapper = new CServiceFunction(Bound);
 	}
-
+#endif
 
 	/*----------------------------------------------------------------------------------------------------------------------------------
 		Assigns a void lambda function.

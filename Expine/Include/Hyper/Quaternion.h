@@ -1085,15 +1085,14 @@ namespace Hyper
 		*this *= RotationMatrix;
 	}
 
-	FORCEINLINE Vector3f::Vector3f
+	constexpr FORCEINLINE Vector3f::Vector3f
 	(
 		const Quaternion & Q
 	)
-	{
-		X = Q.X;
-		Y = Q.Y;
-		Z = Q.Z;
-	}
+		: X(Q.X)
+		, Y(Q.Y)
+		, Z(Q.Z)
+	{}
 
 	FORCEINLINE void Vector3f::RotateByQuaternion
 	(

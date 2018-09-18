@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Smart.h>
-#include "D3D.h"
+#include "DirectX/D3D.h"
 
 namespace D3D
 {
@@ -101,7 +101,7 @@ namespace D3D
 		) :
 			NameDefinition(Name)
 		{
-			for each(const String & Val in Values)
+			for (const String & Val : Values)
 			{
 				HashValues.emplace(std::hash<String>()(Val));
 			}
@@ -132,11 +132,11 @@ namespace D3D
 			Definitions.emplace_back(Name, Values);
 		}
 
-		inline UINT32 GetHash()
+		inline size_t GetHash() const
 		{
-			UINT32 Hash = 0;
+			size_t Hash = 0;
 
-			for each(const ShaderDefinition & Definition in Definitions)
+			for (const ShaderDefinition & Definition : Definitions)
 			{
 				Hash ^= Definition.GetHash();
 			}
@@ -149,12 +149,12 @@ namespace D3D
 	<
 		class Child
 	>
-	class PipelineObjectVariations : public CSingleton<PipelineObjectVariations<Child> >
+	class PSOPermutations : public CSingleton<PSOPermutations<Child> >
 	{
 	protected:
 
 		SharedPointer<PipelineObject<Child> >					Default;
-		TMap<UINT32, SharedPointer<PipelineObject<Child> > >	Permutations;
+		TMap<size_t, SharedPointer<PipelineObject<Child> > >	Permutations;
 		ShaderDefinitionValueMap								DefinitionValueMap;
 
 	public:
@@ -169,66 +169,21 @@ namespace D3D
 		void CreateShaderDefinitionValueMap
 		(
 			const THashMap<String, THashSet<String> > & NameValueMap
-		)
-		{
-			for (const auto & NameValue : NameValueMap)
-			{
-				DefinitionValueMap.AddDefinition(NameValue.first, NameValue.second);
-			}
-		}
+		);
 
-		PipelineObjectVariations
+		PSOPermutations
 		(
 			PipelineObject<Child> * DefaultObject
-		)
-		{
-			Default = DefaultObject;
-		}
+		);
 
 		ErrorCode AddPermutation
 		(
 			TArray<ShaderMacro*, 6>	Macros
-		)
-		{
-			SharedPointer<PipelineObject<Child> > PipelineObject = NewPipelineObject<Child>();
+		);
 
-			UINT32 Hash;
-
-			for (Hash = 0; Defines->Definition && Defines->Name; Defines++)
-			{
-				Hash ^= std::hash<LPCSTR>(Defines->Definition) ^ std::hash<LPCSTR>(Defines->Name);
-			}
-
-			if (Permutations.Find(Hash))
-			{
-				return S_OK;
-			}
-
-			ErrorCode Error = Default->CreateVariation(Macros, PipelineObject.Get());
-
-			if (Error)
-			{
-				return Error;
-			}
-
-			Permutations.insert_or_assign(Hash, PipelineObject);
-
-			return S_OK;
-		}
-
-		inline PipelineObject<Child> * GetPipeline
+		PipelineObject<Child> * GetPipeline
 		(
 			const ShaderDefinitionValueMap & Definitions
-		)	const
-		{
-			SharedPointer<PipelineObject<Child> > * Object = Permutations.Find(Definitions.GetHash());
-
-			if (Object)
-			{
-				return Object->Get();
-			}
-
-			return nullptr;
-		}
+		)	const;
 	};
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DescriptorHeap.h"
+#include "Descriptor/DescriptorHeap.h"
 
 namespace D3D
 {
@@ -72,9 +72,9 @@ namespace D3D
 
 	protected:
 
-		TQueue<TPair<UINT64, CMutableDescriptorHeap*> >	DescriptorHeapsRetired[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
-		TQueue<CMutableDescriptorHeap*>					DescriptorHeapsAvailable[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
-		TVector<UniquePointer<CMutableDescriptorHeap> >	DescriptorHeaps[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
+		TArray<TQueue<TPair<UINT64, CMutableDescriptorHeap*> >	,	D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES> DescriptorHeapsRetired;
+		TArray<TQueue<CMutableDescriptorHeap*>					,	D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES> DescriptorHeapsAvailable;
+		TArray<TVector<UniquePointer<CMutableDescriptorHeap> >	,	D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES> DescriptorHeaps;
 	
 	protected:
 
@@ -140,7 +140,7 @@ namespace D3D
 			ID3D12DescriptorHeap ** ppHeaps
 		)
 		{
-			boost::mutex::scoped_lock Lock(CGPUDescriptorHeapManager::Instance().Mutex);
+			std::scoped_lock<TMutex> Lock(CGPUDescriptorHeapManager::Instance().Mutex);
 
 			ppHeaps = DescriptorHeapObjects.data();
 

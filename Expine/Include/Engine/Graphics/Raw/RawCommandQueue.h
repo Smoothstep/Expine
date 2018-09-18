@@ -1,7 +1,7 @@
 #pragma once
 
-#include "RawFence.h"
-#include "CommandList.h"
+#include "Raw/RawFence.h"
+#include "Command/CommandList.h"
 
 namespace D3D
 {
@@ -199,7 +199,7 @@ namespace D3D
 		const RCommandQueue &	CmdQueue
 	)
 	{
-		boost::mutex::scoped_lock Lock(Mutex);
+		std::scoped_lock<TMutex> Lock(Mutex);
 
 		ThrowOnError
 		(
@@ -211,7 +211,7 @@ namespace D3D
 
 	inline UINT64 RFence::Increment(const UINT Frame, const RCommandQueue & CmdQueue)
 	{
-		boost::mutex::scoped_lock Lock(Mutex);
+		std::scoped_lock<TMutex> Lock(Mutex);
 
 		ThrowOnError
 		(

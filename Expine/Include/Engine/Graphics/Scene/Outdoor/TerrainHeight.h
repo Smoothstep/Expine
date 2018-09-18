@@ -1,6 +1,6 @@
 #pragma once
 
-#include "D3D.h"
+#include "DirectX/D3D.h"
 
 namespace D3D
 {
@@ -54,21 +54,21 @@ namespace D3D
 		{
 		private:
 
-			Float	 * HeightMap	= 0;
-			Vector3f * NormalMap	= 0;
-			Vector3f * TangentMap	= 0;
+			Float	 *			HeightMap;
+			Vector3f *			NormalMap;
+			Vector3f *			TangentMap;
 
-			TVector<Uint8> Data;
+			TVector<Uint8>		Data;
 
-		private:
+			Int					SizeX;
+			Int					SizeZ;
 
-			Int SizeX = 0;
-			Int SizeZ = 0;
+			Float				HeightScale;
+			Float				MaxHeight;
+			Float				MinHeight;
+			EHeightMapDataType	HeightMapDataType;
 
-		protected:
-
-			Float				HeightScale			= 1.0f;
-			EHeightMapDataType	HeightMapDataType	= RAW_16_BIT;
+			static constexpr Float DefaultScaling = 0.01f;
 
 		protected:
 
@@ -158,12 +158,14 @@ namespace D3D
 			CHeight();
 			CHeight
 			(
-				const IntPoint Size
+				const IntPoint Size,
+				const Float Scaling = DefaultScaling
 			);
 			CHeight
 			(
 				const Int SizeX,
-				const Int SizeZ
+				const Int SizeZ,
+				const Float Scaling = DefaultScaling
 			);
 
 			~CHeight();

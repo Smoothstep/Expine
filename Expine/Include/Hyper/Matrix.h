@@ -7,7 +7,7 @@
 
 namespace Hyper
 {
-	using namespace Memory;
+	using namespace Memoryspace;
 
 	struct Matrix4x4 : public TCopyable<Matrix4x4>
 	{

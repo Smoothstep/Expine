@@ -1,10 +1,10 @@
 #pragma once
 
-#include "RawResource.h"
-#include "StaticObject.h"
-#include "ThirdParty\SpeedTree\Core\Core.h"
-#include "Mesh.h"
-#include <File\File.h>
+#include "Raw/RawResource.h"
+#include "Scene/Object/StaticObject.h"
+#include "Object/Mesh.h"
+#include "Utils/File/File.h"
+#include "ThirdParty/SpeedTree/Core/Core.h"
 
 namespace D3D
 {

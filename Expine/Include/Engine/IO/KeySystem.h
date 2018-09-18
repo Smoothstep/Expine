@@ -1,6 +1,8 @@
 #pragma once
 
-#include "D3D.h"
+#include <DirectX/D3D.h>
+#include <type_traits>
+#include <optional>
 
 class Key
 {
@@ -10,29 +12,29 @@ class Key
 		ASCII_Code;
 
 public:
-	constexpr Key() :
-		ASCII_Code(0),
-		ASCII_Representation(nullptr)
+	constexpr Key() 
+		: ASCII_Code(0)
+		, ASCII_Representation(nullptr)
 	{}
 
-	constexpr Key(const char * Rep, const char Code) :
-		ASCII_Code(Code),
-		ASCII_Representation(Rep)
+	constexpr Key(const char * Rep, const char Code) 
+		: ASCII_Code(Code)
+		, ASCII_Representation(Rep)
 	{}
 
-	inline constexpr Key & operator=(const Key& Other)
+	constexpr Key & operator=(const Key& Other)
 	{
 		ASCII_Code = Other.ASCII_Code;
 		ASCII_Representation = Other.ASCII_Representation;
 		return *this;
 	}
 
-	inline unsigned char GetCode() const
+	constexpr unsigned char GetCode() const
 	{
 		return ASCII_Code;
 	}
 
-	inline const char * GetRepresentation() const
+	constexpr const char * GetRepresentation() const
 	{
 		return ASCII_Representation;
 	}
@@ -43,11 +45,16 @@ class KeyCombination
 	static constexpr Uint NumKeys = 4;
 
 private:
-	TArray<const Key*, NumKeys> Keys = { 0 };
-	Uint32 Code = 0;
+	TArray<const Key*, NumKeys> Keys;
+	Uint32 Code;
 
 public:
-	inline Uint32 CombinationCode() const
+	constexpr KeyCombination() 
+		: Code(0)
+		, Keys({0, 0, 0, 0})
+	{}
+
+	constexpr Uint32 CombinationCode() const
 	{
 		return Code;
 	}
@@ -99,7 +106,7 @@ public:
 namespace KeyMap
 {
 	static constexpr Uint NumKeys = 256;
-	static THashMap<String, Key*> Map;
+	static THashMap<StringView, Key*> Map;
 	static const TArray<const char*, NumKeys> KeyReps = {
 		"NULL",
 		"LBUTTON",
@@ -379,38 +386,46 @@ namespace KeyMap
 	}();
 };
 
-class KeyInputPrerequisites
-{
-public:
-	virtual bool Fulfilled()
-	{
-		return false;
-	}
-};
+using KeyInputPrerequisites = std::function<bool()>;
 
 class KeyAction
 {
+	constexpr static size_t MaxKeys = 4;
+
 	KeyCombination Combination;
 
 public:
 
-	KeyAction(KeyCombination Combination) :
-		Combination(Combination)
+	constexpr KeyAction(KeyCombination Combination) 
+		: Combination(Combination)
 	{}
 
-	KeyAction(const String& KeyRep)
+	KeyAction(const StringView& KeyRep)
 	{
 		Key ** K = KeyMap::Map.Find(KeyRep);
-
+		
 		if (K)
 		{
 			Combination.SetKey(*K);
 		}
 	}
 
-	KeyAction(const StringList& KeyReps)
+	KeyAction(const std::initializer_list<StringView> KeyReps)
 	{
-		for (size_t N = 0; N < min(KeyReps.size(), 4); ++N)
+		for (size_t N = 0; N < std::min(KeyReps.size(), MaxKeys); ++N)
+		{
+			Key ** K = KeyMap::Map.Find(*(KeyReps.begin() + N));
+
+			if (K)
+			{
+				Combination.SetKey(*K);
+			}
+		}
+	}
+
+	KeyAction(const StringViewList& KeyReps)
+	{
+		for (size_t N = 0; N < std::min(KeyReps.size(), MaxKeys); ++N)
 		{
 			Key ** K = KeyMap::Map.Find(KeyReps[N]);
 
@@ -421,7 +436,7 @@ public:
 		}
 	}
 
-	virtual bool Execute()
+	virtual bool Execute(bool Pressed)
 	{
 		return false;
 	}
@@ -429,6 +444,32 @@ public:
 	const KeyCombination& GetCombination() const
 	{
 		return Combination;
+	}
+};
+
+template<class Cl>
+class KeyActionFunction : public KeyAction
+{
+	Cl Function;
+
+public:
+	template<class... Init>
+	KeyActionFunction(Cl Function, Init&&... Args) 
+		: KeyAction(std::forward<Init>(Args)...)
+		, Function(Function)
+	{}
+
+	virtual bool Execute(bool Pressed) final
+	{
+		if constexpr (std::is_same<std::invoke_result_t<Cl>, bool>::value)
+		{
+			return Function(Pressed);
+		}
+		else
+		{
+			Function(Pressed);
+			return true;
+		}
 	}
 };
 
@@ -440,13 +481,13 @@ private:
 
 private:
 
-	KeyInputPrerequisites * Prerequisites = nullptr;
+	std::optional<KeyInputPrerequisites> Prerequisites;
 
 protected:
 
 	THashMap<Uint32, KeyAction*> ActionMap;
 
-	bool ExecuteAction(const Uint32 Code)
+	inline bool ExecuteAction(const Uint32 Code, bool Pressed)
 	{
 		KeyAction ** Action = ActionMap.Find(Code);
 
@@ -455,7 +496,7 @@ protected:
 			return false;
 		}
 
-		return Action[0]->Execute();
+		return Action[0]->Execute(Pressed);
 	}
 
 public:
@@ -464,31 +505,32 @@ public:
 		ParentHandler(nullptr)
 	{}
 
-	template<class SmartPointer, class std::enable_if<
-		std::is_same<SmartPointer, SharedPointer<KeyActionHandler> >::value || 
-		std::is_same<SmartPointer, WeakPointer<KeyActionHandler> >::value>* = 0>
-	inline KeyActionHandler(SmartPointer& Handler) :
+	inline void SetPrerequisites(const KeyInputPrerequisites& NewPrerequisites)
+	{
+		Prerequisites = NewPrerequisites;
+	}
+
+	inline KeyActionHandler(WeakPointer<KeyActionHandler>& Handler) :
 		ParentHandler(Handler)
 	{}
 
-	bool HandleKeyAction(const Uint32 Code)
+	inline bool HandleKeyAction(const Uint32 Code, bool Pressed)
 	{
 		if (ParentHandler &&
-			ParentHandler->HandleKeyAction(Code))
+			ParentHandler->HandleKeyAction(Code, Pressed))
 		{
 			return false;
 		}
 
-		if ( Prerequisites &&
-			!Prerequisites->Fulfilled())
+		if (Prerequisites && (*Prerequisites)())
 		{
 			return false;
 		}
 
-		return ExecuteAction(Code);
+		return ExecuteAction(Code, Pressed);
 	}
 
-	KeyAction * AddAction(KeyAction * Action)
+	inline KeyAction * AddAction(KeyAction * Action)
 	{
 		const Uint32 Code = Action->GetCombination().CombinationCode();
 
@@ -504,7 +546,7 @@ public:
 		return nullptr;
 	}
 
-	void RemoveAction(const Uint32 Code)
+	inline void RemoveAction(const Uint32 Code)
 	{
 		ActionMap.erase(Code);
 	}

@@ -22,8 +22,8 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-#ifndef TSL_HOPSCOTCH_MAP_H
-#define TSL_HOPSCOTCH_MAP_H
+#ifndef TSL_hmap_H
+#define TSL_hmap_H
 
 
 #include <algorithm>
@@ -83,7 +83,7 @@ namespace tsl {
 
 
 		/**
-		* Common class used by hopscotch_map and hopscotch_set.
+		* Common class used by hmap and hopscotch_set.
 		*
 		* ValueType is what will be stored by hopscotch_hash (usually std::pair<Key, T> for map and Key for set).
 		*
@@ -1352,7 +1352,7 @@ namespace tsl {
 		class Allocator = std::allocator<std::pair<Key, T>>,
 		unsigned int NeighborhoodSize = 62,
 		class GrowthFactor = std::ratio<2, 1>>
-		class hopscotch_map {
+		class hmap {
 		private:
 			class KeySelect {
 			public:
@@ -1404,10 +1404,10 @@ namespace tsl {
 			/*
 			* Constructors
 			*/
-			hopscotch_map() : hopscotch_map(ht::DEFAULT_INIT_BUCKETS_SIZE) {
+			hmap() : hmap(ht::DEFAULT_INIT_BUCKETS_SIZE) {
 			}
 
-			explicit hopscotch_map(size_type bucket_count,
+			explicit hmap(size_type bucket_count,
 				const Hash& hash = Hash(),
 				const KeyEqual& equal = KeyEqual(),
 				const Allocator& alloc = Allocator()) :
@@ -1415,71 +1415,71 @@ namespace tsl {
 			{
 			}
 
-			hopscotch_map(size_type bucket_count,
-				const Allocator& alloc) : hopscotch_map(bucket_count, Hash(), KeyEqual(), alloc)
+			hmap(size_type bucket_count,
+				const Allocator& alloc) : hmap(bucket_count, Hash(), KeyEqual(), alloc)
 			{
 			}
 
-			hopscotch_map(size_type bucket_count,
+			hmap(size_type bucket_count,
 				const Hash& hash,
-				const Allocator& alloc) : hopscotch_map(bucket_count, hash, KeyEqual(), alloc)
+				const Allocator& alloc) : hmap(bucket_count, hash, KeyEqual(), alloc)
 			{
 			}
 
-			explicit hopscotch_map(const Allocator& alloc) : hopscotch_map(ht::DEFAULT_INIT_BUCKETS_SIZE, alloc) {
+			explicit hmap(const Allocator& alloc) : hmap(ht::DEFAULT_INIT_BUCKETS_SIZE, alloc) {
 			}
 
 			template<class InputIt>
-			hopscotch_map(InputIt first, InputIt last,
+			hmap(InputIt first, InputIt last,
 				size_type bucket_count = ht::DEFAULT_INIT_BUCKETS_SIZE,
 				const Hash& hash = Hash(),
 				const KeyEqual& equal = KeyEqual(),
-				const Allocator& alloc = Allocator()) : hopscotch_map(bucket_count, hash, equal, alloc)
+				const Allocator& alloc = Allocator()) : hmap(bucket_count, hash, equal, alloc)
 			{
 				insert(first, last);
 			}
 
 			template<class InputIt>
-			hopscotch_map(InputIt first, InputIt last,
+			hmap(InputIt first, InputIt last,
 				size_type bucket_count,
-				const Allocator& alloc) : hopscotch_map(first, last, bucket_count, Hash(), KeyEqual(), alloc)
+				const Allocator& alloc) : hmap(first, last, bucket_count, Hash(), KeyEqual(), alloc)
 			{
 			}
 
 			template<class InputIt>
-			hopscotch_map(InputIt first, InputIt last,
+			hmap(InputIt first, InputIt last,
 				size_type bucket_count,
 				const Hash& hash,
-				const Allocator& alloc) : hopscotch_map(first, last, bucket_count, hash, KeyEqual(), alloc)
+				const Allocator& alloc) : hmap(first, last, bucket_count, hash, KeyEqual(), alloc)
 			{
 			}
 
-			hopscotch_map(std::initializer_list<value_type> init,
+			hmap(std::initializer_list<value_type> init,
 				size_type bucket_count = ht::DEFAULT_INIT_BUCKETS_SIZE,
 				const Hash& hash = Hash(),
 				const KeyEqual& equal = KeyEqual(),
 				const Allocator& alloc = Allocator()) :
-				hopscotch_map(init.begin(), init.end(), bucket_count, hash, equal, alloc)
+				hmap(init.begin(), init.end(), bucket_count, hash, equal, alloc)
 			{
 			}
 
-			hopscotch_map(std::initializer_list<value_type> init,
+			hmap(std::initializer_list<value_type> init,
 				size_type bucket_count,
 				const Allocator& alloc) :
-				hopscotch_map(init.begin(), init.end(), bucket_count, Hash(), KeyEqual(), alloc)
+				hmap(init.begin(), init.end(), bucket_count, Hash(), KeyEqual(), alloc)
 			{
 			}
 
-			hopscotch_map(std::initializer_list<value_type> init,
+			hmap(std::initializer_list<value_type> init,
 				size_type bucket_count,
 				const Hash& hash,
 				const Allocator& alloc) :
-				hopscotch_map(init.begin(), init.end(), bucket_count, hash, KeyEqual(), alloc)
+				hmap(init.begin(), init.end(), bucket_count, hash, KeyEqual(), alloc)
 			{
 			}
 
 
-			hopscotch_map& operator=(std::initializer_list<value_type> ilist) {
+			hmap& operator=(std::initializer_list<value_type> ilist) {
 				m_ht.clear();
 
 				m_ht.reserve(ilist.size());
@@ -1648,7 +1648,7 @@ namespace tsl {
 
 
 
-			void swap(hopscotch_map& other) { other.swap(*this); }
+			void swap(hmap& other) { other.swap(*this); }
 
 			/*
 			* Lookup
@@ -1766,8 +1766,8 @@ namespace tsl {
 
 	template<class Key, class T, class Hash, class KeyEqual, class Allocator,
 		unsigned int NeighborhoodSize, class GrowthFactor>
-		inline bool operator==(const hopscotch_map<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& lhs,
-			const hopscotch_map<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& rhs)
+		inline bool operator==(const hmap<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& lhs,
+			const hmap<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& rhs)
 	{
 		if (lhs.size() != rhs.size()) {
 			return false;
@@ -1786,8 +1786,8 @@ namespace tsl {
 
 	template<class Key, class T, class Hash, class KeyEqual, class Allocator,
 		unsigned int NeighborhoodSize, class GrowthFactor>
-		inline bool operator!=(const hopscotch_map<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& lhs,
-			const hopscotch_map<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& rhs)
+		inline bool operator!=(const hmap<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& lhs,
+			const hmap<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& rhs)
 	{
 		return !operator==(lhs, rhs);
 	}
@@ -1795,8 +1795,8 @@ namespace tsl {
 
 	template<class Key, class T, class Hash, class KeyEqual, class Allocator,
 		unsigned int NeighborhoodSize, class GrowthFactor>
-		inline void swap(hopscotch_map<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& lhs,
-			hopscotch_map<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& rhs)
+		inline void swap(hmap<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& lhs,
+			hmap<Key, T, Hash, KeyEqual, Allocator, NeighborhoodSize, GrowthFactor>& rhs)
 	{
 		lhs.swap(rhs);
 	}

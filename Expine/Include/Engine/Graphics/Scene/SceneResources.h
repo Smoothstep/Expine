@@ -1,7 +1,7 @@
 #pragma once
 
-#include "RawResource.h"
-#include "Scene.h"
+#include "Raw/RawResource.h"
+#include "Scene/Scene.h"
 
 namespace D3D
 {

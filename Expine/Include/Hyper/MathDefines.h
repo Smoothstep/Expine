@@ -1,6 +1,6 @@
 #pragma once
 
-#define RoundFP(Value, Result)					_asm fld Value _asm fistp Result
+#define RoundFP(Value, Result)					__asm { fld Value, fistp Result };
 #undef  PI
 #define PI 										(3.1415926535897932f)
 #define FASTASIN_HALF_PI						(1.5707963050f)

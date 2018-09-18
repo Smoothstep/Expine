@@ -1,9 +1,9 @@
 #pragma once
 
 #include "TerrainStructure.h"
-#include "ViewFrustum.h"
+#include "Scene/View/ViewFrustum.h"
 
-#include "Memory.h"
+#include "Hyper/Memory.h"
 
 namespace D3D
 {
@@ -104,15 +104,13 @@ namespace D3D
 				IntPoint Position;
 				IntPoint Size;
 
-				inline InitializeParameters
+				inline constexpr InitializeParameters
 				(
 					const IntPoint & Position,
 					const IntPoint & Size
-				)
-				{
-					this->Position	= Position;
-					this->Size		= Size;
-				}
+				) :
+					Position(Position), Size(Size)
+				{}
 			};
 
 		private:

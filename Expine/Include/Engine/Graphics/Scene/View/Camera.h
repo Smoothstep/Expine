@@ -1,6 +1,6 @@
 #pragma once
 
-#include "D3D.h"
+#include "DirectX/D3D.h"
 #include "Hyper.h"
 
 namespace D3D
@@ -231,6 +231,24 @@ namespace D3D
 		)
 		{
 			CameraPosition += CameraRotation.GetVector() * Distance;
+		}
+
+		inline void MoveDirection
+		(
+			const Vector3f &	Direction,
+			const Float			Distance
+		)
+		{
+			CameraPosition += CameraRotation.GetVector() * Distance * Direction;
+		}
+
+		inline void MoveDirection
+		(
+			const Vector3f &	Direction,
+			const Vector3f &	Distance
+		)
+		{
+			CameraPosition += CameraRotation.GetVector() * Distance * Direction;
 		}
 
 		inline void MoveRight

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "D3D.h"
+#include "DirectX/D3D.h"
 
 #include <dxgi1_2.h>
 #include <dxgi1_3.h>
@@ -10,10 +10,20 @@ namespace D3D
 {
 	struct ScreenWindow
 	{
+		ScreenWindow() = default;
+		ScreenWindow(const Default&)
+			: WindowIsFullscreen(FALSE)
+			, WindowHandle(0)
+			, WindowHeight(840)
+			, WindowWidth(1240)
+			, NumSamples(1)
+		{}
+
 		HWND WindowHandle;
 		BOOL WindowIsFullscreen;
 		UINT WindowWidth;
 		UINT WindowHeight;
+		UINT NumSamples;
 
 		struct
 		{

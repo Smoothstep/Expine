@@ -1,10 +1,10 @@
 #pragma once
 
-#include "RawDescriptorHeap.h"
-#include "RawDevice.h"
-#include "RawCommandList.h"
+#include "Raw/RawDescriptorHeap.h"
+#include "Raw/RawDevice.h"
+#include "Raw/RawCommandList.h"
 
-#include "RawResource.h"
+#include "Raw/RawResource.h"
 
 namespace D3D
 {
@@ -458,7 +458,7 @@ namespace D3D
 					return Error;
 				}
 
-				ResourceObjects[Index] = ppResources[Index].Get();
+				ResourceObjects[Index] = ppResources[Index];
 			}
 		}
 

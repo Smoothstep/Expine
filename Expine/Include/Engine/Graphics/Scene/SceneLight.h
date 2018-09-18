@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Hyper.h"
-#include "VolumetricLighting.h"
+#include "Scene/Lighting/VolumetricLighting.h"
 
 namespace D3D
 {

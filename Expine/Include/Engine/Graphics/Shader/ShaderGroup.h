@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ShaderManager.h"
-#include "PipelineObject.h"
+#include "Shader/ShaderManager.h"
+#include "Pipeline/PipelineObject.h"
 
 namespace D3D
 {

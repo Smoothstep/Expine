@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ParallelProcessingUnit.h"
-#include "Mesh.h"
+#include "Object/Mesh.h"
 
 namespace D3D
 {

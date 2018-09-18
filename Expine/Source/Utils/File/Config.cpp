@@ -1,19 +1,17 @@
-#include "File/Config.h"
+#include "Utils/File/Config.h"
 
 namespace File
 {
-	void CConfig::ReadConfig
-	(
-		const CFile & File
-	)
+	void CConfig::Parse()
 	{
-		CFileReader FileReader(File.GetContentRef());
-
+		CContentReader<String> FileReader(Storage);
+	
 		String Line;
+		size_t LineCounter = 0;
 
-		while (FileReader.GetNextLine(Line))
+		for (size_t LineCounter = 0; FileReader.GetNextLine(Line); ++LineCounter)
 		{
-			size_t SplitOffset = Line.find_last_of('=');
+			const size_t SplitOffset = Line.find_last_of('=');
 
 			if (SplitOffset == String::npos)
 			{
@@ -25,11 +23,45 @@ namespace File
 				continue;
 			}
 
-			ConfigMap.insert(TMap<String, StringValue>::value_type
-			(
-				Line.substr(0, SplitOffset),
-				Line.substr(SplitOffset + 1)
-			));
+			StringType Key(Line.data(), SplitOffset);
+
+			const size_t ValueLength = Line.size() - SplitOffset - 1;
+
+			if (ValueLength <= 1)
+			{
+				continue;
+			}
+
+			StringType Val(Line.data() + SplitOffset + 1, ValueLength);
+			
+			if (!ConfigMap.emplace(
+				StringValue<StringView>(Line.data(),  SplitOffset),
+				StringValue<StringView>(Line.data() + SplitOffset, Line.size() - SplitOffset)).second)
+			{
+				throw CConfigParseError(LineCounter, "Key already exists");
+			}
+		}
+	}
+
+	void CConfig::ReadConfig
+	(
+		CFile & File
+	)
+	{
+		Detach(File.GetContentRef<char>(), Storage);
+		{
+			Parse();
+		}
+	}
+
+	void CConfig::ReadConfig
+	(
+		String&& Content
+	)
+	{
+		Storage = std::move(Content);
+		{
+			Parse();
 		}
 	}
 }
